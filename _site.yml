@@ -1,0 +1,13 @@
+name: "mcgrupp.github.io"
+output_dir: docs
+navbar:
+  title: "Jason W. Rupp"
+  left:
+    - text: "About Me"
+      href: index.html
+    - text: "Machine Learning: Model Tuning"
+      href: model_tuning.html
+    - text: "Data Wrangling and Visualization"
+      href: datawrag2.html
+    - text: "Neural Network"
+      href: tf.html
