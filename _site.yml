@@ -1,7 +1,7 @@
 name: "mcgrupp.github.io/scan_viz_site"
 output_dir: docs
 navbar:
-  title: "Jason W. Rupp"
+  title: "SCAN Project"
   left:
-    - text: "About Me"
-      href: scan_dashboard.html
+    - text: "Prevelence"
+      href: index.html
