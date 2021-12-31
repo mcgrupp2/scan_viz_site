@@ -4,4 +4,4 @@ navbar:
   title: "SCAN Project"
   left:
     - text: "Prevelence"
-      href: index.html
+      href: scan_dashboard.html
