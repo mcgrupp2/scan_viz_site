@@ -1,7 +1,0 @@
-name: "mcgrupp.github.io"
-output_dir: docs
-navbar:
-  title: "SCAN Viz"
-  left:
-    - text: "About Me"
-      href: index.html
