@@ -1,0 +1,7 @@
+name: "mcgrupp.github.io"
+output_dir: docs
+navbar:
+  title: "Jason W. Rupp"
+  left:
+    - text: "About Me"
+      href: index.html
