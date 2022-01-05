@@ -7,3 +7,5 @@ navbar:
       href: index.html
     - text: "Prevalence"
       href: prevalence.html
+    - text: "Metrics"
+      href: rdt_metrics.html
