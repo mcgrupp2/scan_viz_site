@@ -258,7 +258,7 @@ $(document).ready(function () {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div id="header">
+<div id="section-header">
 
 
 
@@ -267,7 +267,7 @@ $(document).ready(function () {
 </div>
 
 
-<div id="rshiny-test" class="section level2">
+<div id="section-rshiny-test" class="section level2">
 <h2>Rshiny Test</h2>
 <p>This is a test of an RShiny app in RMarkdown</p>
 <pre class="r"><code>library(shiny)
@@ -324,9 +324,7 @@ server &lt;- function(input, output) {
   
 }
 shinyApp(ui, server)</code></pre>
-<pre><code>## 
-## Listening on http://127.0.0.1:3771</code></pre>
-<p><img src="rdt_metrics_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><iframe data-deferred-src="app493a524d2ef3ad88211a353284d7b60b/?w=&amp;__subapp__=1" width="100%" height="400" class="shiny-frame shiny-frame-deferred"></iframe></p>
 </div>
 
 
@@ -351,7 +349,7 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function () {
-  window.buildTabsets("TOC");
+  window.buildTabsets("section-TOC");
 });
 
 $(document).ready(function () {

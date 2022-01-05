@@ -1,7 +1,13 @@
 ---
 title: "rdt_metrics"
 output: html_document
+runtime: shiny
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
 ## Rshiny Test
 This is a test of an RShiny app in RMarkdown
 
@@ -60,3 +66,12 @@ server <- function(input, output) {
   
 }
 shinyApp(ui, server)
+
+```
+
+
+
+
+
+
+
