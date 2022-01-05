@@ -1,0 +1,468 @@
+---
+title: ""
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(reticulate)
+library(vegawidget)
+```
+
+
+
+
+```{python include=FALSE}
+import csv
+import gzip
+import numpy as np
+from collections import Counter
+from statistics import mode
+from sklearn.model_selection import train_test_split
+import pandas as pd
+import altair as alt
+```
+
+```{python include=FALSE}
+#%%
+import csv
+import numpy as np
+
+import pandas as pd
+import altair as alt
+
+def read_csv(filepath):
+    # This function will load a csv when passed
+    # a filepath and returns a numpy array 
+    with open(filepath,"r") as f:
+        reader=csv.reader(f)
+        return np.array([x for x in reader])
+
+def get_column_index(labels,col_str):
+    # returns the index of a column
+    # pass the column as a string with the 
+    # current label state
+    return np.where(labels==col_str)[0][0]
+
+#%%
+
+prev_file="/Users/jason/OneDrive - UW/Documents/research_projects/202109_dedx/data/sfs_covid_prev_data.csv"
+
+prev=read_csv(prev_file)
+
+prev_labs=prev[0]
+prev=prev[1:,:]
+
+string_dates=[str(x) for x in prev[:,get_column_index(prev_labs,"best_available_encounter_date")]]
+
+
+a_del = np.delete(prev, get_column_index(prev_labs,"best_available_encounter_date"), 1)
+
+prev_b=np.insert(a_del,get_column_index(prev_labs,"best_available_encounter_date"),string_dates,axis=1)
+
+
+
+def sfs_mask_dates(date, date_range):
+    lag_mask=prev[:,get_column_index(prev_labs,"best_available_encounter_date")]>=str(np.datetime64(date)-np.timedelta64(date_range, 'D'))
+    lead_mask=prev[:,get_column_index(prev_labs,"best_available_encounter_date")]<str(np.datetime64(date))
+    m=np.logical_and(lag_mask,lead_mask)
+    return prev[m]
+
+def sfs_prev_dict(prevn_data):
+    pos_mask=prevn_data[:,get_column_index(prev_labs,'hcov19_status')]=='positive'
+    neg_mask=prevn_data[:,get_column_index(prev_labs,'hcov19_status')]=='negative'
+    ind_mask=prevn_data[:,get_column_index(prev_labs,'hcov19_status')]=='inconclusive'
+    dat_dict={"Inconclusive":sum(prevn_data[ind_mask][:,2].astype(int)),"Negative":sum(prevn_data[neg_mask][:,2].astype(int)),"Positive":sum(prevn_data[pos_mask][:,2].astype(int))}
+    dat_dict.update({'Total':sum(dat_dict.values())})
+    try:
+        #dat_dict.update({'pos_rate':sum(dat_dict['Positive'])/sum_numpy_dicts(dat_dict)})
+        dat_dict.update({'pos_rate':dat_dict['Positive']/dat_dict['Total']})
+    except:
+        #dat_dict.update({'pos_rate':0.1/dat_dict['Total']})
+        dat_dict.update({'pos_rate':0})
+    return dat_dict
+
+def sfs_mask_date_sing(date):
+    lead_mask=prev[:,get_column_index(prev_labs,"best_available_encounter_date")]==str(np.datetime64(date))
+    prevnc_dict=sfs_prev_dict(prev[lead_mask])
+    return prevnc_dict
+
+
+def sum_numpy_dicts(dicts):
+    y=[]
+    for x in dicts.values():
+        y.extend(x)
+    return sum(y)
+
+#sfs_drange=np.unique(prev[:,get_column_index(prev_labs,"best_available_encounter_date")])
+#sfs_comp={x:sfs_mask_date_sing(x) for x in sfs_drange}
+
+sfs_drange=[str(x) for x in np.unique(prev_b[:,get_column_index(prev_labs,"best_available_encounter_date")])]
+sfs_comp={x:sfs_mask_date_sing(x) for x in sfs_drange}
+
+
+# prev_file="/Users/jason/OneDrive - UW/Documents/research_projects/202109_dedx/data/sfs_covid_prev_data.csv"
+
+# prev=pd.read_csv(prev_file,parse_dates=['best_available_encounter_date'])
+
+
+
+sfse=pd.melt(pd.DataFrame.from_dict(sfs_comp,orient="index"), ignore_index=False).reset_index()
+sfse=sfse.rename({'index':'date'}, axis=1)
+sfse2=sfse.loc[(sfse['date'] >= '2020-03-29' )]
+sfse3=sfse2.loc[(sfse2['date'] <= '2021-09-29')]
+
+#sfse3.loc[:,'date']=[pd.to_datetime(x, infer_datetime_format=True) for x in sfse3['date'].copy()]
+
+#sfse3.loc[:,'date']=[pd.to_datetime(x, infer_datetime_format=True) for x in sfse3['date'].copy()]
+
+sfse3 = sfse3.astype({'date':'datetime64[D]'})
+#prev=prev.loc[(prev['best_available_encounter_date'] >= '2020-03-29' )]
+#prev=prev.loc[(prev['best_available_encounter_date'] <= '2021-09-29')]
+
+sfs_viz=sfse3.loc[~sfse3["variable"].isin(["Total","pos_rate"])]
+sfs_viz_pr=sfse3.loc[sfse3["variable"].isin(["pos_rate"])]
+sfs_viz_prarray=sfs_viz_pr.to_numpy()
+
+def rolling_avg(data,date,span):
+    try:
+        span_rates=np.mean([data[np.where(data[:,0]==(np.datetime64(date)-np.timedelta64(x,'D')))[0][0],2] for x in range(span+1)])
+    except:
+        span_rates=0
+    return span_rates
+# np.where(sfs_viz_prarray[:,0]==(np.datetime64('2020-04-24')-np.timedelta64(1,'D')))[0][0]
+
+def rolling_trend(data,date,span):
+    try:
+        span_rates=[data[np.where(data[:,0]==(np.datetime64(date)-np.timedelta64(x,'D')))[0][0],2] for x in range(span+1)]
+        span_rate=sum([span_rates[x-1]-span_rates[x] for x in range(len(span_rates)-1,0,-1)])
+    except:
+        span_rate=0
+    return  span_rate
+
+#%%
+rm_span=7
+
+sfs_avgs=np.array([[rolling_avg(sfs_viz_prarray,x,rm_span)] for x in sfs_viz_prarray[:,0]])
+
+sfs_avgs2=np.array([[rolling_trend(sfs_viz_prarray,x,rm_span)] for x in sfs_viz_prarray[:,0]])
+
+sfs_viz_prarray2=np.hstack((sfs_viz_prarray,sfs_avgs))
+
+sfs_viz_prarray3=np.hstack((sfs_viz_prarray2,sfs_avgs2))
+
+sfs_viz_pr2=pd.DataFrame(sfs_viz_prarray3,columns=np.append(sfs_viz_pr.columns.to_numpy(),np.array(["rolling_mean","trend"])))
+
+
+
+
+```
+
+```{python include=FALSE}
+sfs_upper=alt.Chart(sfs_viz).mark_bar().encode(
+    alt.X('date:T',
+        axis=alt.Axis(tickSize=0,title=None)
+    ),
+    alt.Y('value:Q',axis=alt.Axis(title="Number of Tests")),
+    alt.Color('variable:N', legend=alt.Legend(title="Test Result")
+    ),
+    tooltip=[alt.Tooltip('date:T', title="Date"),alt.Tooltip('value:Q', title='Number of Tests'),alt.Tooltip('variable:N', title='Result')]
+).properties(
+    title=alt.TitleParams(text='SFS Prevalence',fontSize=24)
+).properties(
+    width=400
+).interactive()
+
+sfs_line = alt.Chart(sfs_viz_pr2).mark_line(
+    color='seagreen',
+    size=3
+).encode(
+    x='date:T',
+    y='rolling_mean:Q'
+)
+
+sfs_lower=alt.Chart(sfs_viz_pr2).mark_bar(color="indianred").encode(
+    alt.X('date:T',
+        axis=alt.Axis(tickSize=0, title="Date")
+    ),
+    alt.Y('value:Q',axis=alt.Axis(title="Positivity Rate")),#,scale=alt.Scale(domain=(0,1))),
+    tooltip=[alt.Tooltip('date:T', title="Date"),alt.Tooltip('value:Q',format=".2p", title='Positive Rate'),alt.Tooltip('rolling_mean:Q',format=".2p", title=str("Rolling "+str(rm_span)+'-day Average'))]
+).properties(
+    width=400
+).interactive()
+
+```
+
+
+```{python include=FALSE}
+
+hd_prev_fn='/Users/jason/OneDrive - UW/Documents/research_projects/202109_dedx/data/COVID-19_Diagnostic_Laboratory_Testing__PCR_Testing__Time_Series.csv'
+
+hd_prev=read_csv(hd_prev_fn)
+
+hd_labs=hd_prev[0]
+
+hd_prev=hd_prev[1:,:]
+
+wa_mask=hd_prev[:,get_column_index(hd_labs,"state")]=="WA"
+
+wa_prev=hd_prev[wa_mask]
+
+
+def find_prev_for_date(date):
+    date_mask=wa_prev[:,get_column_index(hd_labs,"date")]==date
+    dat=wa_prev[date_mask]
+    perts=np.vstack((dat[:,get_column_index(hd_labs,"overall_outcome")],dat[:,get_column_index(hd_labs,"new_results_reported")]))
+    dat_dict={perts[0][k]:perts[1][k].astype(int) for k in range(len(perts[0]))}
+    dat_dict.update({"Total":sum(dat_dict.values())})
+    try:
+        dat_dict.update({'pos_rate':dat_dict['Positive']/dat_dict['Total']})
+    except:
+        pass
+    return dat_dict
+
+def hd_mask_dates(date, date_range):
+    lag_mask=wa_prev[:,get_column_index(hd_labs,"date")]=str(np.datetime64(date.replace("/","-"))-np.timedelta64(date_range, 'D')).replace("-","/")
+    lead_mask=wa_prev[:,get_column_index(hd_labs,"date")]<str(np.datetime64(date.replace("/","-"))).replace("-","/")
+    m=np.logical_and(lag_mask,lead_mask)
+    return wa_prev[m]
+
+
+# def sum_numpy_dicts(dicts):
+#     y=[]
+#     for x in dicts.values():
+#         y.extend(x)
+#     return sum(y)
+
+def hd_prev_dict(prevn_data):
+    pos_mask=prevn_data[:,get_column_index(hd_labs,'overall_outcome')]=='Positive'
+    neg_mask=prevn_data[:,get_column_index(hd_labs,'overall_outcome')]=='Negative'
+    ind_mask=prevn_data[:,get_column_index(hd_labs,'overall_outcome')]=='Inconclusive'
+    dat_dict={"Inconclusive":sum(prevn_data[ind_mask][:,get_column_index(hd_labs,'new_results_reported')].astype(int)),"Negative":sum(prevn_data[neg_mask][:,get_column_index(hd_labs,'new_results_reported')].astype(int)),"Positive":sum(prevn_data[pos_mask][:,get_column_index(hd_labs,'new_results_reported')].astype(int))}
+    dat_dict.update({"Total":sum(dat_dict.values())})
+    try:
+        dat_dict.update({'pos_rate':dat_dict['Positive']/dat_dict['Total']})
+    except:
+        pass
+    return dat_dict
+
+hd_drange=[str(x) for x in np.unique(wa_prev[:,get_column_index(hd_labs,"date")])]
+wa_comp={x.replace("/","-"):find_prev_for_date(x) for x in hd_drange}
+
+hde=pd.melt(pd.DataFrame.from_dict(wa_comp,orient="index"), ignore_index=False).reset_index()
+
+hde=hde.rename({'index':'date'}, axis=1).astype({'date':'datetime64[D]'})
+
+# hde2=hde.loc[(hde['index'] >= np.datetime64('2020/03/29') & hde['index'] <= np.datetime64('2021/09/29'))]
+
+
+
+hde2=hde.loc[(hde['date'] >= '2020-03-29' )]
+hde3=hde2.loc[(hde2['date'] <= '2021-09-29')]
+
+hd_viz=hde3.loc[~hde3["variable"].isin(["Total","pos_rate"])]
+hd_viz_pr=hde3.loc[hde3["variable"].isin(["pos_rate"])]
+
+hd_viz_prarray=hd_viz_pr.to_numpy()
+#%%
+rm_span=7
+
+hd_avgs=np.array([[rolling_avg(hd_viz_prarray,x,rm_span)] for x in hd_viz_prarray[:,0]])
+
+hd_viz_prarray2=np.hstack((hd_viz_prarray,hd_avgs))
+
+hd_viz_pr2=pd.DataFrame(hd_viz_prarray2,columns=np.append(hd_viz_pr.columns.to_numpy(),"rolling_mean"))
+
+```
+
+
+```{python include=FALSE}
+hd_upper=alt.Chart(hd_viz).mark_bar().encode(
+    alt.X('date:T',
+        axis=alt.Axis(domain=False, tickSize=0, title=None)
+    ),
+    alt.Y('value:Q',axis=alt.Axis(title=None)),
+    alt.Color('variable:N', legend=alt.Legend(title="Test Result")),
+    tooltip=[alt.Tooltip('date:T', title="Date"),alt.Tooltip('value:Q', title='Number of Tests'),alt.Tooltip('variable:N', title='Result')]
+).properties(
+    title=alt.TitleParams(text='HealthData.gov Prevalence',fontSize=24)
+).properties(
+    width=400
+).interactive()
+
+hd_line = alt.Chart(hd_viz_pr2).mark_line(
+    color='indianred',
+    size=3
+).encode(
+    x='date:T',
+    y='rolling_mean:Q'
+)
+
+hd_lower=alt.Chart(hd_viz_pr2).mark_bar(color="seagreen").encode(
+    alt.X('date:T',
+        axis=alt.Axis(domain=False, tickSize=0,title="Date"),
+    ),
+    alt.Y('value:Q',axis=alt.Axis(title=None)),#title="Positivity Rate"),
+    tooltip=[alt.Tooltip('date:T', title="Date"),alt.Tooltip('value:Q',format=".2p", title='Positive Rate'),alt.Tooltip('rolling_mean:Q',format=".2p", title=str("Rolling "+str(rm_span)+'-day Average'))]
+).properties(
+    width=400
+).interactive()
+
+c=(sfs_upper & (sfs_lower+sfs_line))|(hd_upper & (hd_lower+hd_line))
+cc=c.to_json()
+```
+
+```{python include=FALSE}
+hdpr=hd_viz_pr['value'].to_numpy()
+sfspr=sfs_viz_pr['value'].to_numpy()
+
+rate_diffs=np.array([[x-y] for x,y in zip(hdpr,sfspr)])
+
+
+rate_df=pd.DataFrame(np.hstack((np.array([[x] for x in hd_viz_pr['date']]),rate_diffs)),columns=["date","pos_rate_diff"])
+
+rate_df['rate_bias'] = np.where(rate_df['pos_rate_diff']>0, 'HD', 'SFS')
+
+
+rate_differences=alt.Chart(rate_df).mark_bar().encode(
+    x=alt.X("date:T",axis=alt.Axis(title="Date")),
+    y=alt.Y("pos_rate_diff:Q",axis=alt.Axis(title="Difference in Positivity Rate")),
+    color=alt.condition(
+        alt.datum.pos_rate_diff > 0,
+        alt.value("seagreen"),  # The positive color
+        alt.value("indianred")  # The negative color
+    ),
+    tooltip=[alt.Tooltip('date:T', title="Date"),alt.Tooltip('pos_rate_diff:Q',format=".2p", title='Positive Rate')]
+).properties(
+    width=875
+).interactive()
+```
+
+
+```{python include=FALSE}
+rolling_mean_df=pd.melt(pd.DataFrame({'date':hd_viz_pr2['date'].values,'HD':hd_viz_pr2['rolling_mean'].values,'SFS':sfs_viz_pr2['rolling_mean'].values}),id_vars=['date'])
+
+# Create a selection that chooses the nearest point & selects based on x-value
+nearest = alt.selection(type='single', nearest=True, on='mouseover',
+                        fields=['date'], empty='none')
+
+domain = ['HD', 'SFS']
+range_ = ['seagreen', 'indianred']
+
+# The basic line
+line = alt.Chart(rolling_mean_df).mark_line().encode(
+    x=alt.X('date:T',title="Date"),
+    y=alt.Y('value:Q',title="Positivity Rate"),
+    color=alt.Color('variable:N', scale=alt.Scale(domain=domain, range=range_))
+)
+
+# Transparent selectors across the chart. This is what tells us
+# the x-value of the cursor
+selectors = alt.Chart(rolling_mean_df).mark_point().encode(
+    x='date:T',
+    opacity=alt.value(0),
+).add_selection(
+    nearest
+)
+
+# Draw points on the line, and highlight based on selection
+points = line.mark_point().encode(
+    opacity=alt.condition(nearest, alt.value(1), alt.value(0))
+)
+
+# Draw text labels near the points, and highlight based on selection
+# text = line.mark_text(align='left', dx=5, dy=-5).encode(
+#     text=alt.condition(nearest, 'value', alt.value(' '))
+# ).transform_calculate(label='datum.value + " inches"')
+
+
+
+# Draw a rule at the location of the selection
+rules = alt.Chart(rolling_mean_df).mark_rule(color='gray').encode(
+    x='date:T',
+).transform_filter(
+    nearest
+)
+
+text = line.mark_text(align='left', dx=5, dy=-5, fontSize=16).encode(
+    text=alt.condition(nearest, alt.Text('value:Q',format=".3p"), alt.value(' '))
+)
+
+# text = line.mark_text(
+#     align='center', baseline='bottom', fontSize=16
+# ).encode(
+#     y='value:Q',
+#     text=alt.condition(nearest,'label:N',alt.value(" "))
+# ).transform_calculate(
+#     titles='datum.variable',
+#     pct='datum.value*100',
+#     label='datum.titles + ": " + datum.pct + " %"'
+# )
+
+# Put the five layers into a chart and bind the data
+pos_rate=alt.layer(
+    line, selectors, points, rules, text
+).properties(
+    width=875
+).interactive()
+
+
+
+hdpr=hd_viz_pr['value'].to_numpy()
+sfspr=sfs_viz_pr['value'].to_numpy()
+
+rate_diffs=np.array([[x-y] for x,y in zip(hdpr,sfspr)])
+
+
+rate_df=pd.DataFrame(np.hstack((np.array([[x] for x in hd_viz_pr['date']]),rate_diffs)),columns=["date","pos_rate_diff"])
+
+rate_df['rate_bias'] = np.where(rate_df['pos_rate_diff']>0, 'HealthData', 'SFS')
+
+
+# rate_differences=alt.Chart(rate_df).mark_bar().encode(
+#     x=alt.X("date:T",axis=alt.Axis(title="Date")),
+#     y=alt.Y("pos_rate_diff:Q",axis=alt.Axis(title="Difference in Positivity Rate")),
+#     color=alt.condition(
+#         alt.datum.pos_rate_diff > 0,
+#         alt.value("seagreen"),  # The positive color
+#         alt.value("indianred")  # The negative color
+#     ),
+#     tooltip=[alt.Tooltip('date:T', title="Date"),alt.Tooltip('pos_rate_diff:Q',format=".2p", title='Positive Rate')]
+# ).properties(
+#     width=875
+# ).interactive()
+
+
+rate_differences=alt.Chart(rate_df).mark_bar().encode(
+    x=alt.X("date:T",axis=alt.Axis(title="Date")),
+    y=alt.Y("pos_rate_diff:Q",axis=alt.Axis(title="Difference in Positivity Rate")),
+    color=alt.condition(
+        alt.datum.pos_rate_diff > 0,
+        alt.value("seagreen"),  # The positive color
+        alt.value("indianred")  # The negative color
+    ),
+    tooltip=[alt.Tooltip('date:T', title="Date"),alt.Tooltip('pos_rate_diff:Q',format=".2p", title='Difference in Positive Rate'),alt.Tooltip('rate_bias:N', title='Greater Positivity')]
+).properties(
+    width=875
+).interactive()
+rr=(pos_rate&rate_differences).to_json()
+```
+
+
+## Comparison of Prevelance Sources {.tabset}
+
+### Number of Tests
+
+```{r echo=FALSE,fig.cap="Lines on bottom chart indicate the rolling 7-day mean"}
+as_vegaspec(py$cc)
+```
+
+_Lines on bottom chart indicate the rolling 7-day mean_
+
+### Percentage of Positive Results
+
+```{r echo=FALSE}
+as_vegaspec(py$rr)
+```
+
+
