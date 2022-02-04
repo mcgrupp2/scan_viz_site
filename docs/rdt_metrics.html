@@ -11,7 +11,7 @@
 
 
 
-<title>rdt_metrics</title>
+<title>Testing Metrics</title>
 
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -32,6 +32,14 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="site_libs/vega-5.17.0/vega.min.js"></script>
+<script src="site_libs/vega-lite-4.17.0/vega-lite.min.js"></script>
+<link href="site_libs/vega-embed-6.12.2/vega-embed.css" rel="stylesheet" />
+<script src="site_libs/vega-embed-6.12.2/vega-embed.js"></script>
+<script src="site_libs/vegawidget-binding-0.3.3/vegawidget.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -245,6 +253,9 @@ $(document).ready(function () {
   <a href="index.html">Home</a>
 </li>
 <li>
+  <a href="model_test_results.html">Model Tests</a>
+</li>
+<li>
   <a href="prevalence.html">Prevalence</a>
 </li>
 <li>
@@ -258,73 +269,4307 @@ $(document).ready(function () {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div id="section-header">
+<div id="header">
 
 
 
-<h1 class="title toc-ignore">rdt_metrics</h1>
+<h1 class="title toc-ignore">Testing Metrics</h1>
 
 </div>
 
 
-<div id="section-rshiny-test" class="section level2">
-<h2>Rshiny Test</h2>
-<p>This is a test of an RShiny app in RMarkdown</p>
-<pre class="r"><code>library(shiny)
-ui &lt;- fluidPage(
-  
-  # App title ----
-  titlePanel(&quot;Hello Shiny!&quot;),
-  
-  # Sidebar layout with input and output definitions ----
-  sidebarLayout(
-    
-    # Sidebar panel for inputs ----
-    sidebarPanel(
-      
-      # Input: Slider for the number of bins ----
-      sliderInput(inputId = &quot;bins&quot;,
-                  label = &quot;Number of bins:&quot;,
-                  min = 1,
-                  max = 50,
-                  value = 30)
-      
-    ),
-    
-    # Main panel for displaying outputs ----
-    mainPanel(
-      
-      # Output: Histogram ----
-      plotOutput(outputId = &quot;distPlot&quot;)
-      
-    )
-  )
-)
-# Define server logic required to draw a histogram ----
-server &lt;- function(input, output) {
-  
-  # Histogram of the Old Faithful Geyser Data ----
-  # with requested number of bins
-  # This expression that generates a histogram is wrapped in a call
-  # to renderPlot to indicate that:
-  #
-  # 1. It is &quot;reactive&quot; and therefore should be automatically
-  #    re-executed when inputs (input$bins) change
-  # 2. Its output type is a plot
-  output$distPlot &lt;- renderPlot({
-    
-    x    &lt;- faithful$waiting
-    bins &lt;- seq(min(x), max(x), length.out = input$bins + 1)
-    
-    hist(x, breaks = bins, col = &quot;#75AADB&quot;, border = &quot;white&quot;,
-         xlab = &quot;Waiting time to next eruption (in mins)&quot;,
-         main = &quot;Histogram of waiting times&quot;)
-    
-  })
-  
-}
-shinyApp(ui, server)</code></pre>
-<p><iframe data-deferred-src="app493a524d2ef3ad88211a353284d7b60b/?w=&amp;__subapp__=1" width="100%" height="400" class="shiny-frame shiny-frame-deferred"></iframe></p>
+<div id="diagnostic-tests-for-sars-cov-2" class="section level2 tabset">
+<h2 class="tabset">Diagnostic Tests for SARS-CoV-2</h2>
+<div id="individual-tests" class="section level3">
+<h3>Individual Tests</h3>
+<div id="htmlwidget-b1785b22bc7e5cc25afd" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b1785b22bc7e5cc25afd">{"x":{
+  "chart_spec": {
+    "$schema": "https://vega.github.io/schema/vega-lite/v4.8.1.json",
+    "config": {
+      "view": {
+        "continuousHeight": 300,
+        "continuousWidth": 400
+      }
+    },
+    "datasets": {
+      "data-128feab2d1c006974c3984e39ac6d60d": [
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.9374,
+          "CLINICAL_SENSITIVITY_CI_low": 0.7382,
+          "CLINICAL_SENSITIVITY_mean": 0.8667,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.9853,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "6300",
+          "NOTES": "1) serial screening",
+          "PRODUCT": "SCoV-2 Ag Detect Rapid Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.989,
+          "CLINICAL_SENSITIVITY_CI_low": 0.73,
+          "CLINICAL_SENSITIVITY_mean": 0.917,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.877,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "140.6",
+          "NOTES": "1) over-the-counter home testing\n2) telehealth proctor supervised\n3) serial screening",
+          "PRODUCT": "BinaxNOW COVID-19 Ag Card2 Home Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.989,
+          "CLINICAL_SENSITIVITY_CI_low": 0.73,
+          "CLINICAL_SENSITIVITY_mean": 0.917,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.877,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "",
+          "NOTES": "1) over-the-counter home testing\n2) serial screening",
+          "PRODUCT": "BinaxNOW COVID-19 Antigen Self Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.989,
+          "CLINICAL_SENSITIVITY_CI_low": 0.73,
+          "CLINICAL_SENSITIVITY_mean": 0.917,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.877,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "140.6",
+          "NOTES": "",
+          "PRODUCT": "BinaxNOW COVID-19 Ag Card Home Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": null,
+          "CLINICAL_SENSITIVITY_CI_low": null,
+          "CLINICAL_SENSITIVITY_mean": 0.911,
+          "CLINICAL_SPECIFICITY_CI_high": null,
+          "CLINICAL_SPECIFICITY_CI_low": null,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "111",
+          "NOTES": "",
+          "PRODUCT": "GenBody COVID-19 Ag",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.9493,
+          "CLINICAL_SENSITIVITY_CI_low": 0.7552,
+          "CLINICAL_SENSITIVITY_mean": 0.8837,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.9425,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "Direct swab: 800 \nSwab in VTM: 6400",
+          "NOTES": "1) serial screening",
+          "PRODUCT": "CareStart COVID-19 Antigen test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.99,
+          "CLINICAL_SENSITIVITY_CI_low": 0.883,
+          "CLINICAL_SENSITIVITY_mean": 0.966,
+          "CLINICAL_SPECIFICITY_CI_high": 0.999,
+          "CLINICAL_SPECIFICITY_CI_low": 0.96,
+          "CLINICAL_SPECIFICITY_mean": 0.993,
+          "LoD (TCID50/mL)": "7570",
+          "NOTES": "",
+          "PRODUCT": "QuickVue SARS Antigen Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.896,
+          "CLINICAL_SENSITIVITY_CI_low": 0.749,
+          "CLINICAL_SENSITIVITY_mean": 0.835,
+          "CLINICAL_SPECIFICITY_CI_high": 0.998,
+          "CLINICAL_SPECIFICITY_CI_low": 0.972,
+          "CLINICAL_SPECIFICITY_mean": 0.992,
+          "LoD (TCID50/mL)": "1910",
+          "NOTES": "1) over-the-counter home testing\n2) serial screening",
+          "PRODUCT": "QuickVue At-Home OTC COVID-19 Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.924,
+          "CLINICAL_SENSITIVITY_CI_low": 0.718,
+          "CLINICAL_SENSITIVITY_mean": 0.848,
+          "CLINICAL_SPECIFICITY_CI_high": 0.998,
+          "CLINICAL_SPECIFICITY_CI_low": 0.952,
+          "CLINICAL_SPECIFICITY_mean": 0.991,
+          "LoD (TCID50/mL)": "1910",
+          "NOTES": "1) prescription home-testing",
+          "PRODUCT": "QuickVue At-Home COVID-19 Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.93,
+          "CLINICAL_SENSITIVITY_CI_low": 0.686,
+          "CLINICAL_SENSITIVITY_mean": 0.875,
+          "CLINICAL_SPECIFICITY_CI_high": 0.999,
+          "CLINICAL_SPECIFICITY_CI_low": 0.942,
+          "CLINICAL_SPECIFICITY_mean": 0.989,
+          "LoD (TCID50/mL)": "1250",
+          "NOTES": "",
+          "PRODUCT": "Sienna-Clarity COVID019 Antigen Rapid Test Cassette",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.999,
+          "CLINICAL_SENSITIVITY_CI_low": 0.851,
+          "CLINICAL_SENSITIVITY_mean": 0.971,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.92,
+          "CLINICAL_SPECIFICITY_mean": 0.985,
+          "LoD (TCID50/mL)": "22.5",
+          "NOTES": "",
+          "PRODUCT": "BinaxNOW COVID-19 Ag Card",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.906,
+          "CLINICAL_SENSITIVITY_CI_low": 0.768,
+          "CLINICAL_SENSITIVITY_mean": 0.846,
+          "CLINICAL_SPECIFICITY_CI_high": 0.995,
+          "CLINICAL_SPECIFICITY_CI_low": 0.966,
+          "CLINICAL_SPECIFICITY_mean": 0.985,
+          "LoD (TCID50/mL)": "140.6",
+          "NOTES": "1) non-prescription testing\n2) serial screening",
+          "PRODUCT": "BinaxNOW COVID-19 Ag2 Card",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.994,
+          "CLINICAL_SENSITIVITY_CI_low": 0.828,
+          "CLINICAL_SENSITIVITY_mean": 0.9655,
+          "CLINICAL_SPECIFICITY_CI_high": 0.995,
+          "CLINICAL_SPECIFICITY_CI_low": 0.933,
+          "CLINICAL_SPECIFICITY_mean": 0.9808,
+          "LoD (TCID50/mL)": "2300",
+          "NOTES": "1) serial screening",
+          "PRODUCT": "Celltrion DiaTrust COVID-19 Ag Rapid Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.95,
+          "CLINICAL_SENSITIVITY_CI_low": 0.7,
+          "CLINICAL_SENSITIVITY_mean": 0.87,
+          "CLINICAL_SPECIFICITY_CI_high": 0.99,
+          "CLINICAL_SPECIFICITY_CI_low": 0.93,
+          "CLINICAL_SPECIFICITY_mean": 0.98,
+          "LoD (TCID50/mL)": "2800",
+          "NOTES": "1) over-the-counter home testing\n2) serial screening",
+          "PRODUCT": "CareStart COVID-19 Antigen Home Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.92,
+          "CLINICAL_SENSITIVITY_CI_low": 0.71,
+          "CLINICAL_SENSITIVITY_mean": 0.84,
+          "CLINICAL_SPECIFICITY_CI_high": 0.99,
+          "CLINICAL_SPECIFICITY_CI_low": 0.93,
+          "CLINICAL_SPECIFICITY_mean": 0.98,
+          "LoD (TCID50/mL)": "",
+          "NOTES": "1) serial screening",
+          "PRODUCT": "InteliSwab COVID-19 Rapid Test Pro",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.92,
+          "CLINICAL_SENSITIVITY_CI_low": 0.71,
+          "CLINICAL_SENSITIVITY_mean": 0.84,
+          "CLINICAL_SPECIFICITY_CI_high": 0.99,
+          "CLINICAL_SPECIFICITY_CI_low": 0.93,
+          "CLINICAL_SPECIFICITY_mean": 0.98,
+          "LoD (TCID50/mL)": "250",
+          "NOTES": "1) over-the-counter home testing\n2) serial screening",
+          "PRODUCT": "InteliSwab COVID-19 Rapid Test ",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.92,
+          "CLINICAL_SENSITIVITY_CI_low": 0.71,
+          "CLINICAL_SENSITIVITY_mean": 0.84,
+          "CLINICAL_SPECIFICITY_CI_high": 0.99,
+          "CLINICAL_SPECIFICITY_CI_low": 0.93,
+          "CLINICAL_SPECIFICITY_mean": 0.98,
+          "LoD (TCID50/mL)": "250",
+          "NOTES": "1) prescription home-testing",
+          "PRODUCT": "InteliSwab COVID-19 Rapid Test Rx",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.931,
+          "CLINICAL_SENSITIVITY_CI_low": 0.682,
+          "CLINICAL_SENSITIVITY_mean": 0.844,
+          "CLINICAL_SPECIFICITY_CI_high": 0.982,
+          "CLINICAL_SPECIFICITY_CI_low": 0.926,
+          "CLINICAL_SPECIFICITY_mean": 0.963,
+          "LoD (TCID50/mL)": "2800",
+          "NOTES": "",
+          "PRODUCT": "INDICAID COVID-19 Rapid Antigen Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": null,
+          "CLINICAL_SENSITIVITY_CI_low": null,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": 0.987,
+          "CLINICAL_SPECIFICITY_CI_low": 0.894,
+          "CLINICAL_SPECIFICITY_mean": 0.962,
+          "LoD (TCID50/mL)": "2700",
+          "NOTES": "1) multi-analyte",
+          "PRODUCT": "Status COVID-19/Flu",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        }
+      ],
+      "data-1ba49c5781a53443683e5e93315f1fb3": [
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.995,
+          "CLINICAL_SENSITIVITY_CI_low": 0.847,
+          "CLINICAL_SENSITIVITY_mean": 0.97,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.966,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "575",
+          "NOTES": "",
+          "PRODUCT": "LIAISON SARS-CoV-2 Ag",
+          "READ": "instrument read",
+          "TEST TYPE": "chemiluminescence immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.999,
+          "CLINICAL_SENSITIVITY_CI_low": 0.838,
+          "CLINICAL_SENSITIVITY_mean": 0.969,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.973,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "88",
+          "NOTES": "",
+          "PRODUCT": "Clip COVID Rapid Antigen Test",
+          "READ": "instrument read",
+          "TEST TYPE": "lateral flow immunoluminescent assay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.99,
+          "CLINICAL_SENSITIVITY_CI_low": 0.8,
+          "CLINICAL_SENSITIVITY_mean": 0.944,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.88,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "30",
+          "NOTES": "",
+          "PRODUCT": "Sampinute COVID-19 Antigen MIA",
+          "READ": "instrument read",
+          "TEST TYPE": "magnetic force-assisted electrochemical sandwich immunoassay (MESIA)"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.9509,
+          "CLINICAL_SENSITIVITY_CI_low": 0.7888,
+          "CLINICAL_SENSITIVITY_mean": 0.894,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.8928,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "200",
+          "NOTES": "",
+          "PRODUCT": "Omnia SARS-CoV-2 Antigen Test",
+          "READ": "instrument read",
+          "TEST TYPE": "bulk acoustic wave (BAW) biosensor"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": null,
+          "CLINICAL_SENSITIVITY_CI_low": null,
+          "CLINICAL_SENSITIVITY_mean": 0.84,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.98,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "140",
+          "NOTES": "1) serial screening",
+          "PRODUCT": "BD Veritor System for Rapid Detection of SARS-CoV-2",
+          "READ": "instrument read",
+          "TEST TYPE": "chromatographic digital immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.914,
+          "CLINICAL_SENSITIVITY_CI_low": 0.656,
+          "CLINICAL_SENSITIVITY_mean": 0.818,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.936,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "7160",
+          "NOTES": "",
+          "PRODUCT": "ellume.lab COVID Antigen Test",
+          "READ": "instrument read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.885,
+          "CLINICAL_SENSITIVITY_CI_low": 0.566,
+          "CLINICAL_SENSITIVITY_mean": 0.8,
+          "CLINICAL_SPECIFICITY_CI_high": null,
+          "CLINICAL_SPECIFICITY_CI_low": null,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "3000",
+          "NOTES": "",
+          "PRODUCT": "VITROS Immunodiagnostic Products SARS-CoV-2 Antigen Reagent Pack",
+          "READ": "instrument read",
+          "TEST TYPE": "chemiluminescence immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.931,
+          "CLINICAL_SENSITIVITY_CI_low": 0.758,
+          "CLINICAL_SENSITIVITY_mean": 0.867,
+          "CLINICAL_SPECIFICITY_CI_high": 0.999,
+          "CLINICAL_SPECIFICITY_CI_low": 0.974,
+          "CLINICAL_SPECIFICITY_mean": 0.995,
+          "LoD (TCID50/mL)": "",
+          "NOTES": "1) instrument read",
+          "PRODUCT": "BD Veritor System for Rapid Detection of SARS-CoV-2 + Flu A+B",
+          "READ": "instrument read",
+          "TEST TYPE": "chromatographic digital immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 1,
+          "CLINICAL_SENSITIVITY_CI_low": 0.883,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": 0.999,
+          "CLINICAL_SPECIFICITY_CI_low": 0.969,
+          "CLINICAL_SPECIFICITY_mean": 0.994,
+          "LoD (TCID50/mL)": "15",
+          "NOTES": "1) serial screening",
+          "PRODUCT": "Sofia SARS Antigen FIA",
+          "READ": "instrument read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.929,
+          "CLINICAL_SENSITIVITY_CI_low": 0.7343,
+          "CLINICAL_SENSITIVITY_mean": 0.85,
+          "CLINICAL_SPECIFICITY_CI_high": 0.9988,
+          "CLINICAL_SPECIFICITY_CI_low": 0.966,
+          "CLINICAL_SPECIFICITY_mean": 0.9905,
+          "LoD (TCID50/mL)": "5000",
+          "NOTES": "",
+          "PRODUCT": "QIAreach SARS-CoV-2 Antigen",
+          "READ": "instrument read",
+          "TEST TYPE": "digital lateral flow"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.99,
+          "CLINICAL_SENSITIVITY_CI_low": 0.82,
+          "CLINICAL_SENSITIVITY_mean": 0.95,
+          "CLINICAL_SPECIFICITY_CI_high": 0.99,
+          "CLINICAL_SPECIFICITY_CI_low": 0.93,
+          "CLINICAL_SPECIFICITY_mean": 0.97,
+          "LoD (TCID50/mL)": "6310",
+          "NOTES": "1) over-the-counter home testing",
+          "PRODUCT": "Ellume COVID-19 Home Test",
+          "READ": "instrument read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.993,
+          "CLINICAL_SENSITIVITY_CI_low": 0.916,
+          "CLINICAL_SENSITIVITY_mean": 0.976,
+          "CLINICAL_SPECIFICITY_CI_high": 0.984,
+          "CLINICAL_SPECIFICITY_CI_low": 0.927,
+          "CLINICAL_SPECIFICITY_mean": 0.966,
+          "LoD (TCID50/mL)": "32",
+          "NOTES": "",
+          "PRODUCT": "LumiraDx SARS-CoV-2 Ag Test",
+          "READ": "instrument read",
+          "TEST TYPE": "rapid microfluidic immunofluorescence Assay"
+        }
+      ],
+      "data-259687ef9de213c18ca5b665fcf7f178": [
+        {
+          "CLINICAL_SENSITIVITY_CI_high": null,
+          "CLINICAL_SENSITIVITY_CI_low": null,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": null,
+          "CLINICAL_SPECIFICITY_CI_low": null,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "40",
+          "NOTES": "1) reagents commercially distributed as a kit to labs",
+          "PRODUCT": "Accula SARS-Cov-2 Test",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_PCR/lateral flow technologies"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": null,
+          "CLINICAL_SENSITIVITY_CI_low": null,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": null,
+          "CLINICAL_SPECIFICITY_CI_low": null,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "1.3",
+          "NOTES": "1) reagents commercially distributed as a kit to labs",
+          "PRODUCT": "Cue COVID-19 Test",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_isothermal nucleic acid amplification"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 1,
+          "CLINICAL_SENSITIVITY_CI_low": 0.936,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.984,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "0.012",
+          "NOTES": "1) detects/differentiates SARS-CoV-2, influenza A virus, and/or influenza B virus RNA",
+          "PRODUCT": "cobas SARS-CoV-2 & Influenza A/B Nucleic Acid Test for use on the cobas Liat System",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_(multiplex) real time RT-PCR"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 1,
+          "CLINICAL_SENSITIVITY_CI_low": 0.931,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.931,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "0.4",
+          "NOTES": "1) testing limited to U.S. Department of Defense (DoD) designated laboratories certified under the CLIA for high or moderate complexity tests, or similarly qualified U.S. DoD designated laboratories",
+          "PRODUCT": "Xpert Xpress SARS-CoV-2 DoD",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_real time RT-PCR/pooling (H only)"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.996,
+          "CLINICAL_SENSITIVITY_CI_low": null,
+          "CLINICAL_SENSITIVITY_mean": 0.979,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.981,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "0.131",
+          "NOTES": "1) detects influenza A, influenza B, and respiratory syncytial virus (RSV) viral RNA",
+          "PRODUCT": "Xpert Xpress SARS-CoV-2/Flu/RSV",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_(multiplex) real time RT-PCR"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.9972,
+          "CLINICAL_SENSITIVITY_CI_low": 0.9203,
+          "CLINICAL_SENSITIVITY_mean": 0.977,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.9075,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "0.31",
+          "NOTES": "1) time to perform 96 tests: 150 minutes",
+          "PRODUCT": "Simoa SARS-CoV-2 N Protein Antigen Test",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_paramagnetic microbead-based immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.958,
+          "CLINICAL_SENSITIVITY_CI_low": 0.856,
+          "CLINICAL_SENSITIVITY_mean": 0.917,
+          "CLINICAL_SPECIFICITY_CI_high": 0.994,
+          "CLINICAL_SPECIFICITY_CI_low": 0.958,
+          "CLINICAL_SPECIFICITY_mean": 0.982,
+          "LoD (TCID50/mL)": "0.9",
+          "NOTES": "",
+          "PRODUCT": "Lucira CHECK-IT COVID-19 Test Kit",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_RT-LAMP"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.984,
+          "CLINICAL_SENSITIVITY_CI_low": 0.855,
+          "CLINICAL_SENSITIVITY_mean": 0.941,
+          "CLINICAL_SPECIFICITY_CI_high": 0.999,
+          "CLINICAL_SPECIFICITY_CI_low": 0.894,
+          "CLINICAL_SPECIFICITY_mean": 0.98,
+          "LoD (TCID50/mL)": "0.9",
+          "NOTES": "",
+          "PRODUCT": "Lucira COVID-19 All-In-One Test Kit",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_RT-LAMP "
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.986,
+          "CLINICAL_SENSITIVITY_CI_low": 0.89,
+          "CLINICAL_SENSITIVITY_mean": 0.961,
+          "CLINICAL_SPECIFICITY_CI_high": 0.986,
+          "CLINICAL_SPECIFICITY_CI_low": 0.926,
+          "CLINICAL_SPECIFICITY_mean": 0.961,
+          "LoD (TCID50/mL)": "0.012",
+          "NOTES": "",
+          "PRODUCT": "cobas SARS-CoV-Nucleic acid test for use on the cobas Liat System",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_real time RT-PCR"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.996,
+          "CLINICAL_SENSITIVITY_CI_low": 0.884,
+          "CLINICAL_SENSITIVITY_mean": 0.978,
+          "CLINICAL_SPECIFICITY_CI_high": 0.988,
+          "CLINICAL_SPECIFICITY_CI_low": 0.852,
+          "CLINICAL_SPECIFICITY_mean": 0.956,
+          "LoD (TCID50/mL)": "0.00002 PFU/µL (~0.01 copies/µL, approximated using Seegene’s AllplexTM 2019-nCoV assay data)",
+          "NOTES": "1) reagents commercially distributed as a kit to labs",
+          "PRODUCT": "Xpert Xpress SARS-CoV-2 test",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_real time RT-PCR"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 1,
+          "CLINICAL_SENSITIVITY_CI_low": 0.89,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": 0.984,
+          "CLINICAL_SPECIFICITY_CI_low": 0.871,
+          "CLINICAL_SPECIFICITY_mean": 0.953,
+          "LoD (TCID50/mL)": "435 genomic copies/swab",
+          "NOTES": "",
+          "PRODUCT": "Visby Medical COVID-19 Point of Care Test",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_real time RT-PCR"
+        }
+      ],
+      "data-25f8161f540ab24b57076a3a082cf03d": [
+        {
+          "CLINICAL_SENSITIVITY_CI_high": null,
+          "CLINICAL_SENSITIVITY_CI_low": null,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": 0.987,
+          "CLINICAL_SPECIFICITY_CI_low": 0.894,
+          "CLINICAL_SPECIFICITY_mean": 0.962,
+          "LoD (TCID50/mL)": "2700",
+          "NOTES": "1) multi-analyte",
+          "PRODUCT": "Status COVID-19/Flu",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.999,
+          "CLINICAL_SENSITIVITY_CI_low": 0.851,
+          "CLINICAL_SENSITIVITY_mean": 0.971,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.92,
+          "CLINICAL_SPECIFICITY_mean": 0.985,
+          "LoD (TCID50/mL)": "22.5",
+          "NOTES": "",
+          "PRODUCT": "BinaxNOW COVID-19 Ag Card",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.99,
+          "CLINICAL_SENSITIVITY_CI_low": 0.883,
+          "CLINICAL_SENSITIVITY_mean": 0.966,
+          "CLINICAL_SPECIFICITY_CI_high": 0.999,
+          "CLINICAL_SPECIFICITY_CI_low": 0.96,
+          "CLINICAL_SPECIFICITY_mean": 0.993,
+          "LoD (TCID50/mL)": "7570",
+          "NOTES": "",
+          "PRODUCT": "QuickVue SARS Antigen Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.994,
+          "CLINICAL_SENSITIVITY_CI_low": 0.828,
+          "CLINICAL_SENSITIVITY_mean": 0.9655,
+          "CLINICAL_SPECIFICITY_CI_high": 0.995,
+          "CLINICAL_SPECIFICITY_CI_low": 0.933,
+          "CLINICAL_SPECIFICITY_mean": 0.9808,
+          "LoD (TCID50/mL)": "2300",
+          "NOTES": "1) serial screening",
+          "PRODUCT": "Celltrion DiaTrust COVID-19 Ag Rapid Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.989,
+          "CLINICAL_SENSITIVITY_CI_low": 0.73,
+          "CLINICAL_SENSITIVITY_mean": 0.917,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.877,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "140.6",
+          "NOTES": "1) over-the-counter home testing\n2) telehealth proctor supervised\n3) serial screening",
+          "PRODUCT": "BinaxNOW COVID-19 Ag Card2 Home Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.989,
+          "CLINICAL_SENSITIVITY_CI_low": 0.73,
+          "CLINICAL_SENSITIVITY_mean": 0.917,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.877,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "",
+          "NOTES": "1) over-the-counter home testing\n2) serial screening",
+          "PRODUCT": "BinaxNOW COVID-19 Antigen Self Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.989,
+          "CLINICAL_SENSITIVITY_CI_low": 0.73,
+          "CLINICAL_SENSITIVITY_mean": 0.917,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.877,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "140.6",
+          "NOTES": "",
+          "PRODUCT": "BinaxNOW COVID-19 Ag Card Home Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": null,
+          "CLINICAL_SENSITIVITY_CI_low": null,
+          "CLINICAL_SENSITIVITY_mean": 0.911,
+          "CLINICAL_SPECIFICITY_CI_high": null,
+          "CLINICAL_SPECIFICITY_CI_low": null,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "111",
+          "NOTES": "",
+          "PRODUCT": "GenBody COVID-19 Ag",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.9493,
+          "CLINICAL_SENSITIVITY_CI_low": 0.7552,
+          "CLINICAL_SENSITIVITY_mean": 0.8837,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.9425,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "Direct swab: 800 \nSwab in VTM: 6400",
+          "NOTES": "1) serial screening",
+          "PRODUCT": "CareStart COVID-19 Antigen test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.93,
+          "CLINICAL_SENSITIVITY_CI_low": 0.686,
+          "CLINICAL_SENSITIVITY_mean": 0.875,
+          "CLINICAL_SPECIFICITY_CI_high": 0.999,
+          "CLINICAL_SPECIFICITY_CI_low": 0.942,
+          "CLINICAL_SPECIFICITY_mean": 0.989,
+          "LoD (TCID50/mL)": "1250",
+          "NOTES": "",
+          "PRODUCT": "Sienna-Clarity COVID019 Antigen Rapid Test Cassette",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.95,
+          "CLINICAL_SENSITIVITY_CI_low": 0.7,
+          "CLINICAL_SENSITIVITY_mean": 0.87,
+          "CLINICAL_SPECIFICITY_CI_high": 0.99,
+          "CLINICAL_SPECIFICITY_CI_low": 0.93,
+          "CLINICAL_SPECIFICITY_mean": 0.98,
+          "LoD (TCID50/mL)": "2800",
+          "NOTES": "1) over-the-counter home testing\n2) serial screening",
+          "PRODUCT": "CareStart COVID-19 Antigen Home Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.9374,
+          "CLINICAL_SENSITIVITY_CI_low": 0.7382,
+          "CLINICAL_SENSITIVITY_mean": 0.8667,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.9853,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "6300",
+          "NOTES": "1) serial screening",
+          "PRODUCT": "SCoV-2 Ag Detect Rapid Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.924,
+          "CLINICAL_SENSITIVITY_CI_low": 0.718,
+          "CLINICAL_SENSITIVITY_mean": 0.848,
+          "CLINICAL_SPECIFICITY_CI_high": 0.998,
+          "CLINICAL_SPECIFICITY_CI_low": 0.952,
+          "CLINICAL_SPECIFICITY_mean": 0.991,
+          "LoD (TCID50/mL)": "1910",
+          "NOTES": "1) prescription home-testing",
+          "PRODUCT": "QuickVue At-Home COVID-19 Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.906,
+          "CLINICAL_SENSITIVITY_CI_low": 0.768,
+          "CLINICAL_SENSITIVITY_mean": 0.846,
+          "CLINICAL_SPECIFICITY_CI_high": 0.995,
+          "CLINICAL_SPECIFICITY_CI_low": 0.966,
+          "CLINICAL_SPECIFICITY_mean": 0.985,
+          "LoD (TCID50/mL)": "140.6",
+          "NOTES": "1) non-prescription testing\n2) serial screening",
+          "PRODUCT": "BinaxNOW COVID-19 Ag2 Card",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.931,
+          "CLINICAL_SENSITIVITY_CI_low": 0.682,
+          "CLINICAL_SENSITIVITY_mean": 0.844,
+          "CLINICAL_SPECIFICITY_CI_high": 0.982,
+          "CLINICAL_SPECIFICITY_CI_low": 0.926,
+          "CLINICAL_SPECIFICITY_mean": 0.963,
+          "LoD (TCID50/mL)": "2800",
+          "NOTES": "",
+          "PRODUCT": "INDICAID COVID-19 Rapid Antigen Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.92,
+          "CLINICAL_SENSITIVITY_CI_low": 0.71,
+          "CLINICAL_SENSITIVITY_mean": 0.84,
+          "CLINICAL_SPECIFICITY_CI_high": 0.99,
+          "CLINICAL_SPECIFICITY_CI_low": 0.93,
+          "CLINICAL_SPECIFICITY_mean": 0.98,
+          "LoD (TCID50/mL)": "",
+          "NOTES": "1) serial screening",
+          "PRODUCT": "InteliSwab COVID-19 Rapid Test Pro",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.92,
+          "CLINICAL_SENSITIVITY_CI_low": 0.71,
+          "CLINICAL_SENSITIVITY_mean": 0.84,
+          "CLINICAL_SPECIFICITY_CI_high": 0.99,
+          "CLINICAL_SPECIFICITY_CI_low": 0.93,
+          "CLINICAL_SPECIFICITY_mean": 0.98,
+          "LoD (TCID50/mL)": "250",
+          "NOTES": "1) over-the-counter home testing\n2) serial screening",
+          "PRODUCT": "InteliSwab COVID-19 Rapid Test ",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.92,
+          "CLINICAL_SENSITIVITY_CI_low": 0.71,
+          "CLINICAL_SENSITIVITY_mean": 0.84,
+          "CLINICAL_SPECIFICITY_CI_high": 0.99,
+          "CLINICAL_SPECIFICITY_CI_low": 0.93,
+          "CLINICAL_SPECIFICITY_mean": 0.98,
+          "LoD (TCID50/mL)": "250",
+          "NOTES": "1) prescription home-testing",
+          "PRODUCT": "InteliSwab COVID-19 Rapid Test Rx",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.896,
+          "CLINICAL_SENSITIVITY_CI_low": 0.749,
+          "CLINICAL_SENSITIVITY_mean": 0.835,
+          "CLINICAL_SPECIFICITY_CI_high": 0.998,
+          "CLINICAL_SPECIFICITY_CI_low": 0.972,
+          "CLINICAL_SPECIFICITY_mean": 0.992,
+          "LoD (TCID50/mL)": "1910",
+          "NOTES": "1) over-the-counter home testing\n2) serial screening",
+          "PRODUCT": "QuickVue At-Home OTC COVID-19 Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        }
+      ],
+      "data-b3aa6c38ba55da10348d23f41ea586bf": [
+        {
+          "CLINICAL_SENSITIVITY_CI_high": null,
+          "CLINICAL_SENSITIVITY_CI_low": null,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": null,
+          "CLINICAL_SPECIFICITY_CI_low": null,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "40",
+          "NOTES": "1) reagents commercially distributed as a kit to labs",
+          "PRODUCT": "Accula SARS-Cov-2 Test",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_PCR/lateral flow technologies"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": null,
+          "CLINICAL_SENSITIVITY_CI_low": null,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": null,
+          "CLINICAL_SPECIFICITY_CI_low": null,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "1.3",
+          "NOTES": "1) reagents commercially distributed as a kit to labs",
+          "PRODUCT": "Cue COVID-19 Test",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_isothermal nucleic acid amplification"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 1,
+          "CLINICAL_SENSITIVITY_CI_low": 0.936,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.984,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "0.012",
+          "NOTES": "1) detects/differentiates SARS-CoV-2, influenza A virus, and/or influenza B virus RNA",
+          "PRODUCT": "cobas SARS-CoV-2 & Influenza A/B Nucleic Acid Test for use on the cobas Liat System",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_(multiplex) real time RT-PCR"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 1,
+          "CLINICAL_SENSITIVITY_CI_low": 0.931,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.931,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "0.4",
+          "NOTES": "1) testing limited to U.S. Department of Defense (DoD) designated laboratories certified under the CLIA for high or moderate complexity tests, or similarly qualified U.S. DoD designated laboratories",
+          "PRODUCT": "Xpert Xpress SARS-CoV-2 DoD",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_real time RT-PCR/pooling (H only)"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 1,
+          "CLINICAL_SENSITIVITY_CI_low": 0.89,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": 0.984,
+          "CLINICAL_SPECIFICITY_CI_low": 0.871,
+          "CLINICAL_SPECIFICITY_mean": 0.953,
+          "LoD (TCID50/mL)": "435 genomic copies/swab",
+          "NOTES": "",
+          "PRODUCT": "Visby Medical COVID-19 Point of Care Test",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_real time RT-PCR"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.996,
+          "CLINICAL_SENSITIVITY_CI_low": null,
+          "CLINICAL_SENSITIVITY_mean": 0.979,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.981,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "0.131",
+          "NOTES": "1) detects influenza A, influenza B, and respiratory syncytial virus (RSV) viral RNA",
+          "PRODUCT": "Xpert Xpress SARS-CoV-2/Flu/RSV",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_(multiplex) real time RT-PCR"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.996,
+          "CLINICAL_SENSITIVITY_CI_low": 0.884,
+          "CLINICAL_SENSITIVITY_mean": 0.978,
+          "CLINICAL_SPECIFICITY_CI_high": 0.988,
+          "CLINICAL_SPECIFICITY_CI_low": 0.852,
+          "CLINICAL_SPECIFICITY_mean": 0.956,
+          "LoD (TCID50/mL)": "0.00002 PFU/µL (~0.01 copies/µL, approximated using Seegene’s AllplexTM 2019-nCoV assay data)",
+          "NOTES": "1) reagents commercially distributed as a kit to labs",
+          "PRODUCT": "Xpert Xpress SARS-CoV-2 test",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_real time RT-PCR"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.9972,
+          "CLINICAL_SENSITIVITY_CI_low": 0.9203,
+          "CLINICAL_SENSITIVITY_mean": 0.977,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.9075,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "0.31",
+          "NOTES": "1) time to perform 96 tests: 150 minutes",
+          "PRODUCT": "Simoa SARS-CoV-2 N Protein Antigen Test",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_paramagnetic microbead-based immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.986,
+          "CLINICAL_SENSITIVITY_CI_low": 0.89,
+          "CLINICAL_SENSITIVITY_mean": 0.961,
+          "CLINICAL_SPECIFICITY_CI_high": 0.986,
+          "CLINICAL_SPECIFICITY_CI_low": 0.926,
+          "CLINICAL_SPECIFICITY_mean": 0.961,
+          "LoD (TCID50/mL)": "0.012",
+          "NOTES": "",
+          "PRODUCT": "cobas SARS-CoV-Nucleic acid test for use on the cobas Liat System",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_real time RT-PCR"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.984,
+          "CLINICAL_SENSITIVITY_CI_low": 0.855,
+          "CLINICAL_SENSITIVITY_mean": 0.941,
+          "CLINICAL_SPECIFICITY_CI_high": 0.999,
+          "CLINICAL_SPECIFICITY_CI_low": 0.894,
+          "CLINICAL_SPECIFICITY_mean": 0.98,
+          "LoD (TCID50/mL)": "0.9",
+          "NOTES": "",
+          "PRODUCT": "Lucira COVID-19 All-In-One Test Kit",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_RT-LAMP "
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.958,
+          "CLINICAL_SENSITIVITY_CI_low": 0.856,
+          "CLINICAL_SENSITIVITY_mean": 0.917,
+          "CLINICAL_SPECIFICITY_CI_high": 0.994,
+          "CLINICAL_SPECIFICITY_CI_low": 0.958,
+          "CLINICAL_SPECIFICITY_mean": 0.982,
+          "LoD (TCID50/mL)": "0.9",
+          "NOTES": "",
+          "PRODUCT": "Lucira CHECK-IT COVID-19 Test Kit",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_RT-LAMP"
+        }
+      ],
+      "data-f2863e3e32b24e0b3a80ea506fdaaea4": [
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 1,
+          "CLINICAL_SENSITIVITY_CI_low": 0.883,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": 0.999,
+          "CLINICAL_SPECIFICITY_CI_low": 0.969,
+          "CLINICAL_SPECIFICITY_mean": 0.994,
+          "LoD (TCID50/mL)": "15",
+          "NOTES": "1) serial screening",
+          "PRODUCT": "Sofia SARS Antigen FIA",
+          "READ": "instrument read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.993,
+          "CLINICAL_SENSITIVITY_CI_low": 0.916,
+          "CLINICAL_SENSITIVITY_mean": 0.976,
+          "CLINICAL_SPECIFICITY_CI_high": 0.984,
+          "CLINICAL_SPECIFICITY_CI_low": 0.927,
+          "CLINICAL_SPECIFICITY_mean": 0.966,
+          "LoD (TCID50/mL)": "32",
+          "NOTES": "",
+          "PRODUCT": "LumiraDx SARS-CoV-2 Ag Test",
+          "READ": "instrument read",
+          "TEST TYPE": "rapid microfluidic immunofluorescence Assay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.995,
+          "CLINICAL_SENSITIVITY_CI_low": 0.847,
+          "CLINICAL_SENSITIVITY_mean": 0.97,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.966,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "575",
+          "NOTES": "",
+          "PRODUCT": "LIAISON SARS-CoV-2 Ag",
+          "READ": "instrument read",
+          "TEST TYPE": "chemiluminescence immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.999,
+          "CLINICAL_SENSITIVITY_CI_low": 0.838,
+          "CLINICAL_SENSITIVITY_mean": 0.969,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.973,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "88",
+          "NOTES": "",
+          "PRODUCT": "Clip COVID Rapid Antigen Test",
+          "READ": "instrument read",
+          "TEST TYPE": "lateral flow immunoluminescent assay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.99,
+          "CLINICAL_SENSITIVITY_CI_low": 0.82,
+          "CLINICAL_SENSITIVITY_mean": 0.95,
+          "CLINICAL_SPECIFICITY_CI_high": 0.99,
+          "CLINICAL_SPECIFICITY_CI_low": 0.93,
+          "CLINICAL_SPECIFICITY_mean": 0.97,
+          "LoD (TCID50/mL)": "6310",
+          "NOTES": "1) over-the-counter home testing",
+          "PRODUCT": "Ellume COVID-19 Home Test",
+          "READ": "instrument read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.99,
+          "CLINICAL_SENSITIVITY_CI_low": 0.8,
+          "CLINICAL_SENSITIVITY_mean": 0.944,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.88,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "30",
+          "NOTES": "",
+          "PRODUCT": "Sampinute COVID-19 Antigen MIA",
+          "READ": "instrument read",
+          "TEST TYPE": "magnetic force-assisted electrochemical sandwich immunoassay (MESIA)"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.9509,
+          "CLINICAL_SENSITIVITY_CI_low": 0.7888,
+          "CLINICAL_SENSITIVITY_mean": 0.894,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.8928,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "200",
+          "NOTES": "",
+          "PRODUCT": "Omnia SARS-CoV-2 Antigen Test",
+          "READ": "instrument read",
+          "TEST TYPE": "bulk acoustic wave (BAW) biosensor"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.931,
+          "CLINICAL_SENSITIVITY_CI_low": 0.758,
+          "CLINICAL_SENSITIVITY_mean": 0.867,
+          "CLINICAL_SPECIFICITY_CI_high": 0.999,
+          "CLINICAL_SPECIFICITY_CI_low": 0.974,
+          "CLINICAL_SPECIFICITY_mean": 0.995,
+          "LoD (TCID50/mL)": "",
+          "NOTES": "1) instrument read",
+          "PRODUCT": "BD Veritor System for Rapid Detection of SARS-CoV-2 + Flu A+B",
+          "READ": "instrument read",
+          "TEST TYPE": "chromatographic digital immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.929,
+          "CLINICAL_SENSITIVITY_CI_low": 0.7343,
+          "CLINICAL_SENSITIVITY_mean": 0.85,
+          "CLINICAL_SPECIFICITY_CI_high": 0.9988,
+          "CLINICAL_SPECIFICITY_CI_low": 0.966,
+          "CLINICAL_SPECIFICITY_mean": 0.9905,
+          "LoD (TCID50/mL)": "5000",
+          "NOTES": "",
+          "PRODUCT": "QIAreach SARS-CoV-2 Antigen",
+          "READ": "instrument read",
+          "TEST TYPE": "digital lateral flow"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": null,
+          "CLINICAL_SENSITIVITY_CI_low": null,
+          "CLINICAL_SENSITIVITY_mean": 0.84,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.98,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "140",
+          "NOTES": "1) serial screening",
+          "PRODUCT": "BD Veritor System for Rapid Detection of SARS-CoV-2",
+          "READ": "instrument read",
+          "TEST TYPE": "chromatographic digital immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.914,
+          "CLINICAL_SENSITIVITY_CI_low": 0.656,
+          "CLINICAL_SENSITIVITY_mean": 0.818,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.936,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "7160",
+          "NOTES": "",
+          "PRODUCT": "ellume.lab COVID Antigen Test",
+          "READ": "instrument read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.885,
+          "CLINICAL_SENSITIVITY_CI_low": 0.566,
+          "CLINICAL_SENSITIVITY_mean": 0.8,
+          "CLINICAL_SPECIFICITY_CI_high": null,
+          "CLINICAL_SPECIFICITY_CI_low": null,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "3000",
+          "NOTES": "",
+          "PRODUCT": "VITROS Immunodiagnostic Products SARS-CoV-2 Antigen Reagent Pack",
+          "READ": "instrument read",
+          "TEST TYPE": "chemiluminescence immunoassay"
+        }
+      ]
+    },
+    "vconcat": [
+      {
+        "hconcat": [
+          {
+            "data": {
+              "name": "data-25f8161f540ab24b57076a3a082cf03d"
+            },
+            "layer": [
+              {
+                "encoding": {
+                  "color": {
+                    "field": "PRODUCT",
+                    "legend": null,
+                    "type": "nominal"
+                  },
+                  "tooltip": [
+                    {
+                      "field": "PRODUCT",
+                      "title": "Antigen Test",
+                      "type": "nominal"
+                    },
+                    {
+                      "field": "CLINICAL_SENSITIVITY_mean",
+                      "format": ".3p",
+                      "title": "Mean",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SENSITIVITY_CI_low",
+                      "format": ".3p",
+                      "title": "Low",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SENSITIVITY_CI_high",
+                      "format": ".3p",
+                      "title": "Hi",
+                      "type": "quantitative"
+                    }
+                  ],
+                  "x": {
+                    "axis": {
+                      "title": "Antigen Diagnostic Tests for SARS-CoV-2"
+                    },
+                    "field": "PRODUCT",
+                    "sort": [
+                      "Status COVID-19/Flu",
+                      "BinaxNOW COVID-19 Ag Card",
+                      "QuickVue SARS Antigen Test",
+                      "Celltrion DiaTrust COVID-19 Ag Rapid Test",
+                      "BinaxNOW COVID-19 Ag Card2 Home Test",
+                      "BinaxNOW COVID-19 Antigen Self Test",
+                      "BinaxNOW COVID-19 Ag Card Home Test",
+                      "GenBody COVID-19 Ag",
+                      "CareStart COVID-19 Antigen test",
+                      "Sienna-Clarity COVID019 Antigen Rapid Test Cassette",
+                      "CareStart COVID-19 Antigen Home Test",
+                      "SCoV-2 Ag Detect Rapid Test",
+                      "QuickVue At-Home COVID-19 Test",
+                      "BinaxNOW COVID-19 Ag2 Card",
+                      "INDICAID COVID-19 Rapid Antigen Test",
+                      "InteliSwab COVID-19 Rapid Test Pro",
+                      "InteliSwab COVID-19 Rapid Test ",
+                      "InteliSwab COVID-19 Rapid Test Rx",
+                      "QuickVue At-Home OTC COVID-19 Test"
+                    ],
+                    "type": "nominal"
+                  },
+                  "y": {
+                    "field": "CLINICAL_SENSITIVITY_CI_low",
+                    "type": "quantitative"
+                  },
+                  "y2": {
+                    "field": "CLINICAL_SENSITIVITY_CI_high"
+                  }
+                },
+                "mark": {
+                  "opacity": 0.5,
+                  "type": "bar"
+                },
+                "title": {
+                  "fontSize": 24,
+                  "subtitle": "Visual Read Diagnostic Tests",
+                  "subtitleFontSize": 18,
+                  "text": "Reported Clinical Sensitivity"
+                },
+                "width": 400
+              },
+              {
+                "encoding": {
+                  "color": {
+                    "field": "PRODUCT",
+                    "legend": null,
+                    "type": "nominal"
+                  },
+                  "x": {
+                    "axis": {
+                      "title": "Antigen Diagnostic Tests for SARS-CoV-2"
+                    },
+                    "field": "PRODUCT",
+                    "sort": [
+                      "Status COVID-19/Flu",
+                      "BinaxNOW COVID-19 Ag Card",
+                      "QuickVue SARS Antigen Test",
+                      "Celltrion DiaTrust COVID-19 Ag Rapid Test",
+                      "BinaxNOW COVID-19 Ag Card2 Home Test",
+                      "BinaxNOW COVID-19 Antigen Self Test",
+                      "BinaxNOW COVID-19 Ag Card Home Test",
+                      "GenBody COVID-19 Ag",
+                      "CareStart COVID-19 Antigen test",
+                      "Sienna-Clarity COVID019 Antigen Rapid Test Cassette",
+                      "CareStart COVID-19 Antigen Home Test",
+                      "SCoV-2 Ag Detect Rapid Test",
+                      "QuickVue At-Home COVID-19 Test",
+                      "BinaxNOW COVID-19 Ag2 Card",
+                      "INDICAID COVID-19 Rapid Antigen Test",
+                      "InteliSwab COVID-19 Rapid Test Pro",
+                      "InteliSwab COVID-19 Rapid Test ",
+                      "InteliSwab COVID-19 Rapid Test Rx",
+                      "QuickVue At-Home OTC COVID-19 Test"
+                    ],
+                    "type": "nominal"
+                  },
+                  "y": {
+                    "field": "CLINICAL_SENSITIVITY_CI_low",
+                    "scale": {
+                      "zero": false
+                    },
+                    "title": "Clinical Sensitivity",
+                    "type": "quantitative"
+                  },
+                  "y2": {
+                    "field": "CLINICAL_SENSITIVITY_CI_high"
+                  }
+                },
+                "mark": "rule",
+                "title": {
+                  "fontSize": 24,
+                  "subtitle": "Visual Read Diagnostic Tests",
+                  "subtitleFontSize": 18,
+                  "text": "Reported Clinical Sensitivity"
+                },
+                "width": 400
+              },
+              {
+                "encoding": {
+                  "color": {
+                    "field": "PRODUCT",
+                    "legend": null,
+                    "type": "nominal"
+                  },
+                  "tooltip": [
+                    {
+                      "field": "PRODUCT",
+                      "title": "Antigen Test",
+                      "type": "nominal"
+                    },
+                    {
+                      "field": "CLINICAL_SENSITIVITY_mean",
+                      "format": ".3p",
+                      "title": "Mean",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SENSITIVITY_CI_low",
+                      "format": ".3p",
+                      "title": "Low",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SENSITIVITY_CI_high",
+                      "format": ".3p",
+                      "title": "Hi",
+                      "type": "quantitative"
+                    }
+                  ],
+                  "x": {
+                    "axis": {
+                      "title": "Antigen Diagnostic Tests for SARS-CoV-2"
+                    },
+                    "field": "PRODUCT",
+                    "sort": [
+                      "Status COVID-19/Flu",
+                      "BinaxNOW COVID-19 Ag Card",
+                      "QuickVue SARS Antigen Test",
+                      "Celltrion DiaTrust COVID-19 Ag Rapid Test",
+                      "BinaxNOW COVID-19 Ag Card2 Home Test",
+                      "BinaxNOW COVID-19 Antigen Self Test",
+                      "BinaxNOW COVID-19 Ag Card Home Test",
+                      "GenBody COVID-19 Ag",
+                      "CareStart COVID-19 Antigen test",
+                      "Sienna-Clarity COVID019 Antigen Rapid Test Cassette",
+                      "CareStart COVID-19 Antigen Home Test",
+                      "SCoV-2 Ag Detect Rapid Test",
+                      "QuickVue At-Home COVID-19 Test",
+                      "BinaxNOW COVID-19 Ag2 Card",
+                      "INDICAID COVID-19 Rapid Antigen Test",
+                      "InteliSwab COVID-19 Rapid Test Pro",
+                      "InteliSwab COVID-19 Rapid Test ",
+                      "InteliSwab COVID-19 Rapid Test Rx",
+                      "QuickVue At-Home OTC COVID-19 Test"
+                    ],
+                    "type": "nominal"
+                  },
+                  "y": {
+                    "field": "CLINICAL_SENSITIVITY_mean",
+                    "type": "quantitative"
+                  }
+                },
+                "mark": "point",
+                "title": {
+                  "fontSize": 24,
+                  "subtitle": "Visual Read Diagnostic Tests",
+                  "subtitleFontSize": 18,
+                  "text": "Reported Clinical Sensitivity"
+                },
+                "width": 400
+              }
+            ]
+          },
+          {
+            "data": {
+              "name": "data-128feab2d1c006974c3984e39ac6d60d"
+            },
+            "layer": [
+              {
+                "encoding": {
+                  "color": {
+                    "field": "PRODUCT",
+                    "legend": null,
+                    "type": "nominal"
+                  },
+                  "tooltip": [
+                    {
+                      "field": "PRODUCT",
+                      "title": "Antigen Test",
+                      "type": "nominal"
+                    },
+                    {
+                      "field": "CLINICAL_SPECIFICITY_mean",
+                      "format": ".3p",
+                      "title": "Mean",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SPECIFICITY_CI_low",
+                      "format": ".3p",
+                      "title": "Low",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SPECIFICITY_CI_high",
+                      "format": ".3p",
+                      "title": "Hi",
+                      "type": "quantitative"
+                    }
+                  ],
+                  "x": {
+                    "axis": {
+                      "title": "Antigen Diagnostic Tests for SARS-CoV-2"
+                    },
+                    "field": "PRODUCT",
+                    "sort": [
+                      "SCoV-2 Ag Detect Rapid Test",
+                      "BinaxNOW COVID-19 Ag Card2 Home Test",
+                      "BinaxNOW COVID-19 Antigen Self Test",
+                      "BinaxNOW COVID-19 Ag Card Home Test",
+                      "GenBody COVID-19 Ag",
+                      "CareStart COVID-19 Antigen test",
+                      "QuickVue SARS Antigen Test",
+                      "QuickVue At-Home OTC COVID-19 Test",
+                      "QuickVue At-Home COVID-19 Test",
+                      "Sienna-Clarity COVID019 Antigen Rapid Test Cassette",
+                      "BinaxNOW COVID-19 Ag Card",
+                      "BinaxNOW COVID-19 Ag2 Card",
+                      "Celltrion DiaTrust COVID-19 Ag Rapid Test",
+                      "CareStart COVID-19 Antigen Home Test",
+                      "InteliSwab COVID-19 Rapid Test Pro",
+                      "InteliSwab COVID-19 Rapid Test ",
+                      "InteliSwab COVID-19 Rapid Test Rx",
+                      "INDICAID COVID-19 Rapid Antigen Test",
+                      "Status COVID-19/Flu"
+                    ],
+                    "type": "nominal"
+                  },
+                  "y": {
+                    "field": "CLINICAL_SPECIFICITY_CI_low",
+                    "type": "quantitative"
+                  },
+                  "y2": {
+                    "field": "CLINICAL_SPECIFICITY_CI_high"
+                  }
+                },
+                "mark": {
+                  "opacity": 0.5,
+                  "type": "bar"
+                },
+                "title": {
+                  "fontSize": 24,
+                  "subtitle": "Visual Read Diagnostic Tests",
+                  "subtitleFontSize": 18,
+                  "text": "Reported Clinical Specificity"
+                },
+                "width": 400
+              },
+              {
+                "encoding": {
+                  "color": {
+                    "field": "PRODUCT",
+                    "legend": null,
+                    "type": "nominal"
+                  },
+                  "x": {
+                    "axis": {
+                      "title": "Antigen Diagnostic Tests for SARS-CoV-2"
+                    },
+                    "field": "PRODUCT",
+                    "sort": [
+                      "SCoV-2 Ag Detect Rapid Test",
+                      "BinaxNOW COVID-19 Ag Card2 Home Test",
+                      "BinaxNOW COVID-19 Antigen Self Test",
+                      "BinaxNOW COVID-19 Ag Card Home Test",
+                      "GenBody COVID-19 Ag",
+                      "CareStart COVID-19 Antigen test",
+                      "QuickVue SARS Antigen Test",
+                      "QuickVue At-Home OTC COVID-19 Test",
+                      "QuickVue At-Home COVID-19 Test",
+                      "Sienna-Clarity COVID019 Antigen Rapid Test Cassette",
+                      "BinaxNOW COVID-19 Ag Card",
+                      "BinaxNOW COVID-19 Ag2 Card",
+                      "Celltrion DiaTrust COVID-19 Ag Rapid Test",
+                      "CareStart COVID-19 Antigen Home Test",
+                      "InteliSwab COVID-19 Rapid Test Pro",
+                      "InteliSwab COVID-19 Rapid Test ",
+                      "InteliSwab COVID-19 Rapid Test Rx",
+                      "INDICAID COVID-19 Rapid Antigen Test",
+                      "Status COVID-19/Flu"
+                    ],
+                    "type": "nominal"
+                  },
+                  "y": {
+                    "field": "CLINICAL_SPECIFICITY_CI_low",
+                    "scale": {
+                      "zero": false
+                    },
+                    "title": "Clinical Sensitivity",
+                    "type": "quantitative"
+                  },
+                  "y2": {
+                    "field": "CLINICAL_SPECIFICITY_CI_high"
+                  }
+                },
+                "mark": "rule",
+                "title": {
+                  "fontSize": 24,
+                  "subtitle": "Visual Read Diagnostic Tests",
+                  "subtitleFontSize": 18,
+                  "text": "Reported Clinical Specificity"
+                },
+                "width": 400
+              },
+              {
+                "encoding": {
+                  "color": {
+                    "field": "PRODUCT",
+                    "legend": null,
+                    "type": "nominal"
+                  },
+                  "tooltip": [
+                    {
+                      "field": "PRODUCT",
+                      "title": "Antigen Test",
+                      "type": "nominal"
+                    },
+                    {
+                      "field": "CLINICAL_SPECIFICITY_mean",
+                      "format": ".3p",
+                      "title": "Mean",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SPECIFICITY_CI_low",
+                      "format": ".3p",
+                      "title": "Low",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SPECIFICITY_CI_high",
+                      "format": ".3p",
+                      "title": "High",
+                      "type": "quantitative"
+                    }
+                  ],
+                  "x": {
+                    "axis": {
+                      "title": "Antigen Diagnostic Tests for SARS-CoV-2"
+                    },
+                    "field": "PRODUCT",
+                    "sort": [
+                      "SCoV-2 Ag Detect Rapid Test",
+                      "BinaxNOW COVID-19 Ag Card2 Home Test",
+                      "BinaxNOW COVID-19 Antigen Self Test",
+                      "BinaxNOW COVID-19 Ag Card Home Test",
+                      "GenBody COVID-19 Ag",
+                      "CareStart COVID-19 Antigen test",
+                      "QuickVue SARS Antigen Test",
+                      "QuickVue At-Home OTC COVID-19 Test",
+                      "QuickVue At-Home COVID-19 Test",
+                      "Sienna-Clarity COVID019 Antigen Rapid Test Cassette",
+                      "BinaxNOW COVID-19 Ag Card",
+                      "BinaxNOW COVID-19 Ag2 Card",
+                      "Celltrion DiaTrust COVID-19 Ag Rapid Test",
+                      "CareStart COVID-19 Antigen Home Test",
+                      "InteliSwab COVID-19 Rapid Test Pro",
+                      "InteliSwab COVID-19 Rapid Test ",
+                      "InteliSwab COVID-19 Rapid Test Rx",
+                      "INDICAID COVID-19 Rapid Antigen Test",
+                      "Status COVID-19/Flu"
+                    ],
+                    "type": "nominal"
+                  },
+                  "y": {
+                    "field": "CLINICAL_SPECIFICITY_mean",
+                    "type": "quantitative"
+                  }
+                },
+                "mark": "point",
+                "title": {
+                  "fontSize": 24,
+                  "subtitle": "Visual Read Diagnostic Tests",
+                  "subtitleFontSize": 18,
+                  "text": "Reported Clinical Specificity"
+                },
+                "width": 400
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "hconcat": [
+          {
+            "data": {
+              "name": "data-f2863e3e32b24e0b3a80ea506fdaaea4"
+            },
+            "layer": [
+              {
+                "encoding": {
+                  "color": {
+                    "field": "PRODUCT",
+                    "legend": null,
+                    "type": "nominal"
+                  },
+                  "tooltip": [
+                    {
+                      "field": "PRODUCT",
+                      "title": "Antigen Test",
+                      "type": "nominal"
+                    },
+                    {
+                      "field": "CLINICAL_SENSITIVITY_mean",
+                      "format": ".3p",
+                      "title": "Mean",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SENSITIVITY_CI_low",
+                      "format": ".3p",
+                      "title": "Low",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SENSITIVITY_CI_high",
+                      "format": ".3p",
+                      "title": "Hi",
+                      "type": "quantitative"
+                    }
+                  ],
+                  "x": {
+                    "axis": {
+                      "title": "Antigen Diagnostic Tests for SARS-CoV-2"
+                    },
+                    "field": "PRODUCT",
+                    "sort": [
+                      "Sofia SARS Antigen FIA",
+                      "LumiraDx SARS-CoV-2 Ag Test",
+                      "LIAISON SARS-CoV-2 Ag",
+                      "Clip COVID Rapid Antigen Test",
+                      "Ellume COVID-19 Home Test",
+                      "Sampinute COVID-19 Antigen MIA",
+                      "Omnia SARS-CoV-2 Antigen Test",
+                      "BD Veritor System for Rapid Detection of SARS-CoV-2 + Flu A+B",
+                      "QIAreach SARS-CoV-2 Antigen",
+                      "BD Veritor System for Rapid Detection of SARS-CoV-2",
+                      "ellume.lab COVID Antigen Test",
+                      "VITROS Immunodiagnostic Products SARS-CoV-2 Antigen Reagent Pack"
+                    ],
+                    "type": "nominal"
+                  },
+                  "y": {
+                    "field": "CLINICAL_SENSITIVITY_CI_low",
+                    "type": "quantitative"
+                  },
+                  "y2": {
+                    "field": "CLINICAL_SENSITIVITY_CI_high"
+                  }
+                },
+                "mark": {
+                  "opacity": 0.5,
+                  "type": "bar"
+                },
+                "title": {
+                  "fontSize": 24,
+                  "subtitle": "Instrument Read Diagnostic Tests",
+                  "subtitleFontSize": 18,
+                  "text": "Reported Clinical Sensitivity"
+                },
+                "width": 400
+              },
+              {
+                "encoding": {
+                  "color": {
+                    "field": "PRODUCT",
+                    "legend": null,
+                    "type": "nominal"
+                  },
+                  "x": {
+                    "axis": {
+                      "title": "Antigen Diagnostic Tests for SARS-CoV-2"
+                    },
+                    "field": "PRODUCT",
+                    "sort": [
+                      "Sofia SARS Antigen FIA",
+                      "LumiraDx SARS-CoV-2 Ag Test",
+                      "LIAISON SARS-CoV-2 Ag",
+                      "Clip COVID Rapid Antigen Test",
+                      "Ellume COVID-19 Home Test",
+                      "Sampinute COVID-19 Antigen MIA",
+                      "Omnia SARS-CoV-2 Antigen Test",
+                      "BD Veritor System for Rapid Detection of SARS-CoV-2 + Flu A+B",
+                      "QIAreach SARS-CoV-2 Antigen",
+                      "BD Veritor System for Rapid Detection of SARS-CoV-2",
+                      "ellume.lab COVID Antigen Test",
+                      "VITROS Immunodiagnostic Products SARS-CoV-2 Antigen Reagent Pack"
+                    ],
+                    "type": "nominal"
+                  },
+                  "y": {
+                    "field": "CLINICAL_SENSITIVITY_CI_low",
+                    "scale": {
+                      "zero": false
+                    },
+                    "title": "Clinical Sensitivity",
+                    "type": "quantitative"
+                  },
+                  "y2": {
+                    "field": "CLINICAL_SENSITIVITY_CI_high"
+                  }
+                },
+                "mark": "rule",
+                "title": {
+                  "fontSize": 24,
+                  "subtitle": "Instrument Read Diagnostic Tests",
+                  "subtitleFontSize": 18,
+                  "text": "Reported Clinical Sensitivity"
+                },
+                "width": 400
+              },
+              {
+                "encoding": {
+                  "color": {
+                    "field": "PRODUCT",
+                    "legend": null,
+                    "type": "nominal"
+                  },
+                  "tooltip": [
+                    {
+                      "field": "PRODUCT",
+                      "title": "Antigen Test",
+                      "type": "nominal"
+                    },
+                    {
+                      "field": "CLINICAL_SENSITIVITY_mean",
+                      "format": ".3p",
+                      "title": "Mean",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SENSITIVITY_CI_low",
+                      "format": ".3p",
+                      "title": "Low",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SENSITIVITY_CI_high",
+                      "format": ".3p",
+                      "title": "Hi",
+                      "type": "quantitative"
+                    }
+                  ],
+                  "x": {
+                    "axis": {
+                      "title": "Antigen Diagnostic Tests for SARS-CoV-2"
+                    },
+                    "field": "PRODUCT",
+                    "sort": [
+                      "Sofia SARS Antigen FIA",
+                      "LumiraDx SARS-CoV-2 Ag Test",
+                      "LIAISON SARS-CoV-2 Ag",
+                      "Clip COVID Rapid Antigen Test",
+                      "Ellume COVID-19 Home Test",
+                      "Sampinute COVID-19 Antigen MIA",
+                      "Omnia SARS-CoV-2 Antigen Test",
+                      "BD Veritor System for Rapid Detection of SARS-CoV-2 + Flu A+B",
+                      "QIAreach SARS-CoV-2 Antigen",
+                      "BD Veritor System for Rapid Detection of SARS-CoV-2",
+                      "ellume.lab COVID Antigen Test",
+                      "VITROS Immunodiagnostic Products SARS-CoV-2 Antigen Reagent Pack"
+                    ],
+                    "type": "nominal"
+                  },
+                  "y": {
+                    "field": "CLINICAL_SENSITIVITY_mean",
+                    "type": "quantitative"
+                  }
+                },
+                "mark": "point",
+                "title": {
+                  "fontSize": 24,
+                  "subtitle": "Instrument Read Diagnostic Tests",
+                  "subtitleFontSize": 18,
+                  "text": "Reported Clinical Sensitivity"
+                },
+                "width": 400
+              }
+            ]
+          },
+          {
+            "data": {
+              "name": "data-1ba49c5781a53443683e5e93315f1fb3"
+            },
+            "layer": [
+              {
+                "encoding": {
+                  "color": {
+                    "field": "PRODUCT",
+                    "legend": null,
+                    "type": "nominal"
+                  },
+                  "tooltip": [
+                    {
+                      "field": "PRODUCT",
+                      "title": "Antigen Test",
+                      "type": "nominal"
+                    },
+                    {
+                      "field": "CLINICAL_SPECIFICITY_mean",
+                      "format": ".3p",
+                      "title": "Mean",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SPECIFICITY_CI_low",
+                      "format": ".3p",
+                      "title": "Low",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SPECIFICITY_CI_high",
+                      "format": ".3p",
+                      "title": "Hi",
+                      "type": "quantitative"
+                    }
+                  ],
+                  "x": {
+                    "axis": {
+                      "title": "Antigen Diagnostic Tests for SARS-CoV-2"
+                    },
+                    "field": "PRODUCT",
+                    "sort": [
+                      "LIAISON SARS-CoV-2 Ag",
+                      "Clip COVID Rapid Antigen Test",
+                      "Sampinute COVID-19 Antigen MIA",
+                      "Omnia SARS-CoV-2 Antigen Test",
+                      "BD Veritor System for Rapid Detection of SARS-CoV-2",
+                      "ellume.lab COVID Antigen Test",
+                      "VITROS Immunodiagnostic Products SARS-CoV-2 Antigen Reagent Pack",
+                      "BD Veritor System for Rapid Detection of SARS-CoV-2 + Flu A+B",
+                      "Sofia SARS Antigen FIA",
+                      "QIAreach SARS-CoV-2 Antigen",
+                      "Ellume COVID-19 Home Test",
+                      "LumiraDx SARS-CoV-2 Ag Test"
+                    ],
+                    "type": "nominal"
+                  },
+                  "y": {
+                    "field": "CLINICAL_SPECIFICITY_CI_low",
+                    "type": "quantitative"
+                  },
+                  "y2": {
+                    "field": "CLINICAL_SPECIFICITY_CI_high"
+                  }
+                },
+                "mark": {
+                  "opacity": 0.5,
+                  "type": "bar"
+                },
+                "title": {
+                  "fontSize": 24,
+                  "subtitle": "Instrument Read Diagnostic Tests",
+                  "subtitleFontSize": 18,
+                  "text": "Reported Clinical Specificity"
+                },
+                "width": 400
+              },
+              {
+                "encoding": {
+                  "color": {
+                    "field": "PRODUCT",
+                    "legend": null,
+                    "type": "nominal"
+                  },
+                  "x": {
+                    "axis": {
+                      "title": "Antigen Diagnostic Tests for SARS-CoV-2"
+                    },
+                    "field": "PRODUCT",
+                    "sort": [
+                      "LIAISON SARS-CoV-2 Ag",
+                      "Clip COVID Rapid Antigen Test",
+                      "Sampinute COVID-19 Antigen MIA",
+                      "Omnia SARS-CoV-2 Antigen Test",
+                      "BD Veritor System for Rapid Detection of SARS-CoV-2",
+                      "ellume.lab COVID Antigen Test",
+                      "VITROS Immunodiagnostic Products SARS-CoV-2 Antigen Reagent Pack",
+                      "BD Veritor System for Rapid Detection of SARS-CoV-2 + Flu A+B",
+                      "Sofia SARS Antigen FIA",
+                      "QIAreach SARS-CoV-2 Antigen",
+                      "Ellume COVID-19 Home Test",
+                      "LumiraDx SARS-CoV-2 Ag Test"
+                    ],
+                    "type": "nominal"
+                  },
+                  "y": {
+                    "field": "CLINICAL_SPECIFICITY_CI_low",
+                    "scale": {
+                      "zero": false
+                    },
+                    "title": "Clinical Sensitivity",
+                    "type": "quantitative"
+                  },
+                  "y2": {
+                    "field": "CLINICAL_SPECIFICITY_CI_high"
+                  }
+                },
+                "mark": "rule",
+                "title": {
+                  "fontSize": 24,
+                  "subtitle": "Instrument Read Diagnostic Tests",
+                  "subtitleFontSize": 18,
+                  "text": "Reported Clinical Specificity"
+                },
+                "width": 400
+              },
+              {
+                "encoding": {
+                  "color": {
+                    "field": "PRODUCT",
+                    "legend": null,
+                    "type": "nominal"
+                  },
+                  "tooltip": [
+                    {
+                      "field": "PRODUCT",
+                      "title": "Antigen Test",
+                      "type": "nominal"
+                    },
+                    {
+                      "field": "CLINICAL_SPECIFICITY_mean",
+                      "format": ".3p",
+                      "title": "Mean",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SPECIFICITY_CI_low",
+                      "format": ".3p",
+                      "title": "Low",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SPECIFICITY_CI_high",
+                      "format": ".3p",
+                      "title": "High",
+                      "type": "quantitative"
+                    }
+                  ],
+                  "x": {
+                    "axis": {
+                      "title": "Antigen Diagnostic Tests for SARS-CoV-2"
+                    },
+                    "field": "PRODUCT",
+                    "sort": [
+                      "LIAISON SARS-CoV-2 Ag",
+                      "Clip COVID Rapid Antigen Test",
+                      "Sampinute COVID-19 Antigen MIA",
+                      "Omnia SARS-CoV-2 Antigen Test",
+                      "BD Veritor System for Rapid Detection of SARS-CoV-2",
+                      "ellume.lab COVID Antigen Test",
+                      "VITROS Immunodiagnostic Products SARS-CoV-2 Antigen Reagent Pack",
+                      "BD Veritor System for Rapid Detection of SARS-CoV-2 + Flu A+B",
+                      "Sofia SARS Antigen FIA",
+                      "QIAreach SARS-CoV-2 Antigen",
+                      "Ellume COVID-19 Home Test",
+                      "LumiraDx SARS-CoV-2 Ag Test"
+                    ],
+                    "type": "nominal"
+                  },
+                  "y": {
+                    "field": "CLINICAL_SPECIFICITY_mean",
+                    "type": "quantitative"
+                  }
+                },
+                "mark": "point",
+                "title": {
+                  "fontSize": 24,
+                  "subtitle": "Instrument Read Diagnostic Tests",
+                  "subtitleFontSize": 18,
+                  "text": "Reported Clinical Specificity"
+                },
+                "width": 400
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "hconcat": [
+          {
+            "data": {
+              "name": "data-b3aa6c38ba55da10348d23f41ea586bf"
+            },
+            "layer": [
+              {
+                "encoding": {
+                  "color": {
+                    "field": "PRODUCT",
+                    "legend": null,
+                    "type": "nominal"
+                  },
+                  "tooltip": [
+                    {
+                      "field": "PRODUCT",
+                      "title": "Antigen Test",
+                      "type": "nominal"
+                    },
+                    {
+                      "field": "CLINICAL_SENSITIVITY_mean",
+                      "format": ".3p",
+                      "title": "Mean",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SENSITIVITY_CI_low",
+                      "format": ".3p",
+                      "title": "Low",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SENSITIVITY_CI_high",
+                      "format": ".3p",
+                      "title": "Hi",
+                      "type": "quantitative"
+                    }
+                  ],
+                  "x": {
+                    "axis": {
+                      "title": "Antigen Diagnostic Tests for SARS-CoV-2"
+                    },
+                    "field": "PRODUCT",
+                    "sort": [
+                      "Accula SARS-Cov-2 Test",
+                      "Cue COVID-19 Test",
+                      "cobas SARS-CoV-2 & Influenza A/B Nucleic Acid Test for use on the cobas Liat System",
+                      "Xpert Xpress SARS-CoV-2 DoD",
+                      "Visby Medical COVID-19 Point of Care Test",
+                      "Xpert Xpress SARS-CoV-2/Flu/RSV",
+                      "Xpert Xpress SARS-CoV-2 test",
+                      "Simoa SARS-CoV-2 N Protein Antigen Test",
+                      "cobas SARS-CoV-Nucleic acid test for use on the cobas Liat System",
+                      "Lucira COVID-19 All-In-One Test Kit",
+                      "Lucira CHECK-IT COVID-19 Test Kit"
+                    ],
+                    "type": "nominal"
+                  },
+                  "y": {
+                    "field": "CLINICAL_SENSITIVITY_CI_low",
+                    "type": "quantitative"
+                  },
+                  "y2": {
+                    "field": "CLINICAL_SENSITIVITY_CI_high"
+                  }
+                },
+                "mark": {
+                  "opacity": 0.5,
+                  "type": "bar"
+                },
+                "title": {
+                  "fontSize": 24,
+                  "subtitle": "POC PCR Diagnostic Tests",
+                  "subtitleFontSize": 18,
+                  "text": "Reported Clinical Sensitivity"
+                },
+                "width": 400
+              },
+              {
+                "encoding": {
+                  "color": {
+                    "field": "PRODUCT",
+                    "legend": null,
+                    "type": "nominal"
+                  },
+                  "x": {
+                    "axis": {
+                      "title": "Antigen Diagnostic Tests for SARS-CoV-2"
+                    },
+                    "field": "PRODUCT",
+                    "sort": [
+                      "Accula SARS-Cov-2 Test",
+                      "Cue COVID-19 Test",
+                      "cobas SARS-CoV-2 & Influenza A/B Nucleic Acid Test for use on the cobas Liat System",
+                      "Xpert Xpress SARS-CoV-2 DoD",
+                      "Visby Medical COVID-19 Point of Care Test",
+                      "Xpert Xpress SARS-CoV-2/Flu/RSV",
+                      "Xpert Xpress SARS-CoV-2 test",
+                      "Simoa SARS-CoV-2 N Protein Antigen Test",
+                      "cobas SARS-CoV-Nucleic acid test for use on the cobas Liat System",
+                      "Lucira COVID-19 All-In-One Test Kit",
+                      "Lucira CHECK-IT COVID-19 Test Kit"
+                    ],
+                    "type": "nominal"
+                  },
+                  "y": {
+                    "field": "CLINICAL_SENSITIVITY_CI_low",
+                    "scale": {
+                      "zero": false
+                    },
+                    "title": "Clinical Sensitivity",
+                    "type": "quantitative"
+                  },
+                  "y2": {
+                    "field": "CLINICAL_SENSITIVITY_CI_high"
+                  }
+                },
+                "mark": "rule",
+                "title": {
+                  "fontSize": 24,
+                  "subtitle": "POC PCR Diagnostic Tests",
+                  "subtitleFontSize": 18,
+                  "text": "Reported Clinical Sensitivity"
+                },
+                "width": 400
+              },
+              {
+                "encoding": {
+                  "color": {
+                    "field": "PRODUCT",
+                    "legend": null,
+                    "type": "nominal"
+                  },
+                  "tooltip": [
+                    {
+                      "field": "PRODUCT",
+                      "title": "Antigen Test",
+                      "type": "nominal"
+                    },
+                    {
+                      "field": "CLINICAL_SENSITIVITY_mean",
+                      "format": ".3p",
+                      "title": "Mean",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SENSITIVITY_CI_low",
+                      "format": ".3p",
+                      "title": "Low",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SENSITIVITY_CI_high",
+                      "format": ".3p",
+                      "title": "Hi",
+                      "type": "quantitative"
+                    }
+                  ],
+                  "x": {
+                    "axis": {
+                      "title": "Antigen Diagnostic Tests for SARS-CoV-2"
+                    },
+                    "field": "PRODUCT",
+                    "sort": [
+                      "Accula SARS-Cov-2 Test",
+                      "Cue COVID-19 Test",
+                      "cobas SARS-CoV-2 & Influenza A/B Nucleic Acid Test for use on the cobas Liat System",
+                      "Xpert Xpress SARS-CoV-2 DoD",
+                      "Visby Medical COVID-19 Point of Care Test",
+                      "Xpert Xpress SARS-CoV-2/Flu/RSV",
+                      "Xpert Xpress SARS-CoV-2 test",
+                      "Simoa SARS-CoV-2 N Protein Antigen Test",
+                      "cobas SARS-CoV-Nucleic acid test for use on the cobas Liat System",
+                      "Lucira COVID-19 All-In-One Test Kit",
+                      "Lucira CHECK-IT COVID-19 Test Kit"
+                    ],
+                    "type": "nominal"
+                  },
+                  "y": {
+                    "field": "CLINICAL_SENSITIVITY_mean",
+                    "type": "quantitative"
+                  }
+                },
+                "mark": "point",
+                "title": {
+                  "fontSize": 24,
+                  "subtitle": "POC PCR Diagnostic Tests",
+                  "subtitleFontSize": 18,
+                  "text": "Reported Clinical Sensitivity"
+                },
+                "width": 400
+              }
+            ]
+          },
+          {
+            "data": {
+              "name": "data-259687ef9de213c18ca5b665fcf7f178"
+            },
+            "layer": [
+              {
+                "encoding": {
+                  "color": {
+                    "field": "PRODUCT",
+                    "legend": null,
+                    "type": "nominal"
+                  },
+                  "tooltip": [
+                    {
+                      "field": "PRODUCT",
+                      "title": "Antigen Test",
+                      "type": "nominal"
+                    },
+                    {
+                      "field": "CLINICAL_SPECIFICITY_mean",
+                      "format": ".3p",
+                      "title": "Mean",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SPECIFICITY_CI_low",
+                      "format": ".3p",
+                      "title": "Low",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SPECIFICITY_CI_high",
+                      "format": ".3p",
+                      "title": "Hi",
+                      "type": "quantitative"
+                    }
+                  ],
+                  "x": {
+                    "axis": {
+                      "title": "Antigen Diagnostic Tests for SARS-CoV-2"
+                    },
+                    "field": "PRODUCT",
+                    "sort": [
+                      "Accula SARS-Cov-2 Test",
+                      "Cue COVID-19 Test",
+                      "cobas SARS-CoV-2 & Influenza A/B Nucleic Acid Test for use on the cobas Liat System",
+                      "Xpert Xpress SARS-CoV-2 DoD",
+                      "Xpert Xpress SARS-CoV-2/Flu/RSV",
+                      "Simoa SARS-CoV-2 N Protein Antigen Test",
+                      "Lucira CHECK-IT COVID-19 Test Kit",
+                      "Lucira COVID-19 All-In-One Test Kit",
+                      "cobas SARS-CoV-Nucleic acid test for use on the cobas Liat System",
+                      "Xpert Xpress SARS-CoV-2 test",
+                      "Visby Medical COVID-19 Point of Care Test"
+                    ],
+                    "type": "nominal"
+                  },
+                  "y": {
+                    "field": "CLINICAL_SPECIFICITY_CI_low",
+                    "type": "quantitative"
+                  },
+                  "y2": {
+                    "field": "CLINICAL_SPECIFICITY_CI_high"
+                  }
+                },
+                "mark": {
+                  "opacity": 0.5,
+                  "type": "bar"
+                },
+                "title": {
+                  "fontSize": 24,
+                  "subtitle": "POC PCR Diagnostic Tests",
+                  "subtitleFontSize": 18,
+                  "text": "Reported Clinical Specificity"
+                },
+                "width": 400
+              },
+              {
+                "encoding": {
+                  "color": {
+                    "field": "PRODUCT",
+                    "legend": null,
+                    "type": "nominal"
+                  },
+                  "x": {
+                    "axis": {
+                      "title": "Antigen Diagnostic Tests for SARS-CoV-2"
+                    },
+                    "field": "PRODUCT",
+                    "sort": [
+                      "Accula SARS-Cov-2 Test",
+                      "Cue COVID-19 Test",
+                      "cobas SARS-CoV-2 & Influenza A/B Nucleic Acid Test for use on the cobas Liat System",
+                      "Xpert Xpress SARS-CoV-2 DoD",
+                      "Xpert Xpress SARS-CoV-2/Flu/RSV",
+                      "Simoa SARS-CoV-2 N Protein Antigen Test",
+                      "Lucira CHECK-IT COVID-19 Test Kit",
+                      "Lucira COVID-19 All-In-One Test Kit",
+                      "cobas SARS-CoV-Nucleic acid test for use on the cobas Liat System",
+                      "Xpert Xpress SARS-CoV-2 test",
+                      "Visby Medical COVID-19 Point of Care Test"
+                    ],
+                    "type": "nominal"
+                  },
+                  "y": {
+                    "field": "CLINICAL_SPECIFICITY_CI_low",
+                    "scale": {
+                      "zero": false
+                    },
+                    "title": "Clinical Sensitivity",
+                    "type": "quantitative"
+                  },
+                  "y2": {
+                    "field": "CLINICAL_SPECIFICITY_CI_high"
+                  }
+                },
+                "mark": "rule",
+                "title": {
+                  "fontSize": 24,
+                  "subtitle": "POC PCR Diagnostic Tests",
+                  "subtitleFontSize": 18,
+                  "text": "Reported Clinical Specificity"
+                },
+                "width": 400
+              },
+              {
+                "encoding": {
+                  "color": {
+                    "field": "PRODUCT",
+                    "legend": null,
+                    "type": "nominal"
+                  },
+                  "tooltip": [
+                    {
+                      "field": "PRODUCT",
+                      "title": "Antigen Test",
+                      "type": "nominal"
+                    },
+                    {
+                      "field": "CLINICAL_SPECIFICITY_mean",
+                      "format": ".3p",
+                      "title": "Mean",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SPECIFICITY_CI_low",
+                      "format": ".3p",
+                      "title": "Low",
+                      "type": "quantitative"
+                    },
+                    {
+                      "field": "CLINICAL_SPECIFICITY_CI_high",
+                      "format": ".3p",
+                      "title": "High",
+                      "type": "quantitative"
+                    }
+                  ],
+                  "x": {
+                    "axis": {
+                      "title": "Antigen Diagnostic Tests for SARS-CoV-2"
+                    },
+                    "field": "PRODUCT",
+                    "sort": [
+                      "Accula SARS-Cov-2 Test",
+                      "Cue COVID-19 Test",
+                      "cobas SARS-CoV-2 & Influenza A/B Nucleic Acid Test for use on the cobas Liat System",
+                      "Xpert Xpress SARS-CoV-2 DoD",
+                      "Xpert Xpress SARS-CoV-2/Flu/RSV",
+                      "Simoa SARS-CoV-2 N Protein Antigen Test",
+                      "Lucira CHECK-IT COVID-19 Test Kit",
+                      "Lucira COVID-19 All-In-One Test Kit",
+                      "cobas SARS-CoV-Nucleic acid test for use on the cobas Liat System",
+                      "Xpert Xpress SARS-CoV-2 test",
+                      "Visby Medical COVID-19 Point of Care Test"
+                    ],
+                    "type": "nominal"
+                  },
+                  "y": {
+                    "field": "CLINICAL_SPECIFICITY_mean",
+                    "type": "quantitative"
+                  }
+                },
+                "mark": "point",
+                "title": {
+                  "fontSize": 24,
+                  "subtitle": "POC PCR Diagnostic Tests",
+                  "subtitleFontSize": 18,
+                  "text": "Reported Clinical Specificity"
+                },
+                "width": 400
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "embed_options": {
+    "renderer": "canvas",
+    "defaultStyle": true
+  }
+},"evals":[],"jsHooks":[]}</script>
+<ul>
+<li><p>These charts show the individual tests in each of our assigned classes. The bar indicates the 95% confidence intervals.</p></li>
+<li><p>The data was compiled in <a href="https://pubs.acs.org/doi/pdf/10.1021/acsinfecdis.1c00268">this</a> article. It was collect from the kit handbooks from the EUA-FDA SARS-CoV-2 diagnostic tests (Pub Date: September 27, 2021)</p></li>
+</ul>
+</div>
+<div id="compiled-metrics" class="section level3">
+<h3>Compiled Metrics</h3>
+<div id="htmlwidget-8e1cd22600f04af563d4" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8e1cd22600f04af563d4">{"x":{
+  "chart_spec": {
+    "$schema": "https://vega.github.io/schema/vega-lite/v4.8.1.json",
+    "config": {
+      "view": {
+        "continuousHeight": 300,
+        "continuousWidth": 400
+      }
+    },
+    "data": {
+      "name": "data-22d4a7fc8c0dd59246b3410067389f15"
+    },
+    "datasets": {
+      "data-22d4a7fc8c0dd59246b3410067389f15": [
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.99,
+          "CLINICAL_SENSITIVITY_CI_low": 0.8,
+          "CLINICAL_SENSITIVITY_mean": 0.944,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.88,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "30",
+          "NOTES": "",
+          "PRODUCT": "Sampinute COVID-19 Antigen MIA",
+          "READ": "instrument read",
+          "TEST TYPE": "magnetic force-assisted electrochemical sandwich immunoassay (MESIA)"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 1,
+          "CLINICAL_SENSITIVITY_CI_low": 0.883,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": 0.999,
+          "CLINICAL_SPECIFICITY_CI_low": 0.969,
+          "CLINICAL_SPECIFICITY_mean": 0.994,
+          "LoD (TCID50/mL)": "15",
+          "NOTES": "1) serial screening",
+          "PRODUCT": "Sofia SARS Antigen FIA",
+          "READ": "instrument read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": null,
+          "CLINICAL_SENSITIVITY_CI_low": null,
+          "CLINICAL_SENSITIVITY_mean": 0.84,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.98,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "140",
+          "NOTES": "1) serial screening",
+          "PRODUCT": "BD Veritor System for Rapid Detection of SARS-CoV-2",
+          "READ": "instrument read",
+          "TEST TYPE": "chromatographic digital immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.993,
+          "CLINICAL_SENSITIVITY_CI_low": 0.916,
+          "CLINICAL_SENSITIVITY_mean": 0.976,
+          "CLINICAL_SPECIFICITY_CI_high": 0.984,
+          "CLINICAL_SPECIFICITY_CI_low": 0.927,
+          "CLINICAL_SPECIFICITY_mean": 0.966,
+          "LoD (TCID50/mL)": "32",
+          "NOTES": "",
+          "PRODUCT": "LumiraDx SARS-CoV-2 Ag Test",
+          "READ": "instrument read",
+          "TEST TYPE": "rapid microfluidic immunofluorescence Assay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.999,
+          "CLINICAL_SENSITIVITY_CI_low": 0.838,
+          "CLINICAL_SENSITIVITY_mean": 0.969,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.973,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "88",
+          "NOTES": "",
+          "PRODUCT": "Clip COVID Rapid Antigen Test",
+          "READ": "instrument read",
+          "TEST TYPE": "lateral flow immunoluminescent assay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.99,
+          "CLINICAL_SENSITIVITY_CI_low": 0.82,
+          "CLINICAL_SENSITIVITY_mean": 0.95,
+          "CLINICAL_SPECIFICITY_CI_high": 0.99,
+          "CLINICAL_SPECIFICITY_CI_low": 0.93,
+          "CLINICAL_SPECIFICITY_mean": 0.97,
+          "LoD (TCID50/mL)": "6310",
+          "NOTES": "1) over-the-counter home testing",
+          "PRODUCT": "Ellume COVID-19 Home Test",
+          "READ": "instrument read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.885,
+          "CLINICAL_SENSITIVITY_CI_low": 0.566,
+          "CLINICAL_SENSITIVITY_mean": 0.8,
+          "CLINICAL_SPECIFICITY_CI_high": null,
+          "CLINICAL_SPECIFICITY_CI_low": null,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "3000",
+          "NOTES": "",
+          "PRODUCT": "VITROS Immunodiagnostic Products SARS-CoV-2 Antigen Reagent Pack",
+          "READ": "instrument read",
+          "TEST TYPE": "chemiluminescence immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.931,
+          "CLINICAL_SENSITIVITY_CI_low": 0.758,
+          "CLINICAL_SENSITIVITY_mean": 0.867,
+          "CLINICAL_SPECIFICITY_CI_high": 0.999,
+          "CLINICAL_SPECIFICITY_CI_low": 0.974,
+          "CLINICAL_SPECIFICITY_mean": 0.995,
+          "LoD (TCID50/mL)": "",
+          "NOTES": "1) instrument read",
+          "PRODUCT": "BD Veritor System for Rapid Detection of SARS-CoV-2 + Flu A+B",
+          "READ": "instrument read",
+          "TEST TYPE": "chromatographic digital immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.995,
+          "CLINICAL_SENSITIVITY_CI_low": 0.847,
+          "CLINICAL_SENSITIVITY_mean": 0.97,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.966,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "575",
+          "NOTES": "",
+          "PRODUCT": "LIAISON SARS-CoV-2 Ag",
+          "READ": "instrument read",
+          "TEST TYPE": "chemiluminescence immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.9509,
+          "CLINICAL_SENSITIVITY_CI_low": 0.7888,
+          "CLINICAL_SENSITIVITY_mean": 0.894,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.8928,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "200",
+          "NOTES": "",
+          "PRODUCT": "Omnia SARS-CoV-2 Antigen Test",
+          "READ": "instrument read",
+          "TEST TYPE": "bulk acoustic wave (BAW) biosensor"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.914,
+          "CLINICAL_SENSITIVITY_CI_low": 0.656,
+          "CLINICAL_SENSITIVITY_mean": 0.818,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.936,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "7160",
+          "NOTES": "",
+          "PRODUCT": "ellume.lab COVID Antigen Test",
+          "READ": "instrument read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.929,
+          "CLINICAL_SENSITIVITY_CI_low": 0.7343,
+          "CLINICAL_SENSITIVITY_mean": 0.85,
+          "CLINICAL_SPECIFICITY_CI_high": 0.9988,
+          "CLINICAL_SPECIFICITY_CI_low": 0.966,
+          "CLINICAL_SPECIFICITY_mean": 0.9905,
+          "LoD (TCID50/mL)": "5000",
+          "NOTES": "",
+          "PRODUCT": "QIAreach SARS-CoV-2 Antigen",
+          "READ": "instrument read",
+          "TEST TYPE": "digital lateral flow"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.999,
+          "CLINICAL_SENSITIVITY_CI_low": 0.851,
+          "CLINICAL_SENSITIVITY_mean": 0.971,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.92,
+          "CLINICAL_SPECIFICITY_mean": 0.985,
+          "LoD (TCID50/mL)": "22.5",
+          "NOTES": "",
+          "PRODUCT": "BinaxNOW COVID-19 Ag Card",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.9493,
+          "CLINICAL_SENSITIVITY_CI_low": 0.7552,
+          "CLINICAL_SENSITIVITY_mean": 0.8837,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.9425,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "Direct swab: 800 \nSwab in VTM: 6400",
+          "NOTES": "1) serial screening",
+          "PRODUCT": "CareStart COVID-19 Antigen test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.99,
+          "CLINICAL_SENSITIVITY_CI_low": 0.883,
+          "CLINICAL_SENSITIVITY_mean": 0.966,
+          "CLINICAL_SPECIFICITY_CI_high": 0.999,
+          "CLINICAL_SPECIFICITY_CI_low": 0.96,
+          "CLINICAL_SPECIFICITY_mean": 0.993,
+          "LoD (TCID50/mL)": "7570",
+          "NOTES": "",
+          "PRODUCT": "QuickVue SARS Antigen Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": null,
+          "CLINICAL_SENSITIVITY_CI_low": null,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": 0.987,
+          "CLINICAL_SPECIFICITY_CI_low": 0.894,
+          "CLINICAL_SPECIFICITY_mean": 0.962,
+          "LoD (TCID50/mL)": "2700",
+          "NOTES": "1) multi-analyte",
+          "PRODUCT": "Status COVID-19/Flu",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.924,
+          "CLINICAL_SENSITIVITY_CI_low": 0.718,
+          "CLINICAL_SENSITIVITY_mean": 0.848,
+          "CLINICAL_SPECIFICITY_CI_high": 0.998,
+          "CLINICAL_SPECIFICITY_CI_low": 0.952,
+          "CLINICAL_SPECIFICITY_mean": 0.991,
+          "LoD (TCID50/mL)": "1910",
+          "NOTES": "1) prescription home-testing",
+          "PRODUCT": "QuickVue At-Home COVID-19 Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.906,
+          "CLINICAL_SENSITIVITY_CI_low": 0.768,
+          "CLINICAL_SENSITIVITY_mean": 0.846,
+          "CLINICAL_SPECIFICITY_CI_high": 0.995,
+          "CLINICAL_SPECIFICITY_CI_low": 0.966,
+          "CLINICAL_SPECIFICITY_mean": 0.985,
+          "LoD (TCID50/mL)": "140.6",
+          "NOTES": "1) non-prescription testing\n2) serial screening",
+          "PRODUCT": "BinaxNOW COVID-19 Ag2 Card",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.989,
+          "CLINICAL_SENSITIVITY_CI_low": 0.73,
+          "CLINICAL_SENSITIVITY_mean": 0.917,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.877,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "140.6",
+          "NOTES": "1) over-the-counter home testing\n2) telehealth proctor supervised\n3) serial screening",
+          "PRODUCT": "BinaxNOW COVID-19 Ag Card2 Home Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.989,
+          "CLINICAL_SENSITIVITY_CI_low": 0.73,
+          "CLINICAL_SENSITIVITY_mean": 0.917,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.877,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "",
+          "NOTES": "1) over-the-counter home testing\n2) serial screening",
+          "PRODUCT": "BinaxNOW COVID-19 Antigen Self Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.896,
+          "CLINICAL_SENSITIVITY_CI_low": 0.749,
+          "CLINICAL_SENSITIVITY_mean": 0.835,
+          "CLINICAL_SPECIFICITY_CI_high": 0.998,
+          "CLINICAL_SPECIFICITY_CI_low": 0.972,
+          "CLINICAL_SPECIFICITY_mean": 0.992,
+          "LoD (TCID50/mL)": "1910",
+          "NOTES": "1) over-the-counter home testing\n2) serial screening",
+          "PRODUCT": "QuickVue At-Home OTC COVID-19 Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.994,
+          "CLINICAL_SENSITIVITY_CI_low": 0.828,
+          "CLINICAL_SENSITIVITY_mean": 0.9655,
+          "CLINICAL_SPECIFICITY_CI_high": 0.995,
+          "CLINICAL_SPECIFICITY_CI_low": 0.933,
+          "CLINICAL_SPECIFICITY_mean": 0.9808,
+          "LoD (TCID50/mL)": "2300",
+          "NOTES": "1) serial screening",
+          "PRODUCT": "Celltrion DiaTrust COVID-19 Ag Rapid Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.9374,
+          "CLINICAL_SENSITIVITY_CI_low": 0.7382,
+          "CLINICAL_SENSITIVITY_mean": 0.8667,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.9853,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "6300",
+          "NOTES": "1) serial screening",
+          "PRODUCT": "SCoV-2 Ag Detect Rapid Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.93,
+          "CLINICAL_SENSITIVITY_CI_low": 0.686,
+          "CLINICAL_SENSITIVITY_mean": 0.875,
+          "CLINICAL_SPECIFICITY_CI_high": 0.999,
+          "CLINICAL_SPECIFICITY_CI_low": 0.942,
+          "CLINICAL_SPECIFICITY_mean": 0.989,
+          "LoD (TCID50/mL)": "1250",
+          "NOTES": "",
+          "PRODUCT": "Sienna-Clarity COVID019 Antigen Rapid Test Cassette",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.92,
+          "CLINICAL_SENSITIVITY_CI_low": 0.71,
+          "CLINICAL_SENSITIVITY_mean": 0.84,
+          "CLINICAL_SPECIFICITY_CI_high": 0.99,
+          "CLINICAL_SPECIFICITY_CI_low": 0.93,
+          "CLINICAL_SPECIFICITY_mean": 0.98,
+          "LoD (TCID50/mL)": "",
+          "NOTES": "1) serial screening",
+          "PRODUCT": "InteliSwab COVID-19 Rapid Test Pro",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.92,
+          "CLINICAL_SENSITIVITY_CI_low": 0.71,
+          "CLINICAL_SENSITIVITY_mean": 0.84,
+          "CLINICAL_SPECIFICITY_CI_high": 0.99,
+          "CLINICAL_SPECIFICITY_CI_low": 0.93,
+          "CLINICAL_SPECIFICITY_mean": 0.98,
+          "LoD (TCID50/mL)": "250",
+          "NOTES": "1) over-the-counter home testing\n2) serial screening",
+          "PRODUCT": "InteliSwab COVID-19 Rapid Test ",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.92,
+          "CLINICAL_SENSITIVITY_CI_low": 0.71,
+          "CLINICAL_SENSITIVITY_mean": 0.84,
+          "CLINICAL_SPECIFICITY_CI_high": 0.99,
+          "CLINICAL_SPECIFICITY_CI_low": 0.93,
+          "CLINICAL_SPECIFICITY_mean": 0.98,
+          "LoD (TCID50/mL)": "250",
+          "NOTES": "1) prescription home-testing",
+          "PRODUCT": "InteliSwab COVID-19 Rapid Test Rx",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": null,
+          "CLINICAL_SENSITIVITY_CI_low": null,
+          "CLINICAL_SENSITIVITY_mean": 0.911,
+          "CLINICAL_SPECIFICITY_CI_high": null,
+          "CLINICAL_SPECIFICITY_CI_low": null,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "111",
+          "NOTES": "",
+          "PRODUCT": "GenBody COVID-19 Ag",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.931,
+          "CLINICAL_SENSITIVITY_CI_low": 0.682,
+          "CLINICAL_SENSITIVITY_mean": 0.844,
+          "CLINICAL_SPECIFICITY_CI_high": 0.982,
+          "CLINICAL_SPECIFICITY_CI_low": 0.926,
+          "CLINICAL_SPECIFICITY_mean": 0.963,
+          "LoD (TCID50/mL)": "2800",
+          "NOTES": "",
+          "PRODUCT": "INDICAID COVID-19 Rapid Antigen Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.95,
+          "CLINICAL_SENSITIVITY_CI_low": 0.7,
+          "CLINICAL_SENSITIVITY_mean": 0.87,
+          "CLINICAL_SPECIFICITY_CI_high": 0.99,
+          "CLINICAL_SPECIFICITY_CI_low": 0.93,
+          "CLINICAL_SPECIFICITY_mean": 0.98,
+          "LoD (TCID50/mL)": "2800",
+          "NOTES": "1) over-the-counter home testing\n2) serial screening",
+          "PRODUCT": "CareStart COVID-19 Antigen Home Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.989,
+          "CLINICAL_SENSITIVITY_CI_low": 0.73,
+          "CLINICAL_SENSITIVITY_mean": 0.917,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.877,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "140.6",
+          "NOTES": "",
+          "PRODUCT": "BinaxNOW COVID-19 Ag Card Home Test",
+          "READ": "visual read",
+          "TEST TYPE": "lateral flow immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.9972,
+          "CLINICAL_SENSITIVITY_CI_low": 0.9203,
+          "CLINICAL_SENSITIVITY_mean": 0.977,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.9075,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "0.31",
+          "NOTES": "1) time to perform 96 tests: 150 minutes",
+          "PRODUCT": "Simoa SARS-CoV-2 N Protein Antigen Test",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_paramagnetic microbead-based immunoassay"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.996,
+          "CLINICAL_SENSITIVITY_CI_low": 0.884,
+          "CLINICAL_SENSITIVITY_mean": 0.978,
+          "CLINICAL_SPECIFICITY_CI_high": 0.988,
+          "CLINICAL_SPECIFICITY_CI_low": 0.852,
+          "CLINICAL_SPECIFICITY_mean": 0.956,
+          "LoD (TCID50/mL)": "0.00002 PFU/µL (~0.01 copies/µL, approximated using Seegene’s AllplexTM 2019-nCoV assay data)",
+          "NOTES": "1) reagents commercially distributed as a kit to labs",
+          "PRODUCT": "Xpert Xpress SARS-CoV-2 test",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_real time RT-PCR"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": null,
+          "CLINICAL_SENSITIVITY_CI_low": null,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": null,
+          "CLINICAL_SPECIFICITY_CI_low": null,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "40",
+          "NOTES": "1) reagents commercially distributed as a kit to labs",
+          "PRODUCT": "Accula SARS-Cov-2 Test",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_PCR/lateral flow technologies"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": null,
+          "CLINICAL_SENSITIVITY_CI_low": null,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": null,
+          "CLINICAL_SPECIFICITY_CI_low": null,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "1.3",
+          "NOTES": "1) reagents commercially distributed as a kit to labs",
+          "PRODUCT": "Cue COVID-19 Test",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_isothermal nucleic acid amplification"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 1,
+          "CLINICAL_SENSITIVITY_CI_low": 0.936,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.984,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "0.012",
+          "NOTES": "1) detects/differentiates SARS-CoV-2, influenza A virus, and/or influenza B virus RNA",
+          "PRODUCT": "cobas SARS-CoV-2 & Influenza A/B Nucleic Acid Test for use on the cobas Liat System",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_(multiplex) real time RT-PCR"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.996,
+          "CLINICAL_SENSITIVITY_CI_low": null,
+          "CLINICAL_SENSITIVITY_mean": 0.979,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.981,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "0.131",
+          "NOTES": "1) detects influenza A, influenza B, and respiratory syncytial virus (RSV) viral RNA",
+          "PRODUCT": "Xpert Xpress SARS-CoV-2/Flu/RSV",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_(multiplex) real time RT-PCR"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.984,
+          "CLINICAL_SENSITIVITY_CI_low": 0.855,
+          "CLINICAL_SENSITIVITY_mean": 0.941,
+          "CLINICAL_SPECIFICITY_CI_high": 0.999,
+          "CLINICAL_SPECIFICITY_CI_low": 0.894,
+          "CLINICAL_SPECIFICITY_mean": 0.98,
+          "LoD (TCID50/mL)": "0.9",
+          "NOTES": "",
+          "PRODUCT": "Lucira COVID-19 All-In-One Test Kit",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_RT-LAMP "
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 1,
+          "CLINICAL_SENSITIVITY_CI_low": 0.931,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": 1,
+          "CLINICAL_SPECIFICITY_CI_low": 0.931,
+          "CLINICAL_SPECIFICITY_mean": 1,
+          "LoD (TCID50/mL)": "0.4",
+          "NOTES": "1) testing limited to U.S. Department of Defense (DoD) designated laboratories certified under the CLIA for high or moderate complexity tests, or similarly qualified U.S. DoD designated laboratories",
+          "PRODUCT": "Xpert Xpress SARS-CoV-2 DoD",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_real time RT-PCR/pooling (H only)"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 1,
+          "CLINICAL_SENSITIVITY_CI_low": 0.89,
+          "CLINICAL_SENSITIVITY_mean": 1,
+          "CLINICAL_SPECIFICITY_CI_high": 0.984,
+          "CLINICAL_SPECIFICITY_CI_low": 0.871,
+          "CLINICAL_SPECIFICITY_mean": 0.953,
+          "LoD (TCID50/mL)": "435 genomic copies/swab",
+          "NOTES": "",
+          "PRODUCT": "Visby Medical COVID-19 Point of Care Test",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_real time RT-PCR"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.958,
+          "CLINICAL_SENSITIVITY_CI_low": 0.856,
+          "CLINICAL_SENSITIVITY_mean": 0.917,
+          "CLINICAL_SPECIFICITY_CI_high": 0.994,
+          "CLINICAL_SPECIFICITY_CI_low": 0.958,
+          "CLINICAL_SPECIFICITY_mean": 0.982,
+          "LoD (TCID50/mL)": "0.9",
+          "NOTES": "",
+          "PRODUCT": "Lucira CHECK-IT COVID-19 Test Kit",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_RT-LAMP"
+        },
+        {
+          "CLINICAL_SENSITIVITY_CI_high": 0.986,
+          "CLINICAL_SENSITIVITY_CI_low": 0.89,
+          "CLINICAL_SENSITIVITY_mean": 0.961,
+          "CLINICAL_SPECIFICITY_CI_high": 0.986,
+          "CLINICAL_SPECIFICITY_CI_low": 0.926,
+          "CLINICAL_SPECIFICITY_mean": 0.961,
+          "LoD (TCID50/mL)": "0.012",
+          "NOTES": "",
+          "PRODUCT": "cobas SARS-CoV-Nucleic acid test for use on the cobas Liat System",
+          "READ": "interpreted results presented",
+          "TEST TYPE": "NAAT_real time RT-PCR"
+        }
+      ]
+    },
+    "vconcat": [
+      {
+        "encoding": {
+          "color": {
+            "field": "READ",
+            "type": "nominal"
+          },
+          "x": {
+            "axis": {
+              "labelAngle": 20
+            },
+            "field": "READ",
+            "sort": [
+              "visual read",
+              "instrument read",
+              "interpreted results presented"
+            ],
+            "type": "nominal"
+          },
+          "y": {
+            "field": "CLINICAL_SENSITIVITY_mean",
+            "scale": {
+              "domain": [
+                0.8,
+                1
+              ]
+            },
+            "title": "Sensitivity",
+            "type": "quantitative"
+          }
+        },
+        "mark": {
+          "extent": "min-max",
+          "size": 69,
+          "type": "boxplot"
+        },
+        "title": {
+          "fontSize": 24,
+          "subtitle": "Aggregated Stats from Each Testing Group",
+          "subtitleFontSize": 18,
+          "text": "Reported Clinical Sensitivity"
+        },
+        "width": 600
+      },
+      {
+        "encoding": {
+          "color": {
+            "field": "READ",
+            "type": "nominal"
+          },
+          "x": {
+            "axis": {
+              "labelAngle": 20
+            },
+            "field": "READ",
+            "sort": [
+              "visual read",
+              "instrument read",
+              "interpreted results presented"
+            ],
+            "type": "nominal"
+          },
+          "y": {
+            "field": "CLINICAL_SPECIFICITY_mean",
+            "scale": {
+              "domain": [
+                0.95,
+                1
+              ]
+            },
+            "title": "Specificity",
+            "type": "quantitative"
+          }
+        },
+        "mark": {
+          "extent": "min-max",
+          "size": 69,
+          "type": "boxplot"
+        },
+        "title": {
+          "fontSize": 24,
+          "subtitle": "Aggregated Stats from Each Testing Group",
+          "subtitleFontSize": 18,
+          "text": "Reported Clinical Specificity"
+        },
+        "width": 600
+      }
+    ]
+  },
+  "embed_options": {
+    "renderer": "canvas",
+    "defaultStyle": true
+  }
+},"evals":[],"jsHooks":[]}</script>
+<ul>
+<li>Here are the distributions of each testing class. “interpreted results presented” are POC NAATs</li>
+</ul>
+</div>
+<div id="table" class="section level3">
+<h3>Table</h3>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:90%; overflow-x: scroll; width:100%; ">
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="empty-cells: hide;border-bottom:hidden;position: sticky; top:0; background-color: #FFFFFF;" colspan="3">
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; position: sticky; top:0; background-color: #FFFFFF;" colspan="3">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Reported Sensitivity
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; position: sticky; top:0; background-color: #FFFFFF;" colspan="3">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Reported Specificity
+</div>
+</th>
+</tr>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Product
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Test Type
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Test Class (Internal)
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Mean
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Low
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+High
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Mean
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Low
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+High
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Sampinute COVID-19 Antigen MIA
+</td>
+<td style="text-align:left;">
+magnetic force-assisted electrochemical sandwich immunoassay (MESIA)
+</td>
+<td style="text-align:left;">
+instrument read
+</td>
+<td style="text-align:right;color: rgba(204, 73, 119, 1) !important;">
+0.9440
+</td>
+<td style="text-align:right;">
+0.8000
+</td>
+<td style="text-align:right;">
+0.9900
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.8800
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sofia SARS Antigen FIA
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+instrument read
+</td>
+<td style="text-align:right;color: rgba(241, 132, 75, 1) !important;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.8830
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.9940
+</td>
+<td style="text-align:right;">
+0.9690
+</td>
+<td style="text-align:right;">
+0.9990
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BD Veritor System for Rapid Detection of SARS-CoV-2
+</td>
+<td style="text-align:left;">
+chromatographic digital immunoassay
+</td>
+<td style="text-align:left;">
+instrument read
+</td>
+<td style="text-align:right;color: rgba(82, 2, 163, 1) !important;">
+0.8400
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.9800
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+LumiraDx SARS-CoV-2 Ag Test
+</td>
+<td style="text-align:left;">
+rapid microfluidic immunofluorescence Assay
+</td>
+<td style="text-align:left;">
+instrument read
+</td>
+<td style="text-align:right;color: rgba(228, 105, 94, 1) !important;">
+0.9760
+</td>
+<td style="text-align:right;">
+0.9160
+</td>
+<td style="text-align:right;">
+0.9930
+</td>
+<td style="text-align:right;">
+0.9660
+</td>
+<td style="text-align:right;">
+0.9270
+</td>
+<td style="text-align:right;">
+0.9840
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clip COVID Rapid Antigen Test
+</td>
+<td style="text-align:left;">
+lateral flow immunoluminescent assay
+</td>
+<td style="text-align:left;">
+instrument read
+</td>
+<td style="text-align:right;color: rgba(222, 98, 99, 1) !important;">
+0.9690
+</td>
+<td style="text-align:right;">
+0.8380
+</td>
+<td style="text-align:right;">
+0.9990
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.9730
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ellume COVID-19 Home Test
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+instrument read
+</td>
+<td style="text-align:right;color: rgba(209, 78, 114, 1) !important;">
+0.9500
+</td>
+<td style="text-align:right;">
+0.8200
+</td>
+<td style="text-align:right;">
+0.9900
+</td>
+<td style="text-align:right;">
+0.9700
+</td>
+<td style="text-align:right;">
+0.9300
+</td>
+<td style="text-align:right;">
+0.9900
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VITROS Immunodiagnostic Products SARS-CoV-2 Antigen Reagent Pack
+</td>
+<td style="text-align:left;">
+chemiluminescence immunoassay
+</td>
+<td style="text-align:left;">
+instrument read
+</td>
+<td style="text-align:right;color: rgba(13, 8, 135, 1) !important;">
+0.8000
+</td>
+<td style="text-align:right;">
+0.5660
+</td>
+<td style="text-align:right;">
+0.8850
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BD Veritor System for Rapid Detection of SARS-CoV-2 + Flu A+B
+</td>
+<td style="text-align:left;">
+chromatographic digital immunoassay
+</td>
+<td style="text-align:left;">
+instrument read
+</td>
+<td style="text-align:right;color: rgba(119, 1, 168, 1) !important;">
+0.8670
+</td>
+<td style="text-align:right;">
+0.7580
+</td>
+<td style="text-align:right;">
+0.9310
+</td>
+<td style="text-align:right;">
+0.9950
+</td>
+<td style="text-align:right;">
+0.9740
+</td>
+<td style="text-align:right;">
+0.9990
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+LIAISON SARS-CoV-2 Ag
+</td>
+<td style="text-align:left;">
+chemiluminescence immunoassay
+</td>
+<td style="text-align:left;">
+instrument read
+</td>
+<td style="text-align:right;color: rgba(224, 99, 99, 1) !important;">
+0.9700
+</td>
+<td style="text-align:right;">
+0.8470
+</td>
+<td style="text-align:right;">
+0.9950
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.9660
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Omnia SARS-CoV-2 Antigen Test
+</td>
+<td style="text-align:left;">
+bulk acoustic wave (BAW) biosensor
+</td>
+<td style="text-align:left;">
+instrument read
+</td>
+<td style="text-align:right;color: rgba(154, 22, 159, 1) !important;">
+0.8940
+</td>
+<td style="text-align:right;">
+0.7888
+</td>
+<td style="text-align:right;">
+0.9509
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.8928
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ellume.lab COVID Antigen Test
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+instrument read
+</td>
+<td style="text-align:right;color: rgba(49, 5, 151, 1) !important;">
+0.8180
+</td>
+<td style="text-align:right;">
+0.6560
+</td>
+<td style="text-align:right;">
+0.9140
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.9360
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+QIAreach SARS-CoV-2 Antigen
+</td>
+<td style="text-align:left;">
+digital lateral flow
+</td>
+<td style="text-align:left;">
+instrument read
+</td>
+<td style="text-align:right;color: rgba(97, 0, 167, 1) !important;">
+0.8500
+</td>
+<td style="text-align:right;">
+0.7343
+</td>
+<td style="text-align:right;">
+0.9290
+</td>
+<td style="text-align:right;">
+0.9905
+</td>
+<td style="text-align:right;">
+0.9660
+</td>
+<td style="text-align:right;">
+0.9988
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BinaxNOW COVID-19 Ag Card
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+visual read
+</td>
+<td style="text-align:right;color: rgba(225, 100, 98, 1) !important;">
+0.9710
+</td>
+<td style="text-align:right;">
+0.8510
+</td>
+<td style="text-align:right;">
+0.9990
+</td>
+<td style="text-align:right;">
+0.9850
+</td>
+<td style="text-align:right;">
+0.9200
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CareStart COVID-19 Antigen test
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+visual read
+</td>
+<td style="text-align:right;color: rgba(142, 12, 164, 1) !important;">
+0.8837
+</td>
+<td style="text-align:right;">
+0.7552
+</td>
+<td style="text-align:right;">
+0.9493
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.9425
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+QuickVue SARS Antigen Test
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+visual read
+</td>
+<td style="text-align:right;color: rgba(221, 94, 102, 1) !important;">
+0.9660
+</td>
+<td style="text-align:right;">
+0.8830
+</td>
+<td style="text-align:right;">
+0.9900
+</td>
+<td style="text-align:right;">
+0.9930
+</td>
+<td style="text-align:right;">
+0.9600
+</td>
+<td style="text-align:right;">
+0.9990
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Status COVID-19/Flu
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+visual read
+</td>
+<td style="text-align:right;color: rgba(241, 132, 75, 1) !important;">
+1.0000
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+0.9620
+</td>
+<td style="text-align:right;">
+0.8940
+</td>
+<td style="text-align:right;">
+0.9870
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+QuickVue At-Home COVID-19 Test
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+visual read
+</td>
+<td style="text-align:right;color: rgba(93, 1, 166, 1) !important;">
+0.8480
+</td>
+<td style="text-align:right;">
+0.7180
+</td>
+<td style="text-align:right;">
+0.9240
+</td>
+<td style="text-align:right;">
+0.9910
+</td>
+<td style="text-align:right;">
+0.9520
+</td>
+<td style="text-align:right;">
+0.9980
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BinaxNOW COVID-19 Ag2 Card
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+visual read
+</td>
+<td style="text-align:right;color: rgba(91, 1, 165, 1) !important;">
+0.8460
+</td>
+<td style="text-align:right;">
+0.7680
+</td>
+<td style="text-align:right;">
+0.9060
+</td>
+<td style="text-align:right;">
+0.9850
+</td>
+<td style="text-align:right;">
+0.9660
+</td>
+<td style="text-align:right;">
+0.9950
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BinaxNOW COVID-19 Ag Card2 Home Test
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+visual read
+</td>
+<td style="text-align:right;color: rgba(179, 45, 142, 1) !important;">
+0.9170
+</td>
+<td style="text-align:right;">
+0.7300
+</td>
+<td style="text-align:right;">
+0.9890
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.8770
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BinaxNOW COVID-19 Antigen Self Test
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+visual read
+</td>
+<td style="text-align:right;color: rgba(179, 45, 142, 1) !important;">
+0.9170
+</td>
+<td style="text-align:right;">
+0.7300
+</td>
+<td style="text-align:right;">
+0.9890
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.8770
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+QuickVue At-Home OTC COVID-19 Test
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+visual read
+</td>
+<td style="text-align:right;color: rgba(76, 2, 161, 1) !important;">
+0.8350
+</td>
+<td style="text-align:right;">
+0.7490
+</td>
+<td style="text-align:right;">
+0.8960
+</td>
+<td style="text-align:right;">
+0.9920
+</td>
+<td style="text-align:right;">
+0.9720
+</td>
+<td style="text-align:right;">
+0.9980
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Celltrion DiaTrust COVID-19 Ag Rapid Test
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+visual read
+</td>
+<td style="text-align:right;color: rgba(221, 94, 102, 1) !important;">
+0.9655
+</td>
+<td style="text-align:right;">
+0.8280
+</td>
+<td style="text-align:right;">
+0.9940
+</td>
+<td style="text-align:right;">
+0.9808
+</td>
+<td style="text-align:right;">
+0.9330
+</td>
+<td style="text-align:right;">
+0.9950
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SCoV-2 Ag Detect Rapid Test
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+visual read
+</td>
+<td style="text-align:right;color: rgba(119, 1, 168, 1) !important;">
+0.8667
+</td>
+<td style="text-align:right;">
+0.7382
+</td>
+<td style="text-align:right;">
+0.9374
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.9853
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sienna-Clarity COVID019 Antigen Rapid Test Cassette
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+visual read
+</td>
+<td style="text-align:right;color: rgba(131, 5, 167, 1) !important;">
+0.8750
+</td>
+<td style="text-align:right;">
+0.6860
+</td>
+<td style="text-align:right;">
+0.9300
+</td>
+<td style="text-align:right;">
+0.9890
+</td>
+<td style="text-align:right;">
+0.9420
+</td>
+<td style="text-align:right;">
+0.9990
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+InteliSwab COVID-19 Rapid Test Pro
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+visual read
+</td>
+<td style="text-align:right;color: rgba(82, 2, 163, 1) !important;">
+0.8400
+</td>
+<td style="text-align:right;">
+0.7100
+</td>
+<td style="text-align:right;">
+0.9200
+</td>
+<td style="text-align:right;">
+0.9800
+</td>
+<td style="text-align:right;">
+0.9300
+</td>
+<td style="text-align:right;">
+0.9900
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+InteliSwab COVID-19 Rapid Test
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+visual read
+</td>
+<td style="text-align:right;color: rgba(82, 2, 163, 1) !important;">
+0.8400
+</td>
+<td style="text-align:right;">
+0.7100
+</td>
+<td style="text-align:right;">
+0.9200
+</td>
+<td style="text-align:right;">
+0.9800
+</td>
+<td style="text-align:right;">
+0.9300
+</td>
+<td style="text-align:right;">
+0.9900
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+InteliSwab COVID-19 Rapid Test Rx
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+visual read
+</td>
+<td style="text-align:right;color: rgba(82, 2, 163, 1) !important;">
+0.8400
+</td>
+<td style="text-align:right;">
+0.7100
+</td>
+<td style="text-align:right;">
+0.9200
+</td>
+<td style="text-align:right;">
+0.9800
+</td>
+<td style="text-align:right;">
+0.9300
+</td>
+<td style="text-align:right;">
+0.9900
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GenBody COVID-19 Ag
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+visual read
+</td>
+<td style="text-align:right;color: rgba(173, 39, 147, 1) !important;">
+0.9110
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+INDICAID COVID-19 Rapid Antigen Test
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+visual read
+</td>
+<td style="text-align:right;color: rgba(88, 1, 164, 1) !important;">
+0.8440
+</td>
+<td style="text-align:right;">
+0.6820
+</td>
+<td style="text-align:right;">
+0.9310
+</td>
+<td style="text-align:right;">
+0.9630
+</td>
+<td style="text-align:right;">
+0.9260
+</td>
+<td style="text-align:right;">
+0.9820
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CareStart COVID-19 Antigen Home Test
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+visual read
+</td>
+<td style="text-align:right;color: rgba(124, 2, 168, 1) !important;">
+0.8700
+</td>
+<td style="text-align:right;">
+0.7000
+</td>
+<td style="text-align:right;">
+0.9500
+</td>
+<td style="text-align:right;">
+0.9800
+</td>
+<td style="text-align:right;">
+0.9300
+</td>
+<td style="text-align:right;">
+0.9900
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BinaxNOW COVID-19 Ag Card Home Test
+</td>
+<td style="text-align:left;">
+lateral flow immunoassay
+</td>
+<td style="text-align:left;">
+visual read
+</td>
+<td style="text-align:right;color: rgba(179, 45, 142, 1) !important;">
+0.9170
+</td>
+<td style="text-align:right;">
+0.7300
+</td>
+<td style="text-align:right;">
+0.9890
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.8770
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Simoa SARS-CoV-2 N Protein Antigen Test
+</td>
+<td style="text-align:left;">
+NAAT_paramagnetic microbead-based immunoassay
+</td>
+<td style="text-align:left;">
+interpreted results presented
+</td>
+<td style="text-align:right;color: rgba(229, 106, 93, 1) !important;">
+0.9770
+</td>
+<td style="text-align:right;">
+0.9203
+</td>
+<td style="text-align:right;">
+0.9972
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.9075
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Xpert Xpress SARS-CoV-2 test
+</td>
+<td style="text-align:left;">
+NAAT_real time RT-PCR
+</td>
+<td style="text-align:left;">
+interpreted results presented
+</td>
+<td style="text-align:right;color: rgba(229, 107, 93, 1) !important;">
+0.9780
+</td>
+<td style="text-align:right;">
+0.8840
+</td>
+<td style="text-align:right;">
+0.9960
+</td>
+<td style="text-align:right;">
+0.9560
+</td>
+<td style="text-align:right;">
+0.8520
+</td>
+<td style="text-align:right;">
+0.9880
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Accula SARS-Cov-2 Test
+</td>
+<td style="text-align:left;">
+NAAT_PCR/lateral flow technologies
+</td>
+<td style="text-align:left;">
+interpreted results presented
+</td>
+<td style="text-align:right;color: rgba(241, 132, 75, 1) !important;">
+1.0000
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cue COVID-19 Test
+</td>
+<td style="text-align:left;">
+NAAT_isothermal nucleic acid amplification
+</td>
+<td style="text-align:left;">
+interpreted results presented
+</td>
+<td style="text-align:right;color: rgba(241, 132, 75, 1) !important;">
+1.0000
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cobas SARS-CoV-2 &amp; Influenza A/B Nucleic Acid Test for use on the cobas Liat System
+</td>
+<td style="text-align:left;">
+NAAT_(multiplex) real time RT-PCR
+</td>
+<td style="text-align:left;">
+interpreted results presented
+</td>
+<td style="text-align:right;color: rgba(241, 132, 75, 1) !important;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.9360
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.9840
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Xpert Xpress SARS-CoV-2/Flu/RSV
+</td>
+<td style="text-align:left;">
+NAAT_(multiplex) real time RT-PCR
+</td>
+<td style="text-align:left;">
+interpreted results presented
+</td>
+<td style="text-align:right;color: rgba(229, 107, 92, 1) !important;">
+0.9790
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+0.9960
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.9810
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lucira COVID-19 All-In-One Test Kit
+</td>
+<td style="text-align:left;">
+NAAT_RT-LAMP
+</td>
+<td style="text-align:left;">
+interpreted results presented
+</td>
+<td style="text-align:right;color: rgba(202, 69, 122, 1) !important;">
+0.9410
+</td>
+<td style="text-align:right;">
+0.8550
+</td>
+<td style="text-align:right;">
+0.9840
+</td>
+<td style="text-align:right;">
+0.9800
+</td>
+<td style="text-align:right;">
+0.8940
+</td>
+<td style="text-align:right;">
+0.9990
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Xpert Xpress SARS-CoV-2 DoD
+</td>
+<td style="text-align:left;">
+NAAT_real time RT-PCR/pooling (H only)
+</td>
+<td style="text-align:left;">
+interpreted results presented
+</td>
+<td style="text-align:right;color: rgba(241, 132, 75, 1) !important;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.9310
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.9310
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Visby Medical COVID-19 Point of Care Test
+</td>
+<td style="text-align:left;">
+NAAT_real time RT-PCR
+</td>
+<td style="text-align:left;">
+interpreted results presented
+</td>
+<td style="text-align:right;color: rgba(241, 132, 75, 1) !important;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.8900
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+0.9530
+</td>
+<td style="text-align:right;">
+0.8710
+</td>
+<td style="text-align:right;">
+0.9840
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lucira CHECK-IT COVID-19 Test Kit
+</td>
+<td style="text-align:left;">
+NAAT_RT-LAMP
+</td>
+<td style="text-align:left;">
+interpreted results presented
+</td>
+<td style="text-align:right;color: rgba(179, 45, 142, 1) !important;">
+0.9170
+</td>
+<td style="text-align:right;">
+0.8560
+</td>
+<td style="text-align:right;">
+0.9580
+</td>
+<td style="text-align:right;">
+0.9820
+</td>
+<td style="text-align:right;">
+0.9580
+</td>
+<td style="text-align:right;">
+0.9940
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cobas SARS-CoV-Nucleic acid test for use on the cobas Liat System
+</td>
+<td style="text-align:left;">
+NAAT_real time RT-PCR
+</td>
+<td style="text-align:left;">
+interpreted results presented
+</td>
+<td style="text-align:right;color: rgba(218, 89, 106, 1) !important;">
+0.9610
+</td>
+<td style="text-align:right;">
+0.8900
+</td>
+<td style="text-align:right;">
+0.9860
+</td>
+<td style="text-align:right;">
+0.9610
+</td>
+<td style="text-align:right;">
+0.9260
+</td>
+<td style="text-align:right;">
+0.9860
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 
 
@@ -349,7 +4594,7 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function () {
-  window.buildTabsets("section-TOC");
+  window.buildTabsets("TOC");
 });
 
 $(document).ready(function () {

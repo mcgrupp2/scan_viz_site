@@ -251,6 +251,9 @@ $(document).ready(function () {
   <a href="index.html">Home</a>
 </li>
 <li>
+  <a href="model_test_results.html">Model Tests</a>
+</li>
+<li>
   <a href="prevalence.html">Prevalence</a>
 </li>
 <li>
@@ -276,8 +279,8 @@ $(document).ready(function () {
 <h2 class="tabset">Comparison of Prevelance Sources</h2>
 <div id="number-of-tests" class="section level3">
 <h3>Number of Tests</h3>
-<div id="htmlwidget-ab4509bb7134b4f8759c" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ab4509bb7134b4f8759c">{"x":{
+<div id="htmlwidget-9a79f7c8fdc8a1d0e20a" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9a79f7c8fdc8a1d0e20a">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v4.8.1.json",
     "config": {
@@ -23996,7 +23999,7 @@ $(document).ready(function () {
             },
             "mark": "bar",
             "selection": {
-              "selector053": {
+              "selector010": {
                 "bind": "scales",
                 "encodings": [
                   "x",
@@ -24058,7 +24061,7 @@ $(document).ready(function () {
                   "type": "bar"
                 },
                 "selection": {
-                  "selector054": {
+                  "selector011": {
                     "bind": "scales",
                     "encodings": [
                       "x",
@@ -24140,7 +24143,7 @@ $(document).ready(function () {
             },
             "mark": "bar",
             "selection": {
-              "selector055": {
+              "selector012": {
                 "bind": "scales",
                 "encodings": [
                   "x",
@@ -24203,7 +24206,7 @@ $(document).ready(function () {
                   "type": "bar"
                 },
                 "selection": {
-                  "selector056": {
+                  "selector013": {
                     "bind": "scales",
                     "encodings": [
                       "x",
@@ -24243,11 +24246,34 @@ $(document).ready(function () {
   }
 },"evals":[],"jsHooks":[]}</script>
 <p><em>Lines on bottom chart indicate the rolling 7-day mean</em></p>
+<p>The top charts depict the number of tests per day from two data sources. The data has been trimmed for the time period of the dataset we’ve been using (30MAR20-29SEP21). The counts are separated by test result.</p>
+<p>The bottom charts show the percentage of positive tests relative to total number of tests. Each bar in the barchart is a separate day. As the caption alludes, it denotes the 7-rolling mean. This was calculated by take the mean positive rate from the previous 7-days at each time point, starting a n=7.</p>
+<p>The lines are a visual representation of what we might want the prevalence multiplier to resemble. There is another tabset further investigate the differences.</p>
+<div id="sfs-prevelance-data" class="section level4">
+<h4>SFS Prevelance Data</h4>
+<ul>
+<li>This data was downloaded a dashboard on metabase.</li>
+<li>The query reports the number of tests each day by result, eg. 3 Pos, 16 Negs, 1 Inc.</li>
+<li>This is not specific to one study, counts the positives for the organism</li>
+</ul>
+</div>
+<div id="healthdata.gov" class="section level4">
+<h4>HealthData.gov</h4>
+<ul>
+<li>This data was downloaded from <a href='https://healthdata.gov/dataset/COVID-19-Diagnostic-Laboratory-Testing-PCR-Testing/j8mb-icvb/data'>here</a>.</li>
+<li>Website data source description:</li>
+</ul>
+<p>This time series dataset includes viral COVID-19 laboratory test [Polymerase chain reaction (PCR)] results from over 1,000 U.S. laboratories and testing locations including commercial and reference laboratories, public health laboratories, hospital laboratories, and other testing locations. Data are reported to state and jurisdictional health departments in accordance with applicable state or local law and in accordance with the Coronavirus Aid, Relief, and Economic Security (CARES) Act (CARES Act Section 18115).</p>
+<ul>
+<li><p>The data represented are for all of WA State.</p></li>
+<li><p>Again there is a line showing the rolling 7-day average.</p></li>
+</ul>
+</div>
 </div>
 <div id="percentage-of-positive-results" class="section level3">
 <h3>Percentage of Positive Results</h3>
-<div id="htmlwidget-e1e7d708e6f9eafedab9" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e1e7d708e6f9eafedab9">{"x":{
+<div id="htmlwidget-3cf31ec085a277f1c3e9" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3cf31ec085a277f1c3e9">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v4.8.1.json",
     "config": {
@@ -32547,7 +32573,7 @@ $(document).ready(function () {
             },
             "mark": "line",
             "selection": {
-              "selector059": {
+              "selector016": {
                 "bind": "scales",
                 "encodings": [
                   "x",
@@ -32569,7 +32595,7 @@ $(document).ready(function () {
             },
             "mark": "point",
             "selection": {
-              "selector058": {
+              "selector015": {
                 "empty": "none",
                 "fields": [
                   "date"
@@ -32598,7 +32624,7 @@ $(document).ready(function () {
               },
               "opacity": {
                 "condition": {
-                  "selection": "selector058",
+                  "selection": "selector015",
                   "value": 1
                 },
                 "value": 0
@@ -32630,7 +32656,7 @@ $(document).ready(function () {
             "transform": [
               {
                 "filter": {
-                  "selection": "selector058"
+                  "selection": "selector015"
                 }
               }
             ]
@@ -32655,7 +32681,7 @@ $(document).ready(function () {
                 "condition": {
                   "field": "value",
                   "format": ".3p",
-                  "selection": "selector058",
+                  "selection": "selector015",
                   "type": "quantitative"
                 },
                 "value": " "
@@ -32729,7 +32755,7 @@ $(document).ready(function () {
         },
         "mark": "bar",
         "selection": {
-          "selector060": {
+          "selector017": {
             "bind": "scales",
             "encodings": [
               "x",
@@ -32747,6 +32773,170 @@ $(document).ready(function () {
     "defaultStyle": true
   }
 },"evals":[],"jsHooks":[]}</script>
+<ul>
+<li>The HealthData.gov reports a higher positivite rate fairly consistently throughout the course of the data.</li>
+<li>We can try both metrics to check performance to see if there is major difference (statistical).</li>
+</ul>
+</div>
+<div id="summary" class="section level3">
+<h3>Summary</h3>
+<div id="sfs" class="section level4">
+<h4>SFS</h4>
+<table>
+<colgroup>
+<col width="100%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Pros</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">It is the study population</td>
+</tr>
+<tr class="even">
+<td align="center">May be a closer measure of prevalence representative to the population, ie. sampling/SFS goal</td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col width="100%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Our samples are included, is that cheating?</td>
+</tr>
+<tr class="even">
+<td align="center">It is a specialized study, may not be translatable to other diseases/situations. Others may not have access to similar data</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="healthdata.gov-1" class="section level4">
+<h4>HealthData.gov</h4>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Pros</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Free, easily accessible</td>
+</tr>
+<tr class="even">
+<td align="center">Tangible values (more below on this idea)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col width="100%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Prevalence includes all of WA, might be over/under-estimating</td>
+</tr>
+<tr class="even">
+<td align="center">Not really a population prev. It is people getting/seeking testing, might not exactly fit our hypothesis with regard to test management/community screening</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="other-possible-sources" class="section level4">
+<h4>Other possible sources</h4>
+</div>
+<div id="case-of-people" class="section level4">
+<h4>Case/# of people</h4>
+<ul>
+<li>Publically available data with regard to the number of cases per 100,000 people or some similar measure.</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Pros</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">It may give better measure of population prevalence</td>
+</tr>
+<tr class="even">
+<td align="center">Likely Free, easily accessible</td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col width="100%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">How accurate is the measure of the population at any given time? Enough to skew the data?</td>
+</tr>
+</tbody>
+</table>
+<p>Would need further investigation: - Not sure if county level population stats readily available.</p>
+</div>
+<div id="lab-data" class="section level4">
+<h4>Lab Data</h4>
+<ul>
+<li>Laboratory tracked data on testing metrics.</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Pros</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Gives good measure of prevalence from the local population</td>
+</tr>
+<tr class="even">
+<td align="center">Could be applicable to other DeDx disease models</td>
+</tr>
+<tr class="odd">
+<td align="center">Labs are relatively widespread/applying the model in a different locale</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Not all labs may not accurately track, or track at all</td>
+</tr>
+<tr class="even">
+<td align="center">Resource costs associated</td>
+</tr>
+<tr class="odd">
+<td align="center">Data might not be available to a wide range of users/orgs</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 
