@@ -5,6 +5,8 @@ navbar:
   left:
     - text: "Home"
       href: index.html
+    - text: "Model Tests"
+      href: model_test_results.html
     - text: "Prevalence"
       href: prevalence.html
     - text: "Metrics"

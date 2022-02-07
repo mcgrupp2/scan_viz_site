@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+<link rel="stylesheet" href="site_themes.css" type="text/css" />
 
 
 
@@ -301,10 +302,12 @@ $(document).ready(function () {
   top: 400px;
 }
 
+
+
 <style type="text/css"> .sidebar { overflow: auto; } </style>
 </style>
-<div id="htmlwidget-024ca59fab37ae5d1438" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
-<script type="application/json" data-for="htmlwidget-024ca59fab37ae5d1438">{"x":{
+<div id="htmlwidget-75252c40c7fe75db2485" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
+<script type="application/json" data-for="htmlwidget-75252c40c7fe75db2485">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v4.8.1.json",
     "config": {
@@ -187548,7 +187551,7 @@ $(document).ready(function () {
                     "filter": "(datum.pred <= Low.thresh)"
                   }
                 ],
-                "width": 600
+                "width": 800
               },
               {
                 "data": {
@@ -187602,6 +187605,10 @@ $(document).ready(function () {
                           "field": "pct",
                           "format": ".3p",
                           "type": "quantitative"
+                        },
+                        {
+                          "field": "total_count2",
+                          "type": "quantitative"
                         }
                       ],
                       "y": {
@@ -187612,7 +187619,7 @@ $(document).ready(function () {
                             1
                           ]
                         },
-                        "title": "Percent of Population Served",
+                        "title": "Percent of Total Population Served",
                         "type": "quantitative"
                       }
                     },
@@ -187707,6 +187714,10 @@ $(document).ready(function () {
                           "field": "pct",
                           "format": ".3p",
                           "type": "quantitative"
+                        },
+                        {
+                          "field": "total_pos",
+                          "type": "quantitative"
                         }
                       ],
                       "y": {
@@ -187717,7 +187728,7 @@ $(document).ready(function () {
                             1
                           ]
                         },
-                        "title": "Percentage of Positives",
+                        "title": "Percentage of Total Positives",
                         "type": "quantitative"
                       }
                     },
@@ -187742,20 +187753,25 @@ $(document).ready(function () {
                         }
                       },
                       {
-                        "filter": "((datum.pred <= Low.thresh) && (datum.target === 1))"
+                        "filter": "(datum.pred <= Low.thresh)"
                       },
                       {
                         "aggregate": [
                           {
                             "as": "total_count",
-                            "field": "alt.datum.target",
+                            "field": "target",
                             "op": "count"
+                          },
+                          {
+                            "as": "total_pos",
+                            "field": "target",
+                            "op": "sum"
                           }
                         ]
                       },
                       {
                         "as": "pct",
-                        "calculate": "(datum.total_count / 151)"
+                        "calculate": "(datum.total_pos / 151)"
                       }
                     ],
                     "width": 50
@@ -187785,20 +187801,151 @@ $(document).ready(function () {
                         }
                       },
                       {
-                        "filter": "((datum.pred <= Low.thresh) && (datum.target === 1))"
+                        "filter": "(datum.pred <= Low.thresh)"
                       },
                       {
                         "aggregate": [
                           {
                             "as": "total_count2",
-                            "field": "alt.datum.target",
+                            "field": "target",
                             "op": "count"
+                          },
+                          {
+                            "as": "total_pos",
+                            "field": "target",
+                            "op": "sum"
                           }
                         ]
                       },
                       {
                         "as": "pct",
-                        "calculate": "(datum.total_count2 / 151)"
+                        "calculate": "(datum.total_pos / 151)"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "layer": [
+                  {
+                    "encoding": {
+                      "tooltip": [
+                        {
+                          "field": "pct",
+                          "format": ".3p",
+                          "title": "NPV",
+                          "type": "quantitative"
+                        },
+                        {
+                          "field": "total_count2",
+                          "title": "True Negatives",
+                          "type": "quantitative"
+                        },
+                        {
+                          "field": "total_pos",
+                          "title": "False Negatives",
+                          "type": "quantitative"
+                        }
+                      ],
+                      "y": {
+                        "field": "pct",
+                        "scale": {
+                          "domain": [
+                            0,
+                            1
+                          ]
+                        },
+                        "title": "Negative Predictive Value",
+                        "type": "quantitative"
+                      }
+                    },
+                    "mark": {
+                      "color": "lightgray",
+                      "type": "bar"
+                    },
+                    "selection": {
+                      "selector006": {
+                        "bind": "scales",
+                        "encodings": [
+                          "x",
+                          "y"
+                        ],
+                        "type": "interval"
+                      }
+                    },
+                    "transform": [
+                      {
+                        "filter": {
+                          "selection": "Genre"
+                        }
+                      },
+                      {
+                        "filter": "(datum.pred <= Low.thresh)"
+                      },
+                      {
+                        "joinaggregate": [
+                          {
+                            "as": "total_count2",
+                            "field": "target",
+                            "op": "count"
+                          },
+                          {
+                            "as": "total_pos",
+                            "field": "target",
+                            "op": "sum"
+                          }
+                        ]
+                      },
+                      {
+                        "as": "pct",
+                        "calculate": "((datum.total_count2 - datum.total_pos) / (datum.total_count2 + datum.total_pos))"
+                      }
+                    ]
+                  },
+                  {
+                    "encoding": {
+                      "text": {
+                        "field": "pct",
+                        "format": ".3p",
+                        "type": "quantitative"
+                      },
+                      "y": {
+                        "field": "pct",
+                        "stack": "zero",
+                        "type": "quantitative"
+                      }
+                    },
+                    "mark": {
+                      "color": "black",
+                      "dy": -5,
+                      "type": "text"
+                    },
+                    "transform": [
+                      {
+                        "filter": {
+                          "selection": "Genre"
+                        }
+                      },
+                      {
+                        "filter": "(datum.pred <= Low.thresh)"
+                      },
+                      {
+                        "joinaggregate": [
+                          {
+                            "as": "total_count2",
+                            "field": "target",
+                            "op": "count"
+                          },
+                          {
+                            "as": "total_pos",
+                            "field": "target",
+                            "op": "sum"
+                          }
+                        ]
+                      },
+                      {
+                        "as": "pct",
+                        "calculate": "((datum.total_count2 - datum.total_pos) / (datum.total_count2 + datum.total_pos))"
                       }
                     ]
                   }
@@ -187820,7 +187967,7 @@ $(document).ready(function () {
                   "color": {
                     "condition": {
                       "test": "(datum.pred <= High.thresh)",
-                      "value": "darkorange"
+                      "value": "orangered"
                     },
                     "field": "target",
                     "scale": {
@@ -187893,7 +188040,7 @@ $(document).ready(function () {
                     "filter": "((datum.pred > Low.thresh) && (datum.pred <= High.thresh))"
                   }
                 ],
-                "width": 600
+                "width": 800
               },
               {
                 "data": {
@@ -187983,6 +188130,10 @@ $(document).ready(function () {
                           "field": "pct",
                           "format": ".3p",
                           "type": "quantitative"
+                        },
+                        {
+                          "field": "total_count2",
+                          "type": "quantitative"
                         }
                       ],
                       "y": {
@@ -187993,16 +188144,16 @@ $(document).ready(function () {
                             1
                           ]
                         },
-                        "title": "Percent of Population Served",
+                        "title": "Percent of Total Population Served",
                         "type": "quantitative"
                       }
                     },
                     "mark": {
-                      "color": "darkorange",
+                      "color": "orangered",
                       "type": "bar"
                     },
                     "selection": {
-                      "selector006": {
+                      "selector007": {
                         "bind": "scales",
                         "encodings": [
                           "x",
@@ -188089,6 +188240,10 @@ $(document).ready(function () {
                           "field": "pct",
                           "format": ".3p",
                           "type": "quantitative"
+                        },
+                        {
+                          "field": "total_count",
+                          "type": "quantitative"
                         }
                       ],
                       "y": {
@@ -188099,16 +188254,16 @@ $(document).ready(function () {
                             1
                           ]
                         },
-                        "title": "Percentage of Positives",
+                        "title": "Percentage of Total Positives",
                         "type": "quantitative"
                       }
                     },
                     "mark": {
-                      "color": "darkorange",
+                      "color": "orangered",
                       "type": "bar"
                     },
                     "selection": {
-                      "selector007": {
+                      "selector008": {
                         "bind": "scales",
                         "encodings": [
                           "x",
@@ -188181,6 +188336,138 @@ $(document).ready(function () {
                       {
                         "as": "pct",
                         "calculate": "(datum.total_count2 / 151)"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "layer": [
+                  {
+                    "encoding": {
+                      "tooltip": [
+                        {
+                          "field": "pct",
+                          "format": ".3p",
+                          "type": "quantitative"
+                        },
+                        {
+                          "field": "total_count2",
+                          "type": "quantitative"
+                        },
+                        {
+                          "field": "total_pos",
+                          "type": "quantitative"
+                        }
+                      ],
+                      "y": {
+                        "field": "pct",
+                        "scale": {
+                          "domain": [
+                            0,
+                            1
+                          ]
+                        },
+                        "title": "Percentage of Positives in Sample",
+                        "type": "quantitative"
+                      }
+                    },
+                    "mark": {
+                      "color": "orangered",
+                      "type": "bar"
+                    },
+                    "selection": {
+                      "selector009": {
+                        "bind": "scales",
+                        "encodings": [
+                          "x",
+                          "y"
+                        ],
+                        "type": "interval"
+                      }
+                    },
+                    "transform": [
+                      {
+                        "filter": {
+                          "selection": "Genre"
+                        }
+                      },
+                      {
+                        "filter": "((datum.pred > Low.thresh) && (datum.pred <= High.thresh))"
+                      },
+                      {
+                        "aggregate": [
+                          {
+                            "as": "total_count2",
+                            "field": "target",
+                            "op": "count"
+                          },
+                          {
+                            "as": "total_pos",
+                            "field": "target",
+                            "op": "sum"
+                          }
+                        ]
+                      },
+                      {
+                        "as": "total_neg",
+                        "calculate": "(datum.total_count2 - datum.total_pos)"
+                      },
+                      {
+                        "as": "pct",
+                        "calculate": "(datum.total_pos / datum.total_count2)"
+                      }
+                    ],
+                    "width": 50
+                  },
+                  {
+                    "encoding": {
+                      "text": {
+                        "field": "pct",
+                        "format": ".3p",
+                        "type": "quantitative"
+                      },
+                      "y": {
+                        "field": "pct",
+                        "stack": "zero",
+                        "type": "quantitative"
+                      }
+                    },
+                    "mark": {
+                      "color": "black",
+                      "dy": -5,
+                      "type": "text"
+                    },
+                    "transform": [
+                      {
+                        "filter": {
+                          "selection": "Genre"
+                        }
+                      },
+                      {
+                        "filter": "((datum.pred > Low.thresh) && (datum.pred <= High.thresh))"
+                      },
+                      {
+                        "aggregate": [
+                          {
+                            "as": "total_count2",
+                            "field": "target",
+                            "op": "count"
+                          },
+                          {
+                            "as": "total_pos",
+                            "field": "target",
+                            "op": "sum"
+                          }
+                        ]
+                      },
+                      {
+                        "as": "total_neg",
+                        "calculate": "(datum.total_count2 - datum.total_pos)"
+                      },
+                      {
+                        "as": "pct",
+                        "calculate": "(datum.total_pos / datum.total_count2)"
                       }
                     ]
                   }
@@ -188262,7 +188549,7 @@ $(document).ready(function () {
                     "filter": "(datum.pred > High.thresh)"
                   }
                 ],
-                "width": 600
+                "width": 800
               },
               {
                 "data": {
@@ -188335,7 +188622,7 @@ $(document).ready(function () {
                       "type": "bar"
                     },
                     "selection": {
-                      "selector008": {
+                      "selector010": {
                         "bind": "scales",
                         "encodings": [
                           "x",
@@ -188359,6 +188646,11 @@ $(document).ready(function () {
                             "as": "total_count2",
                             "field": "alt.datum.target",
                             "op": "count"
+                          },
+                          {
+                            "as": "total_pos",
+                            "field": "alt.datum.target",
+                            "op": "average"
                           }
                         ]
                       },
@@ -188431,7 +188723,7 @@ $(document).ready(function () {
                             1
                           ]
                         },
-                        "title": "Percentage of Positives",
+                        "title": "Percentage of Total Positives",
                         "type": "quantitative"
                       }
                     },
@@ -188440,7 +188732,7 @@ $(document).ready(function () {
                       "type": "bar"
                     },
                     "selection": {
-                      "selector009": {
+                      "selector011": {
                         "bind": "scales",
                         "encodings": [
                           "x",
@@ -188462,7 +188754,7 @@ $(document).ready(function () {
                         "aggregate": [
                           {
                             "as": "total_count",
-                            "field": "alt.datum.target",
+                            "field": "target",
                             "op": "count"
                           }
                         ]
@@ -188513,6 +188805,129 @@ $(document).ready(function () {
                       {
                         "as": "pct",
                         "calculate": "(datum.total_count2 / 151)"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "layer": [
+                  {
+                    "encoding": {
+                      "tooltip": [
+                        {
+                          "field": "pct",
+                          "format": ".3p",
+                          "type": "quantitative"
+                        },
+                        {
+                          "field": "total_count2",
+                          "type": "quantitative"
+                        },
+                        {
+                          "field": "total_pos",
+                          "type": "quantitative"
+                        }
+                      ],
+                      "y": {
+                        "field": "pct",
+                        "scale": {
+                          "domain": [
+                            0,
+                            1
+                          ]
+                        },
+                        "title": "Percentage of Positives in Sample",
+                        "type": "quantitative"
+                      }
+                    },
+                    "mark": {
+                      "color": "seagreen",
+                      "type": "bar"
+                    },
+                    "selection": {
+                      "selector012": {
+                        "bind": "scales",
+                        "encodings": [
+                          "x",
+                          "y"
+                        ],
+                        "type": "interval"
+                      }
+                    },
+                    "transform": [
+                      {
+                        "filter": {
+                          "selection": "Genre"
+                        }
+                      },
+                      {
+                        "filter": "((datum.pred > Low.thresh) && (datum.pred > High.thresh))"
+                      },
+                      {
+                        "aggregate": [
+                          {
+                            "as": "total_count2",
+                            "field": "target",
+                            "op": "count"
+                          },
+                          {
+                            "as": "total_pos",
+                            "field": "target",
+                            "op": "sum"
+                          }
+                        ]
+                      },
+                      {
+                        "as": "pct",
+                        "calculate": "(datum.total_pos / datum.total_count2)"
+                      }
+                    ]
+                  },
+                  {
+                    "encoding": {
+                      "text": {
+                        "field": "pct",
+                        "format": ".3p",
+                        "type": "quantitative"
+                      },
+                      "y": {
+                        "field": "pct",
+                        "stack": "zero",
+                        "type": "quantitative"
+                      }
+                    },
+                    "mark": {
+                      "color": "black",
+                      "dy": -5,
+                      "type": "text"
+                    },
+                    "transform": [
+                      {
+                        "filter": {
+                          "selection": "Genre"
+                        }
+                      },
+                      {
+                        "filter": "((datum.pred > Low.thresh) && (datum.pred > High.thresh))"
+                      },
+                      {
+                        "aggregate": [
+                          {
+                            "as": "total_count2",
+                            "field": "target",
+                            "op": "count"
+                          },
+                          {
+                            "as": "total_pos",
+                            "field": "target",
+                            "op": "sum"
+                          }
+                        ]
+                      },
+                      {
+                        "as": "pct",
+                        "calculate": "(datum.total_pos / datum.total_count2)"
                       }
                     ]
                   }

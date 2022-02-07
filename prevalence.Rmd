@@ -1,10 +1,11 @@
 ---
 title: ""
-output: html_document
+output:
+  html_document:
+    css: "site_themes.css"
 ---
 
 ```{r setup, include=FALSE}
-library(flexdashboard)
 library(reticulate)
 library(vegawidget)
 ```
@@ -459,10 +460,108 @@ as_vegaspec(py$cc)
 
 _Lines on bottom chart indicate the rolling 7-day mean_
 
+The top charts depict the number of tests per day from two data sources. The data has been trimmed for the time period of the dataset we've been using (30MAR20-29SEP21). The counts are separated by test result.
+
+The bottom charts show the percentage of positive tests relative to total number of tests. Each bar in the barchart is a separate day. As the caption alludes, it denotes the 7-rolling mean. This was calculated by take the mean positive rate from the previous 7-days at each time point, starting a n=7.
+
+The lines are a visual representation of what we might want the prevalence multiplier to resemble. There is another tabset further investigate the differences.
+
+
+#### SFS Prevelance Data
+
+- This data was downloaded a dashboard on metabase.
+- The query reports the number of tests each day by result, eg. 3 Pos, 16 Negs, 1 Inc.
+- This is not specific to one study, counts the positives for the organism
+
+#### HealthData.gov
+
+- This data was downloaded from <a href='https://healthdata.gov/dataset/COVID-19-Diagnostic-Laboratory-Testing-PCR-Testing/j8mb-icvb/data'>here</a>.
+- Website data source description:
+
+This time series dataset includes viral COVID-19 laboratory test 
+[Polymerase chain reaction (PCR)] results from over 1,000 U.S. laboratories 
+and testing locations including commercial and reference laboratories, public 
+health laboratories, hospital laboratories, and other testing locations. 
+Data are reported to state and jurisdictional health departments in accordance 
+with applicable state or local law and in accordance with the Coronavirus Aid, 
+Relief, and Economic Security (CARES) Act (CARES Act Section 18115).
+
+- The data represented are for all of WA State.
+
+- Again there is a line showing the rolling 7-day average.
+
+
 ### Percentage of Positive Results
 
 ```{r echo=FALSE}
 as_vegaspec(py$rr)
 ```
 
+- The HealthData.gov reports a higher positivite rate fairly consistently throughout the course of the data.
+- We can try both metrics to check performance to see if there is major difference (statistical). 
+
+
+
+### Summary
+
+#### SFS
+
+|Pros|
+|:--:|
+|It is the study population|
+|May be a closer measure of prevalence representative to the population, ie. sampling/SFS goal|
+
+|Cons|
+|:--:|
+|Our samples are included, is that cheating?|
+|It is a specialized study, may not be translatable to other diseases/situations. Others may not have access to similar data|
+
+
+#### HealthData.gov
+
+|Pros|
+|:--:|
+|Free, easily accessible|
+|Tangible values (more below on this idea)|
+
+|Cons|
+|:--:|
+|Prevalence includes all of WA, might be over/under-estimating|
+|Not really a population prev. It is people getting/seeking testing, might not exactly fit our hypothesis with regard to test management/community screening|
+
+
+#### Other possible sources
+
+#### Case/# of people
+
+- Publically available data with regard to the number of cases per 100,000 people or some similar measure.
+
+|Pros|
+|:--:|
+|It may give better measure of population prevalence|
+|Likely Free, easily accessible|
+
+|Cons|
+|:--:|
+|How accurate is the measure of the population at any given time? Enough to skew the data?|
+
+Would need further investigation:
+- Not sure if county level population stats readily available.
+
+
+#### Lab Data
+
+- Laboratory tracked data on testing metrics.
+
+|Pros|
+|:--:|
+|Gives good measure of prevalence from the local population|
+|Could be applicable to other DeDx disease models|
+|Labs are relatively widespread/applying the model in a different locale|
+
+|Cons|
+|:--:|
+|Not all labs may not accurately track, or track at all|
+|Resource costs associated|
+|Data might not be available to a wide range of users/orgs|
 

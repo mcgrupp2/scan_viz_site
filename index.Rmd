@@ -1,8 +1,13 @@
 ---
 title: ""
-output: html_document
+output:
+  html_document:
+    css: "site_themes.css"
 ---
 
 ## Companion Site for the Data-Enhanced Diagnostics Project
 
 - This website contains information related to COVID-19 prevalence and RDT Testing.
+
+
+

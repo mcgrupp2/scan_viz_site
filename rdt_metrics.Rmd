@@ -1,77 +1,239 @@
 ---
-title: "rdt_metrics"
-output: html_document
-runtime: shiny
+title: "Testing Metrics"
+output:
+  html_document:
+    css: "site_themes.css"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Rshiny Test
-This is a test of an RShiny app in RMarkdown
+```{r include=FALSE}
+library(reticulate)
+library(vegawidget)
+```
 
-```{r }
-library(shiny)
-ui <- fluidPage(
-  
-  # App title ----
-  titlePanel("Hello Shiny!"),
-  
-  # Sidebar layout with input and output definitions ----
-  sidebarLayout(
-    
-    # Sidebar panel for inputs ----
-    sidebarPanel(
-      
-      # Input: Slider for the number of bins ----
-      sliderInput(inputId = "bins",
-                  label = "Number of bins:",
-                  min = 1,
-                  max = 50,
-                  value = 30)
-      
-    ),
-    
-    # Main panel for displaying outputs ----
-    mainPanel(
-      
-      # Output: Histogram ----
-      plotOutput(outputId = "distPlot")
-      
+```{python include=FALSE}
+import csv
+import numpy as np
+
+import pandas as pd
+import altair as alt
+```
+
+
+
+```{python include=FALSE}
+
+def read_csv(filepath):
+    # This function will load a csv when passed
+    # a filepath and returns a numpy array 
+    with open(filepath,"r") as f:
+        reader=csv.reader(f)
+        return np.array([x for x in reader])
+
+def get_column_index(labels,col_str):
+    # returns the index of a column
+    # pass the column as a string with the 
+    # current label state
+    return np.where(labels==col_str)[0][0]
+
+rdt_mets=read_csv('/Users/jason/OneDrive - UW/Documents/research_projects/202109_dedx/data/rdt_metrics2.csv')
+rdt_mets[0][0]="PRODUCT"
+
+rdtm_labs=rdt_mets[0]
+
+rdtm_data=rdt_mets[1:,:]
+
+rdtm_df=pd.DataFrame(rdtm_data,columns=rdtm_labs)
+
+rdtm_df[['CLINICAL_SENSITIVITY_mean','CLINICAL_SENSITIVITY_CI_low','CLINICAL_SENSITIVITY_CI_high','CLINICAL_SPECIFICITY_mean','CLINICAL_SPECIFICITY_CI_low','CLINICAL_SPECIFICITY_CI_high']]=rdtm_df[['CLINICAL_SENSITIVITY_mean','CLINICAL_SENSITIVITY_CI_low','CLINICAL_SENSITIVITY_CI_high','CLINICAL_SPECIFICITY_mean','CLINICAL_SPECIFICITY_CI_low','CLINICAL_SPECIFICITY_CI_high']].apply(pd.to_numeric, errors='coerce', axis=1).apply(lambda x: x/100)
+
+# rdtm_dfs=rdtm_df.sort_values("CLINICAL_SENSITIVITY_mean",ascending=False)
+
+
+def filter_metrics(sort_term):
+    return rdtm_df[rdtm_df['READ']==sort_term].sort_values("CLINICAL_SENSITIVITY_mean",ascending=False)
+
+def sens_plot(sort_term,subtitle_text):
+    filter_df=filter_metrics(sort_term).sort_values("CLINICAL_SENSITIVITY_mean",ascending=False)
+    sens_base = alt.Chart(filter_df).encode(
+        x=alt.X('PRODUCT', sort=filter_df['PRODUCT'].to_list(),axis=alt.Axis(title="Antigen Diagnostic Tests for SARS-CoV-2")),
+        color=alt.Color('PRODUCT',legend=None)
+    ).properties(
+        title={
+            'text':'Reported Clinical Sensitivity', 
+            'fontSize':24,
+            'subtitle':subtitle_text,
+            'subtitleFontSize':18},
+        width=400
     )
-  )
-)
-# Define server logic required to draw a histogram ----
-server <- function(input, output) {
-  
-  # Histogram of the Old Faithful Geyser Data ----
-  # with requested number of bins
-  # This expression that generates a histogram is wrapped in a call
-  # to renderPlot to indicate that:
-  #
-  # 1. It is "reactive" and therefore should be automatically
-  #    re-executed when inputs (input$bins) change
-  # 2. Its output type is a plot
-  output$distPlot <- renderPlot({
-    
-    x    <- faithful$waiting
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
-    
-    hist(x, breaks = bins, col = "#75AADB", border = "white",
-         xlab = "Waiting time to next eruption (in mins)",
-         main = "Histogram of waiting times")
-    
-  })
-  
-}
-shinyApp(ui, server)
+    sens_rule = sens_base.mark_rule().encode(
+        alt.Y(
+            'CLINICAL_SENSITIVITY_CI_low:Q',
+            title='Clinical Sensitivity',
+            scale=alt.Scale(zero=False),
+        ),
+        alt.Y2('CLINICAL_SENSITIVITY_CI_high:Q')
+    )
+
+    sens_bar = sens_base.mark_bar(opacity=0.5).encode(
+        alt.Y('CLINICAL_SENSITIVITY_CI_low:Q'),
+        alt.Y2('CLINICAL_SENSITIVITY_CI_high:Q'),
+        tooltip=[alt.Tooltip('PRODUCT:N',title='Antigen Test'),alt.Tooltip('CLINICAL_SENSITIVITY_mean:Q',format=".3p",title='Mean'),alt.Tooltip('CLINICAL_SENSITIVITY_CI_low:Q',format=".3p", title="Low"),alt.Tooltip('CLINICAL_SENSITIVITY_CI_high:Q',format=".3p",title='Hi')]
+    )
+    sens_points = sens_base.mark_point().encode(
+        y=alt.Y('CLINICAL_SENSITIVITY_mean:Q'),
+        tooltip=[alt.Tooltip('PRODUCT:N',title='Antigen Test'),alt.Tooltip('CLINICAL_SENSITIVITY_mean:Q',format=".3p",title='Mean'),alt.Tooltip('CLINICAL_SENSITIVITY_CI_low:Q',format=".3p", title="Low"),alt.Tooltip('CLINICAL_SENSITIVITY_CI_high:Q',format=".3p",title='Hi')] 
+        #color=alt.Color('PRODUCT',legend=None)
+    )
+
+
+    return alt.layer(sens_bar,sens_rule,sens_points)
+
+
+def spec_plot(sort_term,subtitle_text):
+    filter_df=filter_metrics(sort_term).sort_values("CLINICAL_SPECIFICITY_mean",ascending=False)
+    sens_base = alt.Chart(filter_df).encode(
+        x=alt.X('PRODUCT', sort=filter_df['PRODUCT'].to_list(),axis=alt.Axis(title="Antigen Diagnostic Tests for SARS-CoV-2")),
+        color=alt.Color('PRODUCT',legend=None)
+    ).properties(
+        title={
+            'text':'Reported Clinical Specificity', 
+            'fontSize':24,
+            'subtitle':subtitle_text,
+            'subtitleFontSize':18},
+        width=400
+    )
+    sens_rule = sens_base.mark_rule().encode(
+        alt.Y(
+            'CLINICAL_SPECIFICITY_CI_low:Q',
+            title='Clinical Sensitivity',
+            scale=alt.Scale(zero=False),
+        ),
+        alt.Y2('CLINICAL_SPECIFICITY_CI_high:Q')
+    )
+
+    sens_bar = sens_base.mark_bar(opacity=0.5).encode(
+        alt.Y('CLINICAL_SPECIFICITY_CI_low:Q'),
+        alt.Y2('CLINICAL_SPECIFICITY_CI_high:Q'),
+        tooltip=[alt.Tooltip('PRODUCT:N',title='Antigen Test'),alt.Tooltip('CLINICAL_SPECIFICITY_mean:Q',format=".3p",title='Mean'),alt.Tooltip('CLINICAL_SPECIFICITY_CI_low:Q',format=".3p", title="Low"),alt.Tooltip('CLINICAL_SPECIFICITY_CI_high:Q',format=".3p",title='Hi')]
+    )
+    sens_points = sens_base.mark_point().encode(
+        y=alt.Y('CLINICAL_SPECIFICITY_mean:Q'),
+        tooltip=[alt.Tooltip('PRODUCT:N',title='Antigen Test'),alt.Tooltip('CLINICAL_SPECIFICITY_mean:Q',format=".3p",title='Mean'),alt.Tooltip('CLINICAL_SPECIFICITY_CI_low:Q',format=".3p", title="Low"),alt.Tooltip('CLINICAL_SPECIFICITY_CI_high:Q',format=".3p",title='High')] 
+        #color=alt.Color('PRODUCT',legend=None)
+    )
+
+
+    return alt.layer(sens_bar,sens_rule,sens_points)
+
+
+test_options=["visual read","instrument read","interpreted results presented"]
+
+viz_rd_sens_viz=sens_plot(test_options[0], "Visual Read Diagnostic Tests")
+
+
+instr_rd_sens_viz=sens_plot(test_options[1],"Instrument Read Diagnostic Tests")
+
+
+poc_pcr_sens_viz=sens_plot(test_options[2],"POC PCR Diagnostic Tests")
+
+
+viz_rd_spec_viz=spec_plot(test_options[0], "Visual Read Diagnostic Tests")
+
+
+instr_rd_spec_viz=spec_plot(test_options[1],"Instrument Read Diagnostic Tests")
+
+
+poc_pcr_spec_viz=spec_plot(test_options[2],"POC PCR Diagnostic Tests")
+
+
+viz_rd_df,instr_rd_df,poc_pcr_df=filter_metrics(test_options[0]),filter_metrics(test_options[1]),filter_metrics(test_options[2])
+
+
+agg_spec=alt.Chart(rdtm_df).mark_boxplot(extent='min-max',size=69).encode(
+        x=alt.X('READ:N',sort=test_options,axis=alt.Axis(labelAngle=20)),
+        y=alt.Y('CLINICAL_SPECIFICITY_mean',title='Specificity',scale=alt.Scale(domain=(0.95,1))),
+        color="READ:N",
+    ).properties(
+            title={
+                'text':str('Reported Clinical Specificity'), 
+                'fontSize':24,
+                'subtitle':'Aggregated Stats from Each Testing Group',
+                'subtitleFontSize':18},
+            width=600
+        )
+
+agg_sens=alt.Chart(rdtm_df).mark_boxplot(extent='min-max',size=69).encode(
+        x=alt.X('READ:N',sort=test_options,axis=alt.Axis(labelAngle=20)),
+        y=alt.Y('CLINICAL_SENSITIVITY_mean',title='Sensitivity',scale=alt.Scale(domain=(0.8,1))),
+        color="READ:N",
+    ).properties(
+            title={
+                'text':str('Reported Clinical Sensitivity'), 
+                'fontSize':24,
+                'subtitle':'Aggregated Stats from Each Testing Group',
+                'subtitleFontSize':18},
+            width=600
+        )
 
 ```
 
 
 
+## Diagnostic Tests for SARS-CoV-2 {.tabset}
+
+### Individual Tests
+
+```{python echo=FALSE}
+ind_chart=(viz_rd_sens_viz|viz_rd_spec_viz)&(instr_rd_sens_viz|instr_rd_spec_viz)&(poc_pcr_sens_viz|poc_pcr_spec_viz)
+
+ichart=ind_chart.to_json()
+```
+
+```{r echo=FALSE}
+as_vegaspec(py$ichart)
+```
+
+- These charts show the individual tests in each of our assigned classes. The bar indicates the 95% confidence intervals.
+
+- The data was compiled in <a href="https://pubs.acs.org/doi/pdf/10.1021/acsinfecdis.1c00268">this</a> article. It was collect from the kit handbooks from the EUA-FDA SARS-CoV-2 diagnostic tests (Pub Date: September 27, 2021)
 
 
+### Compiled Metrics
 
+```{python echo=FALSE}
+agg_chart=agg_sens&agg_spec
+achart=agg_chart.to_json()
+```
+
+```{r echo=FALSE}
+as_vegaspec(py$achart)
+```
+
+- Here are the distributions of each testing class. "interpreted results presented" are POC NAATs
+
+### Table
+
+```{r include=FALSE}
+library(kableExtra)
+library(tidyverse)
+```
+
+
+```{r echo=FALSE}
+tab <- py$rdtm_df
+
+tab2 <- tab%>%select(-c(starts_with("LOD"),"NOTES"))
+
+tab2 %>%
+  kbl(col.names = c('Product','Test Type','Test Class (Internal)','Mean','Low','High','Mean','Low','High')) %>%
+  kable_styling(c("striped", "hover"))%>%
+  column_spec(4, color = spec_color(tab2$CLINICAL_SENSITIVITY_mean,option="C", end = 0.7)) %>%
+  add_header_above(c(" " = 3, "Reported Sensitivity" = 3, "Reported Specificity" = 3))%>%
+  scroll_box(width = "100%", height = "90%")
+
+```
 
