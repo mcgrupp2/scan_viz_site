@@ -277,11 +277,17 @@ $(document).ready(function () {
 </div>
 
 
+<script>
+$(document).ready(function() {
+  $head = $('#navbar');
+  $head.append('<a href=\"https://www.lutzlab.org/\"><img src=\"https://i.pinimg.com/originals/f6/4c/8d/f64c8dbcffd405294d2943810974e2c1.jpg\" style=\"float: right;width: 75px;\"/></a>')
+});
+</script>
 <style type="text/css">
 
 .chart-wrapper {
   position: absolute;
-  left: 35px;
+  left: 50px;
 }
 
 .vega-bind:first-child {
@@ -302,12 +308,72 @@ $(document).ready(function () {
   top: 400px;
 }
 
-
-
-<style type="text/css"> .sidebar { overflow: auto; } </style>
 </style>
-<div id="htmlwidget-75252c40c7fe75db2485" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
-<script type="application/json" data-for="htmlwidget-75252c40c7fe75db2485">{"x":{
+<div aria-labelledby="modal_markdown-title" class="modal fade bs-example-modal-lg" id="modal_markdown" role="dialog" tabindex="-1">
+<div class="modal-dialog modal-lg" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+<h4 class="modal-title" id="modal_markdown-title">Visualization Explanation</h4>
+</div>
+<div class="modal-body"><h1>Model Result Visualizations</h1>
+
+<p>The below visualizations depict the predictions from several tuned and trained models. The models were trained with roughly 18,000 samples with various data including symptoms, demographics, geographic location and more. The results showing are predictions made on ~4,000 hold out samples used as a test set.</p>
+
+<p>There are three sets of visualizations which can be controlled with the buttons on the left of the screen.
+The &ldquo;High Threshold&rdquo; slider will adjust the top line of the middle visualization and the single line of the bottom visualization.
+The &ldquo;Low Threshold&rdquo; slider will adjust the bottom line in the middle visualization and the single line of the top visualization.
+The different model predictions can be cycled by changing the classifier via the &ldquo;Choose Model&rdquo; dropdown menu.   </p>
+
+<p>The main figures (dot-plots) in each row show the predictions for the chosen model. The y-axis represents the predicted probability for the test sample and the x-axis is the order in which the prediction was made.</p>
+
+<p>There are three bar charts in each row that will adjust when the threshold or classifier is changed. The first two bar charts in all of the rows are the same, but the third bar chart differs between the first row and the other two rows. The first bar chart in each row represents the percentage of the total test population (~4000) that would fall in the given range. The second bar chart in each row represents the total percentage of positives that fall in the given range. The differences of the third bar charts will be called out in section explanations below.</p>
+
+<h3>Model Diagnosed</h3>
+
+<p>The thresholds the top visualizations can be controlled with the &ldquo;Low Threshold&rdquo; slider. The samples in this range would have a low probability of being infected or another interpretation would be that these are highly probable to have a negative result.</p>
+
+<p>The gray dots in the probability plots are meant to represent the population that would be diagnosed with the model alone. Each person that falls in this range would be considered negative, with no further testing required. </p>
+
+<p>There is no way to discern between positive and negative visually in the plots, as these samples would be considered negative and a true result would not be found via biochemical testing. There is a tooltip that will show the true result for the sample, and the predicted output for the sample.</p>
+
+<p>The first bar chart in this row represents the percentage of the total test population (~4000) that would fall in this range, and the second bar represents the total percentage of positive samples that are in this range. </p>
+
+<p>The third bar chart represents <a href="https://en.wikipedia.org/wiki/Positive_and_negative_predictive_values"> negative predictive value </a> of the model given this test population. This value represents the efficacy of the prediction, or the percentage of samples that have been predicted as negative are true negative samples.</p>
+
+<p>To maximize the potential of this system the first and third bars should be <strong>maximized</strong> and the middle bar chart should be <em>minimizied</em> . The idea is to serve as much of the population as possible with the model prediction, as not further resources will be required.</p>
+
+<h3>Higher Performance Tests</h3>
+
+<p>The thresholds the middle visualizations can be controlled with the &ldquo;High Threshold&rdquo; and &ldquo;Low Threshold&rdquo; slider. The samples in this range would have a middle predicted probability of being infected. These samples would receive the higher performance tests with regard to sensitivity and specificity, such as a qPCR respiratory pathogen panel, a point-of-care SARs-CoV-2 NAAT test, or instrument-read SARs-CoV-2 rapid diagnostic test.</p>
+
+<p>The first bar chart in this row represents the percentage of the total test population (~4000) that would fall in this range, and the second bar represents the total percentage of positive samples that are in this range. </p>
+
+<p>The third bar chart in this row depicts the percentage of samples in the selected range that are positive samples. A large value indicates more efficient usage of testing resources. Tests that fall in the higher performance testing bracket will often require some type of specialized equipment or training, so maximizing the discovery rate will indicate efficient usage of these testing resources.</p>
+
+<p>In general, minimizing the first bar indicates a lower cost associated with regard to the higher performance tests as having the least amount of samples in this bucket will be a lower cost.</p>
+
+<h3>Rapid Diagnostic Tests</h3>
+
+<p>The threshold in this last visualization can be controlled with the &ldquo;High Threshold&rdquo; slider. These samples would have a high probability of being infected with SARs-CoV-2. These samples would receive lower cost rapid diagnostic test, such as a lateral flow antigen test. </p>
+
+<p>The first bar chart in this row represents the percentage of the total test population (~4000) that would fall in this range, and the second bar represents the total percentage of positive samples that are in this range. </p>
+
+<p>The third bar chart in this row depicts the percentage of samples in the selected range that are positive samples. A large value indicates more efficient usage of testing resources. Tests that fall in the higher performance testing bracket will often require some type of specialized equipment or training, so maximizing the discovery rate will indicate efficient usage of these testing resources.</p>
+
+<p>In general, having the first bar chart in the third row less than the first bar in first row and greater than the first bar in the second row could be associated with a lower cost. </p>
+</div>
+<div class="modal-footer">
+<button class="btn btn-default" data-dismiss="modal">Close</button>
+</div>
+</div>
+</div>
+</div>
+<p><button class="btn btn-success btn-xs" id="info_modal" data-toggle="modal" data-target="#modal_markdown">Visualization Info</button></p>
+<div id="htmlwidget-cf78d30a45a6b7870dc2" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
+<script type="application/json" data-for="htmlwidget-cf78d30a45a6b7870dc2">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v4.8.1.json",
     "config": {
@@ -187511,9 +187577,10 @@ $(document).ready(function () {
                   "type": "circle"
                 },
                 "selection": {
-                  "Genre": {
+                  "selector003": {
                     "bind": {
                       "input": "select",
+                      "name": "Choose Model: ",
                       "options": [
                         "eclf",
                         "et",
@@ -187531,7 +187598,7 @@ $(document).ready(function () {
                     },
                     "type": "single"
                   },
-                  "selector001": {
+                  "selector004": {
                     "bind": "scales",
                     "encodings": [
                       "x",
@@ -187544,14 +187611,14 @@ $(document).ready(function () {
                 "transform": [
                   {
                     "filter": {
-                      "selection": "Genre"
+                      "selection": "selector003"
                     }
                   },
                   {
-                    "filter": "(datum.pred <= Low.thresh)"
+                    "filter": "(datum.pred <= selector002.thresh)"
                   }
                 ],
-                "width": 800
+                "width": 500
               },
               {
                 "data": {
@@ -187565,11 +187632,12 @@ $(document).ready(function () {
                 },
                 "mark": "rule",
                 "selection": {
-                  "Low": {
+                  "selector002": {
                     "bind": {
                       "input": "range",
                       "max": 1,
                       "min": 0,
+                      "name": "Low Threshold",
                       "step": 0.001
                     },
                     "fields": [
@@ -187584,7 +187652,7 @@ $(document).ready(function () {
                 "transform": [
                   {
                     "filter": {
-                      "selection": "Low"
+                      "selection": "selector002"
                     }
                   }
                 ]
@@ -187628,7 +187696,7 @@ $(document).ready(function () {
                       "type": "bar"
                     },
                     "selection": {
-                      "selector004": {
+                      "selector007": {
                         "bind": "scales",
                         "encodings": [
                           "x",
@@ -187640,11 +187708,11 @@ $(document).ready(function () {
                     "transform": [
                       {
                         "filter": {
-                          "selection": "Genre"
+                          "selection": "selector003"
                         }
                       },
                       {
-                        "filter": "(datum.pred <= Low.thresh)"
+                        "filter": "(datum.pred <= selector002.thresh)"
                       },
                       {
                         "aggregate": [
@@ -187682,11 +187750,11 @@ $(document).ready(function () {
                     "transform": [
                       {
                         "filter": {
-                          "selection": "Genre"
+                          "selection": "selector003"
                         }
                       },
                       {
-                        "filter": "(datum.pred <= Low.thresh)"
+                        "filter": "(datum.pred <= selector002.thresh)"
                       },
                       {
                         "aggregate": [
@@ -187737,7 +187805,7 @@ $(document).ready(function () {
                       "type": "bar"
                     },
                     "selection": {
-                      "selector005": {
+                      "selector008": {
                         "bind": "scales",
                         "encodings": [
                           "x",
@@ -187749,11 +187817,11 @@ $(document).ready(function () {
                     "transform": [
                       {
                         "filter": {
-                          "selection": "Genre"
+                          "selection": "selector003"
                         }
                       },
                       {
-                        "filter": "(datum.pred <= Low.thresh)"
+                        "filter": "(datum.pred <= selector002.thresh)"
                       },
                       {
                         "aggregate": [
@@ -187797,11 +187865,11 @@ $(document).ready(function () {
                     "transform": [
                       {
                         "filter": {
-                          "selection": "Genre"
+                          "selection": "selector003"
                         }
                       },
                       {
-                        "filter": "(datum.pred <= Low.thresh)"
+                        "filter": "(datum.pred <= selector002.thresh)"
                       },
                       {
                         "aggregate": [
@@ -187864,7 +187932,7 @@ $(document).ready(function () {
                       "type": "bar"
                     },
                     "selection": {
-                      "selector006": {
+                      "selector009": {
                         "bind": "scales",
                         "encodings": [
                           "x",
@@ -187876,11 +187944,11 @@ $(document).ready(function () {
                     "transform": [
                       {
                         "filter": {
-                          "selection": "Genre"
+                          "selection": "selector003"
                         }
                       },
                       {
-                        "filter": "(datum.pred <= Low.thresh)"
+                        "filter": "(datum.pred <= selector002.thresh)"
                       },
                       {
                         "joinaggregate": [
@@ -187923,11 +187991,11 @@ $(document).ready(function () {
                     "transform": [
                       {
                         "filter": {
-                          "selection": "Genre"
+                          "selection": "selector003"
                         }
                       },
                       {
-                        "filter": "(datum.pred <= Low.thresh)"
+                        "filter": "(datum.pred <= selector002.thresh)"
                       },
                       {
                         "joinaggregate": [
@@ -187966,7 +188034,7 @@ $(document).ready(function () {
                 "encoding": {
                   "color": {
                     "condition": {
-                      "test": "(datum.pred <= High.thresh)",
+                      "test": "(datum.pred <= selector001.thresh)",
                       "value": "orangered"
                     },
                     "field": "target",
@@ -188020,7 +188088,7 @@ $(document).ready(function () {
                   "type": "circle"
                 },
                 "selection": {
-                  "selector002": {
+                  "selector005": {
                     "bind": "scales",
                     "encodings": [
                       "x",
@@ -188033,14 +188101,14 @@ $(document).ready(function () {
                 "transform": [
                   {
                     "filter": {
-                      "selection": "Genre"
+                      "selection": "selector003"
                     }
                   },
                   {
-                    "filter": "((datum.pred > Low.thresh) && (datum.pred <= High.thresh))"
+                    "filter": "((datum.pred > selector002.thresh) && (datum.pred <= selector001.thresh))"
                   }
                 ],
-                "width": 800
+                "width": 500
               },
               {
                 "data": {
@@ -188054,11 +188122,12 @@ $(document).ready(function () {
                 },
                 "mark": "rule",
                 "selection": {
-                  "High": {
+                  "selector001": {
                     "bind": {
                       "input": "range",
                       "max": 1,
                       "min": 0,
+                      "name": "High Threshold",
                       "step": 0.001
                     },
                     "fields": [
@@ -188073,7 +188142,7 @@ $(document).ready(function () {
                 "transform": [
                   {
                     "filter": {
-                      "selection": "High"
+                      "selection": "selector001"
                     }
                   }
                 ]
@@ -188090,11 +188159,12 @@ $(document).ready(function () {
                 },
                 "mark": "rule",
                 "selection": {
-                  "Low": {
+                  "selector002": {
                     "bind": {
                       "input": "range",
                       "max": 1,
                       "min": 0,
+                      "name": "Low Threshold",
                       "step": 0.001
                     },
                     "fields": [
@@ -188109,7 +188179,7 @@ $(document).ready(function () {
                 "transform": [
                   {
                     "filter": {
-                      "selection": "Low"
+                      "selection": "selector002"
                     }
                   }
                 ]
@@ -188153,7 +188223,7 @@ $(document).ready(function () {
                       "type": "bar"
                     },
                     "selection": {
-                      "selector007": {
+                      "selector010": {
                         "bind": "scales",
                         "encodings": [
                           "x",
@@ -188165,11 +188235,11 @@ $(document).ready(function () {
                     "transform": [
                       {
                         "filter": {
-                          "selection": "Genre"
+                          "selection": "selector003"
                         }
                       },
                       {
-                        "filter": "((datum.pred > Low.thresh) && (datum.pred <= High.thresh))"
+                        "filter": "((datum.pred > selector002.thresh) && (datum.pred <= selector001.thresh))"
                       },
                       {
                         "aggregate": [
@@ -188208,11 +188278,11 @@ $(document).ready(function () {
                     "transform": [
                       {
                         "filter": {
-                          "selection": "Genre"
+                          "selection": "selector003"
                         }
                       },
                       {
-                        "filter": "((datum.pred > Low.thresh) && (datum.pred <= High.thresh))"
+                        "filter": "((datum.pred > selector002.thresh) && (datum.pred <= selector001.thresh))"
                       },
                       {
                         "aggregate": [
@@ -188263,7 +188333,7 @@ $(document).ready(function () {
                       "type": "bar"
                     },
                     "selection": {
-                      "selector008": {
+                      "selector011": {
                         "bind": "scales",
                         "encodings": [
                           "x",
@@ -188275,11 +188345,11 @@ $(document).ready(function () {
                     "transform": [
                       {
                         "filter": {
-                          "selection": "Genre"
+                          "selection": "selector003"
                         }
                       },
                       {
-                        "filter": "(((datum.pred > Low.thresh) && (datum.pred <= High.thresh)) && (datum.target === 1))"
+                        "filter": "(((datum.pred > selector002.thresh) && (datum.pred <= selector001.thresh)) && (datum.target === 1))"
                       },
                       {
                         "aggregate": [
@@ -188318,11 +188388,11 @@ $(document).ready(function () {
                     "transform": [
                       {
                         "filter": {
-                          "selection": "Genre"
+                          "selection": "selector003"
                         }
                       },
                       {
-                        "filter": "(((datum.pred > Low.thresh) && (datum.pred <= High.thresh)) && (datum.target === 1))"
+                        "filter": "(((datum.pred > selector002.thresh) && (datum.pred <= selector001.thresh)) && (datum.target === 1))"
                       },
                       {
                         "aggregate": [
@@ -188377,7 +188447,7 @@ $(document).ready(function () {
                       "type": "bar"
                     },
                     "selection": {
-                      "selector009": {
+                      "selector012": {
                         "bind": "scales",
                         "encodings": [
                           "x",
@@ -188389,11 +188459,11 @@ $(document).ready(function () {
                     "transform": [
                       {
                         "filter": {
-                          "selection": "Genre"
+                          "selection": "selector003"
                         }
                       },
                       {
-                        "filter": "((datum.pred > Low.thresh) && (datum.pred <= High.thresh))"
+                        "filter": "((datum.pred > selector002.thresh) && (datum.pred <= selector001.thresh))"
                       },
                       {
                         "aggregate": [
@@ -188441,11 +188511,11 @@ $(document).ready(function () {
                     "transform": [
                       {
                         "filter": {
-                          "selection": "Genre"
+                          "selection": "selector003"
                         }
                       },
                       {
-                        "filter": "((datum.pred > Low.thresh) && (datum.pred <= High.thresh))"
+                        "filter": "((datum.pred > selector002.thresh) && (datum.pred <= selector001.thresh))"
                       },
                       {
                         "aggregate": [
@@ -188529,7 +188599,7 @@ $(document).ready(function () {
                   "type": "circle"
                 },
                 "selection": {
-                  "selector003": {
+                  "selector006": {
                     "bind": "scales",
                     "encodings": [
                       "x",
@@ -188542,14 +188612,14 @@ $(document).ready(function () {
                 "transform": [
                   {
                     "filter": {
-                      "selection": "Genre"
+                      "selection": "selector003"
                     }
                   },
                   {
-                    "filter": "(datum.pred > High.thresh)"
+                    "filter": "(datum.pred > selector001.thresh)"
                   }
                 ],
-                "width": 800
+                "width": 500
               },
               {
                 "data": {
@@ -188563,11 +188633,12 @@ $(document).ready(function () {
                 },
                 "mark": "rule",
                 "selection": {
-                  "High": {
+                  "selector001": {
                     "bind": {
                       "input": "range",
                       "max": 1,
                       "min": 0,
+                      "name": "High Threshold",
                       "step": 0.001
                     },
                     "fields": [
@@ -188582,7 +188653,7 @@ $(document).ready(function () {
                 "transform": [
                   {
                     "filter": {
-                      "selection": "High"
+                      "selection": "selector001"
                     }
                   }
                 ]
@@ -188622,7 +188693,7 @@ $(document).ready(function () {
                       "type": "bar"
                     },
                     "selection": {
-                      "selector010": {
+                      "selector013": {
                         "bind": "scales",
                         "encodings": [
                           "x",
@@ -188634,11 +188705,11 @@ $(document).ready(function () {
                     "transform": [
                       {
                         "filter": {
-                          "selection": "Genre"
+                          "selection": "selector003"
                         }
                       },
                       {
-                        "filter": "(datum.pred > High.thresh)"
+                        "filter": "(datum.pred > selector001.thresh)"
                       },
                       {
                         "aggregate": [
@@ -188681,11 +188752,11 @@ $(document).ready(function () {
                     "transform": [
                       {
                         "filter": {
-                          "selection": "Genre"
+                          "selection": "selector003"
                         }
                       },
                       {
-                        "filter": "(datum.pred > High.thresh)"
+                        "filter": "(datum.pred > selector001.thresh)"
                       },
                       {
                         "aggregate": [
@@ -188732,7 +188803,7 @@ $(document).ready(function () {
                       "type": "bar"
                     },
                     "selection": {
-                      "selector011": {
+                      "selector014": {
                         "bind": "scales",
                         "encodings": [
                           "x",
@@ -188744,11 +188815,11 @@ $(document).ready(function () {
                     "transform": [
                       {
                         "filter": {
-                          "selection": "Genre"
+                          "selection": "selector003"
                         }
                       },
                       {
-                        "filter": "((datum.pred > High.thresh) && (datum.target === 1))"
+                        "filter": "((datum.pred > selector001.thresh) && (datum.target === 1))"
                       },
                       {
                         "aggregate": [
@@ -188787,11 +188858,11 @@ $(document).ready(function () {
                     "transform": [
                       {
                         "filter": {
-                          "selection": "Genre"
+                          "selection": "selector003"
                         }
                       },
                       {
-                        "filter": "((datum.pred > High.thresh) && (datum.target === 1))"
+                        "filter": "((datum.pred > selector001.thresh) && (datum.target === 1))"
                       },
                       {
                         "aggregate": [
@@ -188846,7 +188917,7 @@ $(document).ready(function () {
                       "type": "bar"
                     },
                     "selection": {
-                      "selector012": {
+                      "selector015": {
                         "bind": "scales",
                         "encodings": [
                           "x",
@@ -188858,11 +188929,11 @@ $(document).ready(function () {
                     "transform": [
                       {
                         "filter": {
-                          "selection": "Genre"
+                          "selection": "selector003"
                         }
                       },
                       {
-                        "filter": "((datum.pred > Low.thresh) && (datum.pred > High.thresh))"
+                        "filter": "((datum.pred > selector002.thresh) && (datum.pred > selector001.thresh))"
                       },
                       {
                         "aggregate": [
@@ -188905,11 +188976,11 @@ $(document).ready(function () {
                     "transform": [
                       {
                         "filter": {
-                          "selection": "Genre"
+                          "selection": "selector003"
                         }
                       },
                       {
-                        "filter": "((datum.pred > Low.thresh) && (datum.pred > High.thresh))"
+                        "filter": "((datum.pred > selector002.thresh) && (datum.pred > selector001.thresh))"
                       },
                       {
                         "aggregate": [

@@ -1,5 +1,28 @@
+
 .navbar-default {
-    background-color: rebeccapurple;
-    border-color: #e7e7e7;
+    background-color: #3c2c72;
+    border-color: #d5ca94;
 }
 
+.navbar-default .navbar-brand {
+    color: #d5ca94;
+}
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
+    color: #f3eabf;
+    background-color: rebeccapurple;
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: #d5ca94;
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+    color: #ffe256;
+    background-color: rebeccapurple;
+}
+
+.navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover {
+    color: #ffe256;
+    background-color: rebeccapurple;
+}

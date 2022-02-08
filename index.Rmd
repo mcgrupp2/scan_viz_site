@@ -9,5 +9,11 @@ output:
 
 - This website contains information related to COVID-19 prevalence and RDT Testing.
 
+<script>
+$(document).ready(function() {
+  $head = $('#navbar');
+  $head.append('<img src=\"https://i.pinimg.com/originals/f6/4c/8d/f64c8dbcffd405294d2943810974e2c1.jpg\" style=\"float: right;width: 75px;\"/>')
+});
+</script>
 
 

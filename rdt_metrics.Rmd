@@ -9,6 +9,15 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+<script>
+$(document).ready(function() {
+  $head = $('#navbar');
+  $head.append('<img src=\"https://i.pinimg.com/originals/f6/4c/8d/f64c8dbcffd405294d2943810974e2c1.jpg\" style=\"float: right;width: 75px;\"/>')
+});
+</script>
+
+
 ```{r include=FALSE}
 library(reticulate)
 library(vegawidget)
