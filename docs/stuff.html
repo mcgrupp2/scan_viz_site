@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>stuff</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">SCAN Project</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="model_test_results.html">Model Tests</a>
+</li>
+<li>
+  <a href="prevalence.html">Prevalence</a>
+</li>
+<li>
+  <a href="rdt_metrics.html">Metrics</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+
+</div>
+
+
+<div id="model-result-visualizations" class="section level1">
+<h1>Model Result Visualizations</h1>
+<p>The below visualizations depict the predictions from several tuned and trained models. The models were trained with roughly 18,000 samples with various data including symptoms, demographics, geographic location and more. The results showing are predictions made on ~4,000 hold out samples used as a test set.</p>
+<p>There are three sets of visualizations which can be controlled with the buttons on the left of the screen. The “High Threshold” slider will adjust the top line of the middle visualization and the single line of the bottom visualization. The “Low Threshold” slider will adjust the bottom line in the middle visualization and the single line of the top visualization. The different model predictions can be cycled by changing the classifier via the “Choose Model” dropdown menu.</p>
+<p>The main figures (dot-plots) in each row show the predictions for the chosen model. The y-axis represents the predicted probability for the test sample and the x-axis is the order in which the prediction was made.</p>
+<p>There are three bar charts in each row that will adjust when the threshold or classifier is changed. The first two bar charts in all of the rows are the same, but the third bar chart differs between the first row and the other two rows. The first bar chart in each row represents the percentage of the total test population (~4000) that would fall in the given range. The second bar chart in each row represents the total percentage of positives that fall in the given range. The differences of the third bar charts will be called out in section explanations below.</p>
+<div id="model-diagnosed" class="section level3">
+<h3>Model Diagnosed</h3>
+<p>The thresholds the top visualizations can be controlled with the “Low Threshold” slider. The samples in this range would have a low probability of being infected or another interpretation would be that these are highly probable to have a negative result.</p>
+<p>The gray dots in the probability plots are meant to represent the population that would be diagnosed with the model alone. Each person that falls in this range would be considered negative, with no further testing required.</p>
+<p>There is no way to discern between positive and negative visually in the plots, as these samples would be considered negative and a true result would not be found via biochemical testing. There is a tooltip that will show the true result for the sample, and the predicted output for the sample.</p>
+<p>The first bar chart in this row represents the percentage of the total test population (~4000) that would fall in this range, and the second bar represents the total percentage of positive samples that are in this range.</p>
+<p>The third bar chart represents <a href="https://en.wikipedia.org/wiki/Positive_and_negative_predictive_values"> negative predictive value </a> of the model given this test population. This value represents the efficacy of the prediction, or the percentage of samples that have been predicted as negative are true negative samples.</p>
+<p>To maximize the potential of this system the first and third bars should be <strong>maximized</strong> and the middle bar chart should be <em>minimizied</em> . The idea is to serve as much of the population as possible with the model prediction, as not further resources will be required.</p>
+</div>
+<div id="higher-performance-tests" class="section level3">
+<h3>Higher Performance Tests</h3>
+<p>The thresholds the middle visualizations can be controlled with the “High Threshold” and “Low Threshold” slider. The samples in this range would have a middle predicted probability of being infected. These samples would receive the higher performance tests with regard to sensitivity and specificity, such as a qPCR respiratory pathogen panel, a point-of-care SARs-CoV-2 NAAT test, or instrument-read SARs-CoV-2 rapid diagnostic test.</p>
+<p>The first bar chart in this row represents the percentage of the total test population (~4000) that would fall in this range, and the second bar represents the total percentage of positive samples that are in this range.</p>
+<p>The third bar chart in this row depicts the percentage of samples in the selected range that are positive samples. A large value indicates more efficient usage of testing resources. Tests that fall in the higher performance testing bracket will often require some type of specialized equipment or training, so maximizing the discovery rate will indicate efficient usage of these testing resources.</p>
+<p>In general, minimizing the first bar indicates a lower cost associated with regard to the higher performance tests as having the least amount of samples in this bucket will be a lower cost.</p>
+</div>
+<div id="rapid-diagnostic-tests" class="section level3">
+<h3>Rapid Diagnostic Tests</h3>
+<p>The threshold in this last visualization can be controlled with the “High Threshold” slider. These samples would have a high probability of being infected with SARs-CoV-2. These samples would receive lower cost rapid diagnostic test, such as a lateral flow antigen test.</p>
+<p>The first bar chart in this row represents the percentage of the total test population (~4000) that would fall in this range, and the second bar represents the total percentage of positive samples that are in this range.</p>
+<p>The third bar chart in this row depicts the percentage of samples in the selected range that are positive samples. A large value indicates more efficient usage of testing resources. Tests that fall in the higher performance testing bracket will often require some type of specialized equipment or training, so maximizing the discovery rate will indicate efficient usage of these testing resources.</p>
+<p>In general, having the first bar chart in the third row less than the first bar in first row and greater than the first bar in the second row could be associated with a lower cost.</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
