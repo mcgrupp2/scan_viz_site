@@ -7,16 +7,11 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,warning=F,message=F)
+library(knitr)
 ```
 
 
-<script>
-$(document).ready(function() {
-  $head = $('#navbar');
-  $head.append('<a href=\"https://www.lutzlab.org/\"><img src=\"https://i.pinimg.com/originals/f6/4c/8d/f64c8dbcffd405294d2943810974e2c1.jpg\" style=\"float: right;width: 75px;\"/></a>')
-});
-</script>
-
+## {.tabset}
 
 
 ```{css, echo=FALSE}
@@ -29,19 +24,19 @@ $(document).ready(function() {
 .vega-bind:first-child {
   position: fixed;
   left: 20px;
-  top: 200px;
+  top: 300px;
 }
 
 .vega-bind:nth-child(2) {
   position: fixed;
   left: 20px;
-  top: 300px;
+  top: 400px;
 }
 
 .vega-bind:last-child {
-  position: fixed;
-  left: 20px;
-  top: 400px;
+    position: absolute;
+    left: 700px;
+    top: -60px;
 }
 
 ```
@@ -54,23 +49,15 @@ library(bsplus)
 library(htmltools)
 ```
 
-```{r echo=FALSE}
-bs_modal(
-  id = "modal_markdown", 
-  title = "Visualization Explanation",
-  body = includeMarkdown("stuff.md"),
-  size = "large"
-)
-bs_button("Visualization Info", button_type = "success",button_size ="extra-small",id="info_modal") %>%
-  bs_attach_modal("modal_markdown")
-```
+
 
 
 ```{python include=FALSE}
 import numpy as np
 import pandas as pd
 import altair as alt
-from sklearn.metrics import balanced_accuracy_score, log_loss, f1_score, precision_score, accuracy_score,recall_score,roc_curve,precision_recall_curve,matthews_corrcoef,cohen_kappa_score,auc
+from sklearn.metrics import balanced_accuracy_score, log_loss, f1_score, precision_score, accuracy_score,recall_score,roc_curve,precision_recall_curve,matthews_corrcoef,cohen_kappa_score,auc,confusion_matrix
+
 alt.data_transformers.disable_max_rows()
 
 ```
@@ -79,7 +66,7 @@ alt.data_transformers.disable_max_rows()
 source = pd.read_csv('/Users/jason/Library/CloudStorage/OneDrive-UW/Documents/research_projects/202109_dedx/220202_preds.csv')
 
 source=source.iloc[:,1:]
-
+source['result']=source['target'].map({0:"Neg",1:"Pos"})
 y_scoring2=source['target']
 rf_y_pred2=source['rf']
 xg_y_pred2=source['xg']
@@ -139,395 +126,325 @@ def to_labels(pos_probs, threshold):
 
 
 
+
 ```{python include=FALSE,warning=F,message=F}
-
-
 alt.data_transformers.disable_max_rows()
 
-source_df=source.reset_index().melt(id_vars=['index','target'],var_name='classifier',value_name='pred')
+source_df=source.reset_index().melt(id_vars=['index','target',"result"],var_name='classifier',value_name='pred')
 
 
 # sns.scatterplot(data=df, x="index", y="pred_prob",hue='response')
 # plt.show()
 y_slider_df=pd.DataFrame({'thresh': np.arange(0,1,0.0001)})
 
-slider = alt.binding_range(name="High Threshold", min=0, max=1, step=0.001)
-select_thresh = alt.selection_single(fields=['thresh'],
-                                   bind=slider, init={'thresh': round(eclf_best_thresh,3)})
+hi_slider = alt.binding_range(name="High Threshold", min=0, max=1, step=0.001)
+hi_select_thresh = alt.selection_single(fields=['thresh'],
+                                   bind=hi_slider, init={'thresh': round(eclf_best_thresh,3)})
 
-slider2 = alt.binding_range(min=0, max=1, step=0.001,name="Low Threshold")
-select_thresh2 = alt.selection_single(fields=['thresh'],
-                                   bind=slider2, init={'thresh': round(eclf_thresholds[eclf_ix],3)})
+lo_slider = alt.binding_range(min=0, max=1, step=0.001,name="Low Threshold")
+lo_select_thresh = alt.selection_single(fields=['thresh'],
+                                   bind=lo_slider, init={'thresh': round(eclf_thresholds[eclf_ix],3)})
 
-yrule = alt.Chart(y_slider_df).mark_rule().encode(y='thresh:Q').add_selection(
-    select_thresh
+hi_thresh_line = alt.Chart(y_slider_df).mark_rule(color="lightgray").encode(y='thresh:Q',opacity=alt.value(0.05)).add_selection(
+    hi_select_thresh
 ).transform_filter(
-    select_thresh
+    hi_select_thresh
 )
 
-yrule2 = alt.Chart(y_slider_df).mark_rule().encode(y='thresh:Q').add_selection(
-    select_thresh2
+lo_thresh_line = alt.Chart(y_slider_df).mark_rule(color="lightgray").encode(y='thresh:Q',opacity=alt.value(0.05)).add_selection(
+    lo_select_thresh
 ).transform_filter(
-    select_thresh2
+    lo_select_thresh
 )
 
 
-genre_dropdown = alt.binding_select(options=np.unique(source_df['classifier']),name="Choose Model: ")
+genre_dropdown = alt.binding_select(options=np.unique(source_df['classifier']),name="Choose Model:\n ",labels=['Ensemble',"Extra Trees","Gradient Boost","Logistic Regression", "Random Forest", "XGBoost"])
 genre_select = alt.selection_single(fields=['classifier'], bind=genre_dropdown,init={'classifier': 'et'})
 
 
-color = alt.condition(alt.datum.pred<=select_thresh.thresh,
+colorz = alt.condition(alt.datum.pred<=hi_select_thresh.thresh,
                       alt.value('orangered'),
                       alt.Color('target:Q', scale=alt.Scale(scheme='greens')),legend=None)
 
-# color = alt.condition({
-#   'condition': {'test': '(datum.pred <= High.thresh)', 'value': 'darkred'},
-#   'scale': alt.Scale({
-#     'scheme': 'reds'
-#   }),
-#   'shorthand': 'target:Q'
-# })
 
-opacity = alt.condition(alt.datum.target==0, alt.value(0.2), alt.value(0.8),legend=None)
+opacityz = alt.condition(alt.datum.target==0, alt.value(0.2), alt.value(0.8),legend=None)
 
-base=alt.Chart(source_df).mark_circle(size=60,color='lightgrey').encode(
-    x=alt.X('index',axis=None),
+def first_base():
+     return alt.Chart(source_df).add_selection(
+         genre_select
+     ).transform_filter(
+         genre_select
+     ).transform_filter(
+         (alt.datum.pred <= lo_select_thresh.thresh) 
+     )
+
+def base_plot(filter_criteria):
+     return alt.Chart(source_df).transform_filter(
+         genre_select
+     ).transform_filter(
+         (filter_criteria) 
+     )
+
+def row_calcs(base):
+    # base=base_plot(filter_criteria)
+    return base.transform_aggregate(
+        total_count2='count(target)',
+        total_pos='sum(target)',
+    ).transform_calculate(
+        tru_negs=(alt.datum.total_count2-alt.datum.total_pos),
+        pop_pct=(alt.datum.total_count2/source.shape[0]),
+        tpos_pct=(alt.datum.total_pos/source[source['target']==1].shape[0]),
+        spos_pct=(alt.datum.total_pos/alt.datum.total_count2),
+        npv=(alt.datum.tru_negs/alt.datum.total_count2)
+    )
+
+def bar_plot(base,colore,fieldz,toolz,titlez):
+    return row_calcs(base).mark_bar(color=colore).encode(
+    y=alt.Y(fieldz,scale=alt.Scale(domain=(0, 1)),title=titlez),
+    tooltip=toolz
+    ).properties(width=40).interactive()
+
+def label_plot(base,fieldz):
+    return row_calcs(base).mark_text(dy=-5, color='black').encode(
+    y=alt.Y(fieldz, stack='zero'),
+    text=alt.Text(fieldz, format='.3p')
+    )
+
+def cat_lbdBar_plot(base,colore,fieldz,toolz,titlez):
+    return (bar_plot(base,colore,fieldz,toolz,titlez)+label_plot(base,fieldz))
+
+
+lbd_bar_bases={
+'pop':{
+    'titlez':"Percent of Total Population Served",
+    'fieldz':'pop_pct:Q',
+    'toolz':[
+        alt.Tooltip('pop_pct:Q',format='.3p',title="Percentage"),
+        alt.Tooltip('total_count2:Q',title="Total Count"),
+        alt.Tooltip('tru_negs:Q',title="Negatives"),
+        alt.Tooltip('total_pos:Q',title="Positives")]
+        },
+'tpos':{
+    'titlez':"Percent of Total Positives",
+    'fieldz':'tpos_pct:Q',
+    'toolz':[
+        alt.Tooltip('tpos_pct:Q',format='.3p',title="Percentage"),
+        alt.Tooltip('total_count2:Q',title="Total Count"),
+        alt.Tooltip('total_pos:Q',title="Positives"),]
+        },
+'npv':{
+    'titlez':"Negative Predictive Value",
+    'fieldz':'npv:Q',
+    'toolz':[
+        alt.Tooltip('npv:Q',format='.3p',title="Negative Predictive Value"),
+        alt.Tooltip('total_count2:Q',title="Total Count"),
+        alt.Tooltip('tru_negs:Q',title="True Negatives"),
+        alt.Tooltip('total_pos:Q',title="False Negatives (Pos)")],
+        },
+'spos':{
+    'titlez':"Percentage of Positives in Ranges",
+    'fieldz':'spos_pct:Q',
+    'toolz':[
+        alt.Tooltip('spos_pct:Q',format='.3p',title="Percentage"),
+        alt.Tooltip('total_count2:Q',title="Total Count"),
+        alt.Tooltip('tru_negs:Q',title="Negatives"),
+        alt.Tooltip('total_pos:Q',title="Positives")]
+    }
+}
+
+row_bases={
+    'firstRow':{
+        'base':base_plot(alt.datum.pred <= lo_select_thresh.thresh),
+        'colore':'lightgray'},
+    'secondRow':{
+        'base':base_plot((alt.datum.pred > lo_select_thresh.thresh) & (alt.datum.pred <= hi_select_thresh.thresh)),
+        'colore':'orangeRed'},
+    'thirdRow':{
+        'base':base_plot((alt.datum.pred > hi_select_thresh.thresh)),
+        'colore':'seagreen'},
+}
+
+def lbd_bar_plot(lbd_bar_base,row_base):
+    call_dict=lbd_bar_bases[lbd_bar_base].copy()
+    call_dict.update(row_bases[row_base])
+    return cat_lbdBar_plot(**call_dict)
+
+dotplot_tools=[alt.Tooltip('pred',title="Probability",format='.3p'), alt.Tooltip('result',title="Test Result")]
+
+fR_dot=first_base().mark_circle(size=60,color='lightgrey').encode(
+    x=alt.X('index',axis=None,scale=alt.Scale(domain=(0, source.shape[0]))),
     y=alt.Y('pred',scale=alt.Scale(domain=(0, 1)),axis=alt.Axis(title="Predicted Probability")),
-    tooltip=['index','pred', 'target']
-).add_selection(
-    genre_select
-).transform_filter(
-    genre_select
-).transform_filter(
-    alt.datum.pred <= select_thresh2.thresh
+    tooltip=dotplot_tools
 ).properties(title="Model Diagnosed",width=500).interactive()
 
-
-base2=alt.Chart(source_df).mark_circle(size=60).encode(
-    x=alt.X('index',axis=None),
-    y=alt.Y('pred',scale=alt.Scale(domain=(0, 1)),axis=alt.Axis(title="Predicted Probability")),
-    color=color,
-    opacity=opacity,
-    tooltip=['index','pred', 'target']
-).transform_filter(
-    genre_select
-).transform_filter(
-    (alt.datum.pred > select_thresh2.thresh) & (alt.datum.pred <= select_thresh.thresh)
-).properties(title="Higher Performance Tests",width=500).interactive()
+# pop,tpos,npv,spos
+fR_poplbdBar=lbd_bar_plot('pop','firstRow')
+fR_tposlbdBar=lbd_bar_plot('tpos','firstRow')
+fR_npvlbdBar=lbd_bar_plot('npv','firstRow')
 
 
-base3=alt.Chart(source_df).mark_circle(size=60).encode(
-    x=alt.X('index',axis=None),
-    y=alt.Y('pred',scale=alt.Scale(domain=(0, 1)),axis=alt.Axis(title="Predicted Probability")),
-    color=alt.Color('target:Q',legend=None),
-    tooltip=['index','pred', 'target']
-).transform_filter(
-    genre_select
-).transform_filter(
-    (alt.datum.pred > select_thresh.thresh)
-).properties(title="Rapid Diagnostic Tests",width=500).interactive()
+firstRow=(fR_dot+lo_thresh_line|(fR_poplbdBar|fR_tposlbdBar|fR_npvlbdBar))
 
+#%%
 
+def dot_plot(base,titlez,arg_dicts):
+    return base.mark_circle(size=60).encode(**arg_dicts).properties(title=titlez,width=500).interactive()
 
+dot_plot_args={'x':alt.X('index',axis=None,scale=alt.Scale(domain=(0, source.shape[0]))),
+    'y':alt.Y('pred',scale=alt.Scale(domain=(0, 1)),axis=alt.Axis(title="Predicted Probability")),
+    'tooltip':dotplot_tools}
+    # 'opacity':dopacity,}
 
-text = alt.Chart(source_df).transform_filter(
-    genre_select
-).transform_filter(
-    alt.datum.pred <= select_thresh2.thresh
-).transform_aggregate(
-    total_count2='count(alt.datum.target)',
-    # total_pos='average(alt.datum.target)'
-).transform_calculate(
-    pct=alt.datum.total_count2/source.shape[0]
-).mark_text(dy=-5, color='black').encode(
-    y=alt.Y('pct:Q', stack='zero'),
-    text=alt.Text('pct:Q', format='.3p')
-)
+sR_dot_dict=dot_plot_args.copy()
+sR_dot_dict.update({'color':colorz,'opacity':opacityz})
 
+sR_dot=dot_plot(row_bases['secondRow']['base'],"Higher Performance Tests",sR_dot_dict)
 
-text2 = alt.Chart(source_df).transform_filter(
-    genre_select
-).transform_filter(
-    (alt.datum.pred <= select_thresh2.thresh)
-).transform_aggregate(
-    total_count2='count(target)',
-    total_pos='sum(target)'
-).transform_calculate(
-    pct=alt.datum.total_pos/source[source['target']==1].shape[0]
-).mark_text(dy=-5, color='black').encode(
-    y=alt.Y('pct:Q', stack='zero'),
-    text=alt.Text('pct:Q', format='.3p')
-)
+sR_poplbdBar=lbd_bar_plot('pop','secondRow')
+sR_tposlbdBar=lbd_bar_plot('tpos','secondRow')
+sR_sposlbdBar=lbd_bar_plot('spos','secondRow')
 
+secondRow=((sR_dot+hi_thresh_line+lo_thresh_line)|sR_poplbdBar|sR_tposlbdBar|sR_sposlbdBar)
 
-bar=alt.Chart(source_df).transform_filter(
-    genre_select
-).transform_filter(
-    alt.datum.pred <= select_thresh2.thresh
-).transform_aggregate(
-    total_count2='count(alt.datum.target)',
-    # total_pos='average(alt.datum.target)'
-).transform_calculate(
-    pct=alt.datum.total_count2/source.shape[0]
-).mark_bar(color='lightgray').encode(
-    y=alt.Y('pct:Q',scale=alt.Scale(domain=(0, 1)),title="Percent of Total Population Served"),
-    tooltip=[alt.Tooltip('pct:Q',format='.3p'),alt.Tooltip('total_count2:Q')]
-).interactive()
+tR_dot_dict=dot_plot_args.copy()
+tR_dot_dict.update({'color':(alt.Color('target:Q',legend=None))})
 
+tR_dot=dot_plot(row_bases['thirdRow']['base'],"Rapid Diagnostic Tests",tR_dot_dict)
 
-bar2=alt.Chart(source_df).transform_filter(
-    genre_select
-).transform_filter(
-    (alt.datum.pred <= select_thresh2.thresh)# & (alt.datum.target == 1)
-).transform_aggregate(
-    total_count='count(target)',
-    total_pos='sum(target)'
-).transform_calculate(
-    #pct=alt.datum.total_count/source[source['target']==1].shape[0]
-    pct=alt.datum.total_pos/source[source['target']==1].shape[0]
-).mark_bar(color='lightgray').encode(
-    y=alt.Y('pct:Q',scale=alt.Scale(domain=(0, 1)),title="Percentage of Total Positives"),
-    tooltip=[alt.Tooltip('pct:Q',format='.3p'),alt.Tooltip('total_pos:Q')]
-).properties(width=50).interactive()
+tR_poplbdBar=lbd_bar_plot('pop','thirdRow')
+tR_tposlbdBar=lbd_bar_plot('tpos','thirdRow')
+tR_sposlbdBar=lbd_bar_plot('spos','thirdRow')
 
+thirdRow=((tR_dot+hi_thresh_line)|tR_poplbdBar|tR_tposlbdBar|tR_sposlbdBar)
 
-textb = alt.Chart(source_df).transform_filter(
-    genre_select
-).transform_filter(
-    (alt.datum.pred <= select_thresh2.thresh) 
-).transform_joinaggregate(
-    total_count2='count(target)',
-#).transform_aggregate(
-    total_pos='sum(target)',
-).transform_calculate(
-    pct=(alt.datum.total_count2-alt.datum.total_pos)/(alt.datum.total_count2+alt.datum.total_pos)
-).mark_text(dy=-5, color='black').encode(
-    y=alt.Y('pct:Q', stack='zero'),
-    text=alt.Text('pct:Q', format='.3p')
-)
-
-
-barb=alt.Chart(source_df).transform_filter(
-    genre_select
-).transform_filter(
-    (alt.datum.pred <= select_thresh2.thresh) 
-).transform_joinaggregate(
-    total_count2='count(target)',
-#).transform_aggregate(
-    total_pos='sum(target)',
-).transform_calculate(
-    pct=(alt.datum.total_count2-alt.datum.total_pos)/(alt.datum.total_count2+alt.datum.total_pos)
-).mark_bar(color='lightgray').encode(
-    y=alt.Y('pct:Q',scale=alt.Scale(domain=(0, 1)),title="Negative Predictive Value"),
-    tooltip=[alt.Tooltip('pct:Q',format='.3p',title="NPV"),alt.Tooltip('total_count2:Q',title="True Negatives"),alt.Tooltip('total_pos:Q',title="False Negatives")]
-).interactive()
-
-
-
-text3 = alt.Chart(source_df).transform_filter(
-    genre_select
-).transform_filter(
-    (alt.datum.pred > select_thresh2.thresh) & (alt.datum.pred <= select_thresh.thresh)
-).transform_aggregate(
-    total_count2='count(alt.datum.target)',
-    # total_pos='average(alt.datum.target)'
-).transform_calculate(
-    pct=alt.datum.total_count2/source.shape[0]
-).mark_text(dy=-5, color='black').encode(
-    y=alt.Y('pct:Q', stack='zero'),
-    text=alt.Text('pct:Q', format='.3p')
-)
-
-
-text4 = alt.Chart(source_df).transform_filter(
-    genre_select
-).transform_filter(
-    (alt.datum.pred > select_thresh2.thresh) & (alt.datum.pred <= select_thresh.thresh) & (alt.datum.target == 1)
-).transform_aggregate(
-    total_count2='count(alt.datum.target)',
-    # total_pos='average(alt.datum.target)'
-).transform_calculate(
-    pct=alt.datum.total_count2/source[source['target']==1].shape[0]
-).mark_text(dy=-5, color='black').encode(
-    y=alt.Y('pct:Q', stack='zero'),
-    text=alt.Text('pct:Q', format='.3p')
-)
-
-
-bar3=alt.Chart(source_df).transform_filter(
-    genre_select
-).transform_filter(
-    (alt.datum.pred > select_thresh2.thresh) & (alt.datum.pred <= select_thresh.thresh)
-).transform_aggregate(
-    total_count2='count(alt.datum.target)',
-    # total_pos='average(alt.datum.target)'
-).transform_calculate(
-    pct=alt.datum.total_count2/source.shape[0]
-).mark_bar(color='orangered').encode(
-    y=alt.Y('pct:Q',scale=alt.Scale(domain=(0, 1)),title="Percent of Total Population Served"),
-    tooltip=[alt.Tooltip('pct:Q',format='.3p'),alt.Tooltip('total_count2:Q')]
-).properties(width=50).interactive()
-
-
-bar4=alt.Chart(source_df).transform_filter(
-    genre_select
-).transform_filter(
-    (alt.datum.pred > select_thresh2.thresh) & (alt.datum.pred <= select_thresh.thresh) & (alt.datum.target == 1)
-).transform_aggregate(
-    total_count='count(alt.datum.target)',
-    # total_pos='average(alt.datum.target)'
-).transform_calculate(
-    pct=alt.datum.total_count/source[source['target']==1].shape[0]
-).mark_bar(color='orangered').encode(
-    y=alt.Y('pct:Q',scale=alt.Scale(domain=(0, 1)),title="Percentage of Total Positives"),
-    tooltip=[alt.Tooltip('pct:Q',format='.3p'),alt.Tooltip('total_count:Q')]
-).properties(width=50).interactive()
-
-
-barc=alt.Chart(source_df).transform_filter(
-    genre_select
-).transform_filter(
-    (alt.datum.pred > select_thresh2.thresh) & (alt.datum.pred <= select_thresh.thresh)
-).transform_aggregate(
-    total_count2='count(target)',
-    total_pos='sum(target)'
-).transform_calculate(
-    total_neg=alt.datum.total_count2-alt.datum.total_pos,
-    pct=alt.datum.total_pos/alt.datum.total_count2
-).mark_bar(color='orangered').encode(
-    y=alt.Y('pct:Q',scale=alt.Scale(domain=(0, 1)),title="Percentage of Positives in Sample"),
-    tooltip=[alt.Tooltip('pct:Q',format='.3p'),alt.Tooltip('total_count2:Q'),alt.Tooltip('total_pos:Q')]
-).properties(width=50).interactive()
-
-
-
-textc = alt.Chart(source_df).transform_filter(
-    genre_select
-).transform_filter(
-    (alt.datum.pred > select_thresh2.thresh) & (alt.datum.pred <= select_thresh.thresh)
-).transform_aggregate(
-    total_count2='count(target)',
-    total_pos='sum(target)'
-).transform_calculate(
-    total_neg=alt.datum.total_count2-alt.datum.total_pos,
-    pct=alt.datum.total_pos/alt.datum.total_count2
-).mark_text(dy=-5, color='black').encode(
-    y=alt.Y('pct:Q', stack='zero'),
-    text=alt.Text('pct:Q', format='.3p')
-)
-
-
-
-# (base+yrule2|((bar+text)|(bar2+text2)|barb+textb))&(base2+yrule+yrule2|((bar3+text3)|(bar4+text4)))
-
-
-
-
-
-text5 = alt.Chart(source_df).transform_filter(
-    genre_select
-).transform_filter(
-    (alt.datum.pred > select_thresh.thresh) 
-).transform_aggregate(
-    total_count2='count(alt.datum.target)',
-    # total_pos='average(alt.datum.target)'
-).transform_calculate(
-    pct=alt.datum.total_count2/source.shape[0]
-).mark_text(dy=-5, color='black').encode(
-    y=alt.Y('pct:Q', stack='zero'),
-    text=alt.Text('pct:Q', format='.3p')
-)
-
-
-text6 = alt.Chart(source_df).transform_filter(
-    genre_select
-).transform_filter(
-    (alt.datum.pred > select_thresh.thresh) & (alt.datum.target == 1)
-).transform_aggregate(
-    total_count2='count(alt.datum.target)',
-    # total_pos='average(alt.datum.target)'
-).transform_calculate(
-    pct=alt.datum.total_count2/source[source['target']==1].shape[0]
-).mark_text(dy=-5, color='black').encode(
-    y=alt.Y('pct:Q', stack='zero'),
-    text=alt.Text('pct:Q', format='.3p')
-)
-
-
-bar5=alt.Chart(source_df).transform_filter(
-    genre_select
-).transform_filter(
-    (alt.datum.pred > select_thresh.thresh)
-).transform_aggregate(
-    total_count2='count(alt.datum.target)',
-    total_pos='average(alt.datum.target)'
-).transform_calculate(
-    pct=alt.datum.total_count2/source.shape[0]
-).mark_bar(color="seagreen").encode(
-    y=alt.Y('pct:Q',scale=alt.Scale(domain=(0, 1)),title="Percent of Population Served"),
-    tooltip=[alt.Tooltip('pct:Q',format='.3p')]
-).interactive()
-
-
-bar6=alt.Chart(source_df).transform_filter(
-    genre_select
-).transform_filter(
-    (alt.datum.pred > select_thresh.thresh) & (alt.datum.target == 1)
-).transform_aggregate(
-    total_count='count(target)',
-    # total_pos='average(alt.datum.target)'
-).transform_calculate(
-    pct=alt.datum.total_count/source[source['target']==1].shape[0]
-).mark_bar(color="seagreen").encode(
-    y=alt.Y('pct:Q',scale=alt.Scale(domain=(0, 1)),title="Percentage of Total Positives"),
-    tooltip=[alt.Tooltip('pct:Q',format='.3p')]
-).properties(width=50).interactive()
-
-bard=alt.Chart(source_df).transform_filter(
-    genre_select
-).transform_filter(
-    (alt.datum.pred > select_thresh2.thresh) & (alt.datum.pred > select_thresh.thresh)
-).transform_aggregate(
-    total_count2='count(target)',
-    total_pos='sum(target)'
-).transform_calculate(
-    pct=alt.datum.total_pos/alt.datum.total_count2
-).mark_bar(color="seagreen").encode(
-    y=alt.Y('pct:Q',scale=alt.Scale(domain=(0, 1)),title="Percentage of Positives in Sample"),
-    tooltip=[alt.Tooltip('pct:Q',format='.3p'),alt.Tooltip('total_count2:Q'),alt.Tooltip('total_pos:Q')]
-).interactive()
-
-
-
-textd = alt.Chart(source_df).transform_filter(
-    genre_select
-).transform_filter(
-    (alt.datum.pred > select_thresh2.thresh) & (alt.datum.pred > select_thresh.thresh)
-).transform_aggregate(
-    total_count2='count(target)',
-    total_pos='sum(target)'
-).transform_calculate(
-    pct=alt.datum.total_pos/alt.datum.total_count2
-).mark_text(dy=-5, color='black').encode(
-    y=alt.Y('pct:Q', stack='zero'),
-    text=alt.Text('pct:Q', format='.3p')
-)
-
-
-
-
-
-
+# (firstRow)&(secondRow)&(thirdRow)
 ```
 
-```{python include=F,message=FALSE,warning=FALSE}
-ind_chart=(base+yrule2|((bar+text)|(bar2+text2)|barb+textb))&(base2+yrule+yrule2|((bar3+text3)|(bar4+text4)|(barc+textc)))&(base3+yrule|((bar5+text5)|(bar6+text6)|(bard+textd)))
 
-ichart=ind_chart.to_json() 
+### Dashboard
+
+```{r echo=FALSE}
+bs_modal(
+  id = "modal_markdown", 
+  title = "Visualization Explanation",
+  body = includeMarkdown("stuff.md"),
+  size = "large"
+)
+bs_button("Visualization Info", button_type = "success",button_size ="extra-small",id="info_modal") %>%
+  bs_attach_modal("modal_markdown")
+```
+
+```{python echo=F,message=FALSE,warning=FALSE}
+# ind_chart=(firstRow_dot+yrule2|((bar+firstRow_barlabel)|(bar2+text2)|barb+textb))&(base2+yrule+yrule2|((bar3+text3)|(bar4+text4)|(barc+textc)))&(base3+yrule|((bar5+text5)|(bar6+text6)|(bard+textd)))
+
+# ichart=ind_chart.to_json() 
+# ind_chart
+(firstRow)&(secondRow)&(thirdRow)
+```
+
+```{r echo=FALSE,message=FALSE,warning=FALSE}
+# as_vegaspec(py$ichart)
+```
+
+
+```{r echo=F}
+htmltools::includeScript(path = "helpers.js")
+```
+
+
+### Plots
+
+
+```{python echo=F,message=FALSE,warning=FALSE}
+
+# tn, fp, fn, tp
+
+# confusion_matrix(y_scoring2,to_labels(rf_y_pred2,0.001)).ravel()
+
+def calc_at_thresh(preds,thresh,classifier):
+    # return np.hstack((classifier,confusion_matrix(y_scoring2,to_labels(preds,thresh)).ravel()))
+    return confusion_matrix(y_scoring2,to_labels(preds,thresh)).ravel()
+
+# [x/1000 for x in range(1,1001)]
+
+
+cms=[calc_at_thresh(source['rf'],y,'rf') for y in [x/1000 for x in range(0,1001)]]
+
+cmf=[np.hstack((y,x)).tolist() for x,y in zip(cms,[x/1000 for x in range(0,1001)])]
+
+# cm_df=pd.DataFrame(cmf,columns=['thresh','classifier','tn','fp','fn','tp'])
+
+# cm_df[['tn','fp','fn','tp']]=cm_df[['tn','fp','fn','tp']].astype(float)
+
+cm_df=pd.DataFrame(cmf,columns=['thresh','tn','fp','fn','tp'])
+#%%
+alt.data_transformers.disable_max_rows()
+
+# source_df=source.reset_index().melt(id_vars=['index','target',"result"],var_name='classifier',value_name='pred')
+slider = alt.binding_range(name="Threshold", min=0, max=1, step=0.001)
+select_thresh = alt.selection_single(fields=['thresh'],
+                                   bind=slider, init={'thresh': round(eclf_best_thresh,3)})
+
+# genre_dropdown = alt.binding_select(options=np.unique(cm_df['classifier']),name="Choose Model:\n ",labels=["Random Forest"])
+# genre_select = alt.selection_single(fields=['classifier'], bind=genre_dropdown,init={'classifier': 'rf'})
+
+
+tn=alt.Chart(cm_df.loc[:, cm_df.columns != 'classifier']).add_selection(
+     select_thresh
+    ).transform_filter(
+        select_thresh
+    ).mark_text().encode(
+    text=alt.Text('tn:Q'),
+    color=alt.Color('tn:Q', scale=alt.Scale(scheme='redyellowgreen'),legend=None)
+).properties(width=40,title='TN')
+
+
+fp=alt.Chart(cm_df).transform_filter(
+        select_thresh
+    ).mark_text().encode(
+    text=alt.Text('fp:Q'),
+    color=alt.Color('fp:Q', scale=alt.Scale(scheme='redyellowgreen'),legend=None)
+).properties(width=40,title='FP')
+
+
+fn=alt.Chart(cm_df).add_selection(
+     select_thresh
+    ).transform_filter(
+        select_thresh
+    ).mark_text().encode(
+    text=alt.Text('fn:Q'),
+    color=alt.Color('fn:Q', scale=alt.Scale(scheme='redyellowgreen'),legend=None)
+).properties(width=40,title='FN')
+
+
+tp=alt.Chart(cm_df).add_selection(
+     select_thresh
+    ).transform_filter(
+        select_thresh
+    ).mark_text().encode(
+    text=alt.Text('tp:Q'),
+    color=alt.Color('tp:Q', scale=alt.Scale(scheme='redyellowgreen'),legend=None)
+).properties(width=40,title='TP')
+
+
+ichart=((tn|fp)&(fn|tp)).configure_title(fontSize=12).configure(background='#3b3e46').to_json() 
+# f
+
+# ichart=((tn|fp)&(fn|tp)).configure_title(fontSize=12).configure(background='#D9E9F0').to_json() 
+
+# ichart=ind_chart.to_json() 
+# ind_chart
+# (firstRow)&(secondRow)&(thirdRow)
 ```
 
 ```{r echo=FALSE,message=FALSE,warning=FALSE}
 as_vegaspec(py$ichart)
 ```
 
+### Tables
 
+We show the data in this tab.
+
+```{r}
+
+```
